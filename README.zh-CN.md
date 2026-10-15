@@ -16,7 +16,7 @@
 
 一条常见的采集路线是先确定相关账户，再通过视频模型和人工检查，筛出其中适合训练的具体视频。已有研究尝试了人工整理来源、自动检索候选和按频道抽查等方法，但筛选来源及审核内容仍需要投入人工。[\[1\]](https://aclanthology.org/2022.emnlp-main.427/) [\[2\]](https://papers.nips.cc/paper_files/paper/2023/hash/5c61452daca5f0c260e683b317d13a3f-Abstract-Datasets_and_Benchmarks.html) [\[3\]](https://arxiv.org/html/2407.11144) 候选账户越多，逐个浏览和判断的成本就越高；当类别边界或采集目标改变时，部分工作还需要重做。**账户筛选因此成为领域数据采集中的一道瓶颈。**
 
-<p><img src="docs/assets/collection-workflow.svg" alt="UGC 用户创作社区 → 发现候选账户 → 筛选相关账户 → 筛选与审核具体视频 → 构建训练数据集。下方的 Jev Account Filter 通过向上箭头指向筛选相关账户这一步。" width="100%"></p>
+<p><img src="docs/assets/collection-workflow.svg" alt="通过关键词及推荐发现候选账户 → 人工筛选相关账户（账户筛选瓶颈） → 视频模型与人工审核筛选具体视频 → 预处理并构建训练数据集。下方 Jev Account Filter 通过视频标题与封面筛选账户，向上箭头指向人工筛选相关账户这一步。" width="100%"></p>
 
 账户主页本身已经提供了丰富的预览信息：标题表达作品主题，封面呈现视觉线索，名称和简介补充创作者定位。这些信息为低成本的来源判断提供了可能。与此同时，决策模型能够把给定证据直接转换为类别选择和相关性概率，并在同一请求中回答多个独立问题，适合大规模、可重复的筛选任务。[\[5\]](https://developers.openai.com/api/docs/guides/decisions) [\[7\]](https://docs.typesafe.ai/introduction)
 
@@ -37,19 +37,26 @@
 决策接口的多问题能力、速度与价格依据见 [Decisions API 文档（参考文献 5）](https://developers.openai.com/api/docs/guides/decisions)；卡片中的官方标准价格截至 2026-10-14，长上下文与区域处理另有加价。发布记录见 [参考文献 6](https://developers.openai.com/api/docs/changelog)。人工与模型差异的独立复核统计将在完成后补充。
 <!-- 待补充独立复核结果：模型错误数、原人工标注错误数与复核标准；据此更新准确性比较。 -->
 
-## 相关工作
+## 应用领域
 
-### 决策模型：Jev 与多模态 Decisions 接口
+从领域账户中选择稳定的数据来源，可以服务于多种 UGC 数据集采集任务。手语是本项目已验证的应用，其他领域是可拓展方向。下方仅列出论文明确描述了选定频道来源或频道级人工审核的数据集，展开可查看原文依据。
 
-TypeSafe 的 **Jev** 围绕软件中的分类、评分与条件判断设计，接受共享状态和带类型的问题，返回选项、分数及概率。其官方文档说明，同一次调用中的多个问题可以针对同一输入并行、独立地评估；发布介绍进一步讨论了并行采样与面向校准决策的训练方法。这类接口将模型判断组织成可组合的程序步骤，为批量内容筛选提供了适合的技术基础。[\[7\]](https://docs.typesafe.ai/introduction) [\[8\]](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
+<p><img src="docs/assets/application-domains.svg" alt="五个横向圆角卡片：手语（OpenASL、YouTube-ASL、YouTube-SL-25）、乐器演奏（PIAST）、美妆教学（YouMakeup）、舞蹈、健身训练；每个领域均配一个 emoji。" width="100%"></p>
 
-OpenAI 的 **Decisions API** 同样支持结构化的类别、条件概率和评分，并能够接收文本与图像、在一次请求中评估多个独立问题。[\[5\]](https://developers.openai.com/api/docs/guides/decisions) 本项目的既有实验通过 OpenRouter 调用 **GPT-6 Luna Decisions**，利用其多模态判断能力融合视频标题与封面；Jev 在此作为决策模型的相关工作介绍。项目关注如何把这类能力组织为账户筛选方法，并通过显式配置选择模型服务与筛选类别。
+<details>
+<summary>论文原文：频道来源与人工筛选依据</summary>
 
-### 手语数据集：从内容发现到逐视频审核
+**[OpenASL](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · §3。** 作者选定三个 YouTube 来源采集手语视频；原文写到 “in these two channels”，随后说明第三个来源。YouTube-ASL 的 [§2.1](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=2) 将 OpenASL 的来源选择归为 “manual channel curation”。
 
-**OpenASL** 从三个选定的 YouTube 频道采集手语视频，代表了围绕人工确定来源构建语料的路线。[\[1\]](https://aclanthology.org/2022.emnlp-main.427/) **YouTube-ASL** 进一步使用平台自动标签检索候选，再由熟练标注者逐视频筛选，扩大了内容来源范围。[\[2\]](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf) **YouTube-SL-25** 将检索扩展到多种手语，并通过按频道抽查与定向审阅提高筛选效率；论文也指出，YouTube-ASL 的三名母语手语标注者曾花费数月审核候选视频。[\[3\]](https://arxiv.org/html/2407.11144)
+**[YouTube-ASL](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · §3.2。** 候选通过自动标签检索，人工标注者可以把判断应用到整个频道；原文为 “labels held for an entire channel of videos”。这里的人工环节是频道级审核。
 
-**Seeing, Signing, and Saying** 引入 VLM 辅助检查人物可见性、手语活动及视频与文本的匹配，并构建 TikTok-SL-8，展示了模型辅助逐视频整理数据的潜力。[\[4\]](https://aclanthology.org/2025.ranlp-1.159/) 本项目将模型判断前移到来源选择阶段，以账户主页的标题与封面进行预筛，为后续视频采集和质量检查提供候选账户。这一方法与逐视频审核相互衔接，目标是减少在无关来源上投入的采集和检查成本。
+**[YouTube-SL-25](https://arxiv.org/html/2407.11144#S2.SS2) · §2.2。** 作者按频道抽查视频，再接受、拒绝或进一步检查该频道；原文为 “For each channel, the author sampled several random videos”。
+
+**[PIAST](https://arxiv.org/html/2411.02551v2#S2.SS2) · §2.2。** 作者结合标签检索与选定频道采集，原文明确为 “23 selected channels known for their piano content”。论文描述的是研究者选定来源，未展开逐频道筛查细节；预处理后主要提供音频、转录 MIDI 和文本。
+
+**[YouMakeup](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4) · §3.1。** 作者先整理知名美妆品牌和博主名单，再搜索其官方频道采集教学视频；原文为 “we search their official channels on the YouTube”。这体现了先选定账户来源、再采集作品的过程。
+
+</details>
 
 ## 方法
 
@@ -103,8 +110,8 @@ OpenAI 的 **Decisions API** 同样支持结构化的类别、条件概率和评
 1. Bowen Shi, Diane Brentari, Gregory Shakhnarovich, and Karen Livescu. **[Open-Domain Sign Language Translation Learned from Online Video](https://aclanthology.org/2022.emnlp-main.427/)**. EMNLP, 2022.
 2. Dave Uthus, Garrett Tanzer, and Manfred Georg. **[YouTube-ASL: A Large-Scale, Open-Domain American Sign Language-English Parallel Corpus](https://papers.nips.cc/paper_files/paper/2023/hash/5c61452daca5f0c260e683b317d13a3f-Abstract-Datasets_and_Benchmarks.html)**. NeurIPS, 2023.
 3. Garrett Tanzer and Biao Zhang. **[YouTube-SL-25: A Large-Scale, Open-Domain Multilingual Sign Language Parallel Corpus](https://arxiv.org/abs/2407.11144)**. arXiv:2407.11144, 2024.
-4. Shakib Yazdani, Yasser Hamidullah, Cristina España-Bonet, and Josef van Genabith. **[Seeing, Signing, and Saying: A Vision-Language Model-Assisted Pipeline for Sign Language Data Acquisition and Curation from Social Media](https://aclanthology.org/2025.ranlp-1.159/)**. RANLP, 2025.
+4. Hayeon Bang, Eunjin Choi, Megan Finch, Seungheon Doh, Seolhee Lee, Gyeong-Hoon Lee, and Juhan Nam. **[PIAST: A Multimodal Piano Dataset with Audio, Symbolic and Text](https://arxiv.org/abs/2411.02551)**. NLP4MusA, 2024.
 5. OpenAI. **[Decisions API Guide](https://developers.openai.com/api/docs/guides/decisions)**. 访问日期：2026-10-14。
 6. OpenAI. **[API Changelog — October 6, 2026](https://developers.openai.com/api/docs/changelog)**. GPT-6 Luna Decisions 发布记录。
 7. TypeSafe AI. **[Jev / System One Models: Introduction](https://docs.typesafe.ai/introduction)**. 访问日期：2026-10-15。
-8. Diogo Almeida. **[Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)**. TypeSafe AI，2026。
+8. Weiying Wang, Yongcheng Wang, Shizhe Chen, and Qin Jin. **[YouMakeup: A Large-Scale Domain-Specific Multimodal Dataset for Fine-Grained Semantic Comprehension](https://aclanthology.org/D19-1517/)**. EMNLP-IJCNLP, 2019.

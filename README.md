@@ -16,7 +16,7 @@ Collecting datasets from user-generated content communities is becoming an incre
 
 A common collection pipeline first identifies relevant accounts, then uses video models and human review to select individual videos suitable for training. Previous work has explored manually curated sources, automatic candidate retrieval, and channel-level sampling, yet source selection and content review still require human effort.[\[1\]](https://aclanthology.org/2022.emnlp-main.427/) [\[2\]](https://papers.nips.cc/paper_files/paper/2023/hash/5c61452daca5f0c260e683b317d13a3f-Abstract-Datasets_and_Benchmarks.html) [\[3\]](https://arxiv.org/html/2407.11144) As the number of candidate accounts grows, the cost of browsing and judging them increases. Changes to category boundaries or collection goals can also require repeating part of that work. **Account screening has therefore become a bottleneck in domain dataset collection.**
 
-<p><img src="docs/assets/collection-workflow.en.svg" alt="UGC communities → candidate accounts → relevant-account screening → video selection and review → training dataset. Jev Account Filter points upward to the account-screening step." width="100%"></p>
+<p><img src="docs/assets/collection-workflow.en.svg" alt="Discover candidate accounts via keywords and recommendations → manually screen relevant accounts (account-screening bottleneck) → select videos with video models and human review → preprocess and build the training dataset. Below, Jev Account Filter screens accounts via titles and thumbnails, with an upward arrow pointing to manual account screening." width="100%"></p>
 
 An account's profile page already provides useful previews: titles describe video topics, thumbnails supply visual cues, and the account name and biography describe the creator's focus. These signals offer a basis for inexpensive source selection. Meanwhile, decision models can turn supplied evidence directly into category choices and relevance probabilities, answering several independent questions in a single request. This makes them suitable for large-scale, repeatable screening.[\[5\]](https://developers.openai.com/api/docs/guides/decisions) [\[7\]](https://docs.typesafe.ai/introduction)
 
@@ -37,19 +37,26 @@ An account's profile page already provides useful previews: titles describe vide
 The sources for multi-question support, speed, and pricing are the [Decisions API documentation (reference 5)](https://developers.openai.com/api/docs/guides/decisions). The official standard prices shown in the cards are dated October 14, 2026; long-context and regional-processing premiums apply. See [reference 6](https://developers.openai.com/api/docs/changelog) for the release record. Independent adjudication statistics for disagreements between the model and human annotations will be added when available.
 <!-- Add independent adjudication results: model errors, original human-annotation errors, and adjudication criteria; then update the accuracy comparison. -->
 
-## Related work
+## Application domains
 
-### Decision models: Jev and multimodal Decisions APIs
+Selecting consistent sources from domain-specific accounts can support UGC dataset collection across multiple fields. Sign language is the application validated in this project; the other domains are potential extensions. Dataset names below are limited to papers that describe selected channel sources or human review at channel level. Expand the evidence notes for the original wording.
 
-TypeSafe's **Jev** is designed for classification, scoring, and conditional judgments inside software. It accepts shared state and typed questions and returns choices, scores, and probabilities. Its official documentation states that multiple questions in one call can be evaluated independently and in parallel against the same input. The release announcement also discusses parallel sampling and training for calibrated decisions. These interfaces organize model judgments into composable program steps, providing a useful foundation for batch content screening.[\[7\]](https://docs.typesafe.ai/introduction) [\[8\]](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
+<p><img src="docs/assets/application-domains.en.svg" alt="Five horizontal rounded cards, each with an emoji: sign language (OpenASL, YouTube-ASL, YouTube-SL-25), instrument performance (PIAST), makeup tutorials (YouMakeup), dance, and fitness training." width="100%"></p>
 
-OpenAI's **Decisions API** likewise supports structured categories, condition probabilities, and scores. It accepts text and images and can evaluate several independent questions in one request.[\[5\]](https://developers.openai.com/api/docs/guides/decisions) The existing experiments in this project call **GPT-6 Luna Decisions** through OpenRouter, using its multimodal capabilities to combine titles and thumbnails. Jev is discussed here as related work on decision models. The project focuses on organizing these capabilities into an account-screening method, with explicit configurations for the model service and target category.
+<details>
+<summary>Paper evidence: channel sources and human screening</summary>
 
-### Sign-language datasets: from content discovery to video-level review
+**[OpenASL](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · §3.** The authors chose three YouTube sources. The text refers to “in these two channels” before describing the third source. YouTube-ASL [§2.1](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=2) characterizes the OpenASL approach as “manual channel curation”.
 
-**OpenASL** collects sign-language videos from three selected YouTube channels, illustrating a corpus-building approach based on manually chosen sources.[\[1\]](https://aclanthology.org/2022.emnlp-main.427/) **YouTube-ASL** broadens the source pool by retrieving candidates with platform-generated tags, followed by skilled annotators filtering individual videos.[\[2\]](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf) **YouTube-SL-25** extends retrieval to multiple sign languages and improves screening efficiency through channel-level sampling and targeted audits. It also reports that three native sign-language annotators spent several months reviewing candidate videos for YouTube-ASL.[\[3\]](https://arxiv.org/html/2407.11144)
+**[YouTube-ASL](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · §3.2.** Candidates were retrieved using automatic tags. Human annotators could apply a judgment to a whole channel: “labels held for an entire channel of videos”. Its human component therefore includes channel-level review.
 
-**Seeing, Signing, and Saying** uses VLMs to check person visibility, signing activity, and video–text alignment, producing TikTok-SL-8 and demonstrating the potential of model-assisted video-level curation.[\[4\]](https://aclanthology.org/2025.ranlp-1.159/) This project moves model judgments earlier, to source selection: profile-page titles and thumbnails provide an initial screen of accounts before video collection and quality review. The approach complements video-level review by reducing collection and inspection effort spent on irrelevant sources.
+**[YouTube-SL-25](https://arxiv.org/html/2407.11144#S2.SS2) · §2.2.** The author sampled videos per channel before accepting, rejecting, or investigating that channel: “For each channel, the author sampled several random videos”.
+
+**[PIAST](https://arxiv.org/html/2411.02551v2#S2.SS2) · §2.2.** The authors combined tag-based retrieval with “23 selected channels known for their piano content”. The paper describes researcher-selected sources without detailing each channel-screening decision. After preprocessing, the dataset primarily provides audio, transcribed MIDI, and text.
+
+**[YouMakeup](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4) · §3.1.** The authors compiled a list of cosmetic brands and beauty bloggers before collecting tutorials from their official channels: “we search their official channels on the YouTube”. This places source selection before collecting individual works.
+
+</details>
 
 ## Method
 
@@ -103,8 +110,8 @@ If this project helps your dataset collection or research, you can use the follo
 1. Bowen Shi, Diane Brentari, Gregory Shakhnarovich, and Karen Livescu. **[Open-Domain Sign Language Translation Learned from Online Video](https://aclanthology.org/2022.emnlp-main.427/)**. EMNLP, 2022.
 2. Dave Uthus, Garrett Tanzer, and Manfred Georg. **[YouTube-ASL: A Large-Scale, Open-Domain American Sign Language-English Parallel Corpus](https://papers.nips.cc/paper_files/paper/2023/hash/5c61452daca5f0c260e683b317d13a3f-Abstract-Datasets_and_Benchmarks.html)**. NeurIPS, 2023.
 3. Garrett Tanzer and Biao Zhang. **[YouTube-SL-25: A Large-Scale, Open-Domain Multilingual Sign Language Parallel Corpus](https://arxiv.org/abs/2407.11144)**. arXiv:2407.11144, 2024.
-4. Shakib Yazdani, Yasser Hamidullah, Cristina España-Bonet, and Josef van Genabith. **[Seeing, Signing, and Saying: A Vision-Language Model-Assisted Pipeline for Sign Language Data Acquisition and Curation from Social Media](https://aclanthology.org/2025.ranlp-1.159/)**. RANLP, 2025.
+4. Hayeon Bang, Eunjin Choi, Megan Finch, Seungheon Doh, Seolhee Lee, Gyeong-Hoon Lee, and Juhan Nam. **[PIAST: A Multimodal Piano Dataset with Audio, Symbolic and Text](https://arxiv.org/abs/2411.02551)**. NLP4MusA, 2024.
 5. OpenAI. **[Decisions API Guide](https://developers.openai.com/api/docs/guides/decisions)**. Accessed October 14, 2026.
 6. OpenAI. **[API Changelog — October 6, 2026](https://developers.openai.com/api/docs/changelog)**. GPT-6 Luna Decisions release record.
 7. TypeSafe AI. **[Jev / System One Models: Introduction](https://docs.typesafe.ai/introduction)**. Accessed October 15, 2026.
-8. Diogo Almeida. **[Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)**. TypeSafe AI, 2026.
+8. Weiying Wang, Yongcheng Wang, Shizhe Chen, and Qin Jin. **[YouMakeup: A Large-Scale Domain-Specific Multimodal Dataset for Fine-Grained Semantic Comprehension](https://aclanthology.org/D19-1517/)**. EMNLP-IJCNLP, 2019.
