@@ -1,49 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
-  <title id="title">Fast: 让判断跟上数据的规模</title>
-  <desc id="description">同一请求可并行回答多个独立问题，共用标题与封面，一次判断账户类别及多个候选视频。官方接口速度约为Responses API 的 10 倍。[5]无需下载、解码或逐个观看完整视频。</desc>
-  <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
-      <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </marker>
-  </defs>
-  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
-    <g class="contribution" data-kind="Fast" transform="translate(4,4)">
-      <rect x="0" y="0" width="1432" height="405" rx="26" fill="#eef4ff" stroke="#cadbf6" stroke-width="1.5" />
-      <g class="copy">
-        <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#285ad0" stroke="none" />
-        <text x="57" y="65" font-size="38" fill="#285ad0" font-weight="700">Fast</text>
-        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">让判断跟上数据的规模</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">同一请求可并行回答多个独立问题，共用标题与封面，一次判断账户</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">类别及多个候选视频。官方接口速度约为Responses API 的 10 倍。</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">[5]无需下载、解码或逐个观看完整视频。</text>
-      </g>
-      <text x="1396" y="32" font-size="17" fill="#285ad0" opacity=".55" font-weight="600" text-anchor="end">01</text>
-      <path d="M843 43V362" fill="none" stroke="#cadbf6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-      <g class="artwork" transform="translate(876,62.5)">
-        <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#cadbf6" fill-opacity=".76" />
-        <text x="25" y="31" font-size="19" fill="#285ad0" font-weight="600">共享证据，一次并行判断</text>
-        <rect x="23" y="92" width="124" height="100" rx="16" fill="#cadbf6" stroke="none" />
-        <rect x="43" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0" />
-        <rect x="48" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none" />
-        <path d="M49 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="77" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0" />
-        <rect x="82" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none" />
-        <path d="M83 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <text x="85" y="174" font-size="16" fill="#285ad0" font-weight="600" text-anchor="middle">标题 + 封面</text>
-        <path d="M148 142H191V83H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="58" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="88" font-size="17" fill="#24344e" font-weight="600">账户类别</text>
-        <text x="470" y="88" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">yes / no</text>
-        <path d="M148 142H191V149H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="124" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="154" font-size="17" fill="#24344e" font-weight="600">候选视频 A</text>
-        <text x="470" y="154" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(A)</text>
-        <path d="M148 142H191V215H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="190" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="220" font-size="17" fill="#24344e" font-weight="600">候选视频 B</text>
-        <text x="470" y="220" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(B)</text>
-        <text x="255" y="263" font-size="17" fill="#64748b" text-anchor="middle">多个独立问题，共用一次输入</text>
-      </g>
-    </g>
-  </g>
-</svg>
+<title id="title">Fast: 同一批账户，筛选加速 136.36×</title><desc id="description">同一批账户，筛选加速 136.36× 人工筛选 2140 个账户，共耗时 1500 人时。 模型仅用 11 小时完成同一批账户的筛选。 一个请求可并行回答多个独立问题，共用标题与封面， 同时判断账户类别与候选视频，无需逐个观看完整视频。 人工与模型筛选耗时均采用团队提供的数据。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1L7 4.5L1 8" fill="none" stroke="#285ad0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif"><g class="contribution" data-kind="Fast" transform="translate(4,4)">
+<rect width="1432" height="405" rx="26" fill="#eef4ff" stroke="#cadbf6" stroke-width="1.5"/>
+<g class="copy"><rect x="38" y="35" width="5" height="37" rx="2.5" fill="#285ad0"/>
+<text x="57" y="65" font-size="38" fill="#285ad0" font-weight="700">Fast</text><text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">同一批账户，筛选加速 136.36×</text>
+<text x="38" y="158" font-size="24" fill="#43516a">人工筛选 2140 个账户，共耗时 1500 人时。</text><text x="38" y="193" font-size="24" fill="#43516a">模型仅用 11 小时完成同一批账户的筛选。</text><text x="38" y="228" font-size="24" fill="#43516a">一个请求可并行回答多个独立问题，共用标题与封面，</text><text x="38" y="263" font-size="24" fill="#43516a">同时判断账户类别与候选视频，无需逐个观看完整视频。</text>
+<text x="38" y="350" font-size="18" fill="#64748b">人工与模型筛选耗时均采用团队提供的数据。</text></g>
+<text x="1396" y="32" font-size="17" fill="#285ad0" font-weight="600" text-anchor="end">01</text>
+<path d="M843 43V362" stroke="#cadbf6" stroke-width="1.2"/>
+<g class="artwork" transform="translate(876,62.5)"><rect width="510" height="280" rx="22" fill="#fff" fill-opacity=".8" stroke="#cadbf6"/><text x="25" y="31" font-size="19" fill="#285ad0" font-weight="600">2140 个账户 · 筛选耗时</text><text x="25" y="89" font-size="21" fill="#24344e" font-weight="600">人工筛选</text><text x="485" y="89" font-size="24" fill="#285ad0" font-weight="700" text-anchor="end">1500 小时</text><rect x="25" y="105" width="460" height="22" rx="5" fill="#afc5ef"/><text x="25" y="174" font-size="21" fill="#24344e" font-weight="600">模型筛选</text><text x="485" y="174" font-size="24" fill="#285ad0" font-weight="700" text-anchor="end">11 小时</text><rect x="25" y="190" width="3.373" height="22" rx="1" fill="#285ad0"/><text x="255" y="257" font-size="30" fill="#285ad0" font-weight="700" text-anchor="middle">加速 136.36×</text></g>
+</g></g></svg>

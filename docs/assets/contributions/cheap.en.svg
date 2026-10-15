@@ -1,54 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
-  <title id="title">Cheap: Make large-scale screening affordable</title>
-  <desc id="description">The decision API has a standard input price of $0.10 per million tokens, with no output-token charge. [5] Rank titles first, then send the top N thumbnails to assess accounts and videos with compact inputs. Reuse cached evidence to test rules without collecting again.</desc>
-  <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
-      <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </marker>
-  </defs>
-  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
-    <g class="contribution" data-kind="Cheap" transform="translate(4,4)">
-      <rect x="0" y="0" width="1432" height="405" rx="26" fill="#effaf5" stroke="#c5e8d7" stroke-width="1.5" />
-      <g class="copy">
-        <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#087a55" stroke="none" />
-        <text x="57" y="65" font-size="38" fill="#087a55" font-weight="700">Cheap</text>
-        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Make large-scale screening affordable</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">The decision API has a standard input price of $0.10 per million</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">tokens, with no output-token charge. [5] Rank titles first, then send</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">the top N thumbnails to assess accounts and videos with compact</text>
-        <text x="38" y="260" font-size="25" fill="#43516a">inputs. Reuse cached evidence to test rules without collecting again.</text>
-      </g>
-      <text x="1396" y="32" font-size="17" fill="#087a55" opacity=".55" font-weight="600" text-anchor="end">02</text>
-      <path d="M843 43V362" fill="none" stroke="#c5e8d7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-      <g class="artwork" transform="translate(876,62.5)">
-        <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#c5e8d7" fill-opacity=".76" />
-        <text x="26" y="54" font-size="46" fill="#087a55" font-weight="700">$0.10</text>
-        <text x="26" y="82" font-size="18" fill="#64748b">/ 1M input tokens [5]</text>
-        <rect x="324" y="25" width="160" height="62" rx="16" fill="#c5e8d7" stroke="none" />
-        <text x="404" y="51" font-size="16" fill="#087a55" text-anchor="middle">Output charge</text>
-        <text x="404" y="76" font-size="25" fill="#087a55" font-weight="700" text-anchor="middle">$0</text>
-        <rect x="35" y="124" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.25" />
-        <rect x="35" y="142" width="86" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.37" />
-        <rect x="35" y="160" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.49" />
-        <rect x="35" y="178" width="86" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.61" />
-        <rect x="35" y="196" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.73" />
-        <path d="M186 125H264L239 162V188H213V162Z" fill="none" stroke="#087a55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-        <text x="225" y="217" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">Top N</text>
-        <path d="M151 156H179" fill="none" stroke="#087a55" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <path d="M272 156H311" fill="none" stroke="#087a55" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="329" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55" />
-        <rect x="334" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none" />
-        <path d="M335 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="377" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55" />
-        <rect x="382" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none" />
-        <path d="M383 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="425" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55" />
-        <rect x="430" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none" />
-        <path d="M431 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <text x="86" y="240" font-size="17" fill="#64748b" text-anchor="middle">All titles</text>
-        <text x="390" y="217" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">Selected images</text>
-        <text x="255" y="268" font-size="17" fill="#64748b" text-anchor="middle">Rank text first. Send only selected images.</text>
-      </g>
-    </g>
-  </g>
-</svg>
+<title id="title">Cheap: Same input rate. Zero output charge.</title><desc id="description">Same input rate. Zero output charge. gpt-6-luna: $0.10 input / $0.50 output per 1M tokens. gpt-6-luna-decisions: $0.10 input / $0 output. Rank titles first, then send only the top N thumbnails. Shared evidence serves multiple decision questions; cached evidence supports repeated screening. Official Standard rates · 2026-10-16 · excludes premiums [5, 9]</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1L7 4.5L1 8" fill="none" stroke="#087a55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif"><g class="contribution" data-kind="Cheap" transform="translate(4,4)">
+<rect width="1432" height="405" rx="26" fill="#effaf5" stroke="#c5e8d7" stroke-width="1.5"/>
+<g class="copy"><rect x="38" y="35" width="5" height="37" rx="2.5" fill="#087a55"/>
+<text x="57" y="65" font-size="38" fill="#087a55" font-weight="700">Cheap</text><text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Same input rate. Zero output charge.</text>
+<text x="38" y="158" font-size="24" fill="#43516a">gpt-6-luna: $0.10 input / $0.50 output per 1M tokens.</text><text x="38" y="193" font-size="24" fill="#43516a">gpt-6-luna-decisions: $0.10 input / $0 output.</text><text x="38" y="228" font-size="24" fill="#43516a">Rank titles first, then send only the top N thumbnails.</text><text x="38" y="263" font-size="24" fill="#43516a">Shared evidence serves multiple decision questions;</text><text x="38" y="298" font-size="24" fill="#43516a">cached evidence supports repeated screening.</text>
+<text x="38" y="350" font-size="18" fill="#64748b">Official Standard rates · 2026-10-16 · excludes premiums [5, 9]</text></g>
+<text x="1396" y="32" font-size="17" fill="#087a55" font-weight="600" text-anchor="end">02</text>
+<path d="M843 43V362" stroke="#c5e8d7" stroke-width="1.2"/>
+<g class="artwork" transform="translate(876,62.5)"><rect width="510" height="280" rx="22" fill="#fff" fill-opacity=".8" stroke="#c5e8d7"/><text x="25" y="29" font-size="18" fill="#087a55" font-weight="600">Standard price · USD / 1M tokens</text><rect x="27" y="45" width="13" height="13" rx="3" fill="#92c5b0"/><text x="48" y="57" font-size="17" fill="#24344e">gpt-6-luna</text><rect x="27" y="67" width="13" height="13" rx="3" fill="#087a55"/><text x="48" y="79" font-size="17" fill="#24344e">gpt-6-luna-decisions</text><path d="M65 228H477" stroke="#d8e9e1" stroke-width="1"/><text x="55" y="233" font-size="14" fill="#64748b" text-anchor="end">0</text><path d="M65 163H477" stroke="#d8e9e1" stroke-width="1"/><text x="55" y="168" font-size="14" fill="#64748b" text-anchor="end">0.25</text><path d="M65 98H477" stroke="#d8e9e1" stroke-width="1"/><text x="55" y="103" font-size="14" fill="#64748b" text-anchor="end">0.5</text><rect x="118" y="202.0" width="42" height="26.0" rx="4" fill="#92c5b0"/><text x="139" y="192.0" font-size="18" fill="#92c5b0" font-weight="600" text-anchor="middle">$0.10</text><rect x="177" y="202.0" width="42" height="26.0" rx="4" fill="#087a55"/><text x="198" y="192.0" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">$0.10</text><rect x="327" y="98.0" width="42" height="130.0" rx="4" fill="#92c5b0"/><text x="348" y="88.0" font-size="18" fill="#92c5b0" font-weight="600" text-anchor="middle">$0.50</text><path d="M386 228h42" stroke="#087a55" stroke-width="3"/><text x="407" y="218" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">$0.00</text><text x="168" y="258" font-size="20" fill="#24344e" text-anchor="middle">Input</text><text x="377" y="258" font-size="20" fill="#24344e" text-anchor="middle">Output</text></g>
+</g></g></svg>

@@ -41,7 +41,7 @@ def test_old_csv_does_not_implicitly_select_a_category(tmp_path):
     before = path.read_bytes()
     html, summary = generate(path, category='sign-language')
     assert summary['matched'] == 1 and path.read_bytes() == before
-    assert '原预测 + 单条降级' in html.read_text(encoding='utf-8')
+    assert '候选数量规则的敏感性分析' in html.read_text(encoding='utf-8')
 
 
 def test_generic_modules_do_not_contain_task_or_provider_defaults():

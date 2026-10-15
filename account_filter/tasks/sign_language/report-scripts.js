@@ -16,7 +16,7 @@ function countMetrics(evaluated){
  const stats=useNew=>{let tp=0,fp=0,fn=0;for(const {r,c} of explicit){const prediction=useNew?c.predicted:r.prediction;if(prediction===L[0]){if(r.manual===L[0])tp++;else fp++}else if(r.manual===L[0])fn++}return{precision:tp+fp?tp/(tp+fp):null,recall:tp+fn?tp/(tp+fn):null,f1:2*tp+fp+fn?2*tp/(2*tp+fp+fn):null,tp,fp,fn}};
  const old=stats(false),next=stats(true),acc=useNew=>evaluated.length?evaluated.filter(x=>useNew?x.c.after:x.c.before).length/evaluated.length:null;
  const percent=p=>p==null?'—':(p*100).toFixed(2)+'%',diff=(a,b)=>a==null||b==null?'—':((b-a)*100>=0?'+':'')+((b-a)*100).toFixed(2)+' 个百分点';
- $('count-metrics').innerHTML='<table class="stat-table"><thead><tr><th>指标</th><th>原预测</th><th>模拟预测</th><th>变化</th></tr></thead><tbody>'+[['标签准确率',acc(false),acc(true)],['手语精确率',old.precision,next.precision],['手语召回率',old.recall,next.recall],['手语 F1',old.f1,next.f1]].map(([name,a,b])=>`<tr><td>${name}</td><td>${percent(a)}</td><td>${percent(b)}</td><td>${diff(a,b)}</td></tr>`).join('')+`</tbody></table><p class="note">准确率按上方人工标注口径计算；精确率、召回率和 F1 仅在人工明确正负类中计算，模型“疑难”不算正类命中。误判为手语 ${old.fp} → ${next.fp} 条；人工手语未判为手语 ${old.fn} → ${next.fn} 条（包括模型疑难）。</p>`;
+ $('count-metrics').innerHTML='<table class="stat-table"><thead><tr><th>指标</th><th>原预测</th><th>模拟预测</th><th>变化</th></tr></thead><tbody>'+[['与原标注一致率',acc(false),acc(true)],['手语精确率',old.precision,next.precision],['手语召回率',old.recall,next.recall],['手语 F1',old.f1,next.f1]].map(([name,a,b])=>`<tr><td>${name}</td><td>${percent(a)}</td><td>${percent(b)}</td><td>${diff(a,b)}</td></tr>`).join('')+`</tbody></table><p class="note">本模拟沿用原人工标注计算一致率，不随上方评估参考切换；精确率、召回率和 F1 仅在人工明确正负类中计算，模型“疑难”不算正类命中。误判为手语 ${old.fp} → ${next.fp} 条；人工手语未判为手语 ${old.fn} → ${next.fn} 条（包括模型疑难）。</p>`;
 }
 function countReview(){
  const evaluated=D.rows.map(r=>({r,c:countComparison(r)})),eligible=evaluated.filter(x=>x.c.eligible),changed=eligible.filter(x=>x.c.changed);
@@ -24,7 +24,7 @@ function countReview(){
  $('count-fixed').textContent=nfmt(fixed.length);$('count-harmed').textContent=nfmt(harmed.length);
  const remaining=eligible.filter(x=>!x.c.after);$('count-remaining').textContent=nfmt(remaining.length);
  const single=countState.mode==='single-low';
- $('count-heading').textContent=single?'原预测 + 单条降级与疑难分流：效果如何？':'至少两个手语候选：哪些变对，哪些变错？';
+ $('count-heading').textContent=single?'候选数量规则的敏感性分析':'候选数量规则的分类结果变化';
  $('count-caption').textContent=single?'原手语恰好1条 >0.1 时改非手语；原疑难至少2条 >0.1 时判手语，否则非手语。':'以 CSV 原预测为基准，只数候选中分数 ≥0.8 的视频。原结果和人工标注保持不变。';
  $('count-rule-note').textContent=single?'当前规则：原预测手语且恰好 1 个分数 >0.1 的候选时改非手语；原预测疑难有至少 2 个分数 >0.1 的候选时改手语，否则非手语。原预测非手语不改；原手语有0个或至少2个不改。严格大于0.1，等于0.1不计数。':countState.mode==='binary'?'当前规则：至少 2 个分数 ≥0.8 的候选判手语，否则判非手语；原模型疑难也会重新划分。':'当前规则：仅将原预测手语且不足 2 个高分候选的频道改为非手语；其它原标签，包括模型疑难，保持不变。';
  countMetrics(eligible);
@@ -34,7 +34,7 @@ function countReview(){
  const query=countState.search.trim().toLowerCase(),pool=countState.group==='remaining'?remaining:changed,rows=pool.filter(x=>(countState.group==='all'||countState.group==='remaining'||x.c.kind===countState.group)&&(!query||`${x.r.name} ${x.r.bio}`.toLowerCase().includes(query))).sort((a,b)=>a.r.id-b.r.id);
  const pages=Math.max(1,Math.ceil(rows.length/pageSize));countState.page=Math.min(countState.page,pages-1);
  const visible=rows.slice(countState.page*pageSize,(countState.page+1)*pageSize);
- $('count-list-title').textContent=({fixed:'变对的频道',harmed:'变错的频道',all:'全部改判频道',remaining:'新规则下所有预测与标注不符的频道'}[countState.group])+`（当前 ${rows.length} 条）`;
+ $('count-list-title').textContent=({fixed:'新增一致账户',harmed:'新增不一致账户',all:'全部改判账户',remaining:'模拟后仍与原标注不一致的账户'}[countState.group])+`（当前 ${rows.length} 条）`;
  $('count-table').innerHTML=rows.length?'<table class="case-table count-table"><thead><tr><th>CSV 行</th><th>账户</th><th>人工标注</th><th>原预测</th><th>模拟预测</th><th>改判结果</th><th>分数 '+countBoundary()+' 的视频数</th><th>原频道概率</th><th>原视频分数（降序）</th><th>封面预览</th><th>复核</th></tr></thead><tbody>'+visible.map(({r,c})=>`<tr data-count-row="${r.id}"><td class="muted">${r.id}</td><td class="name">${esc(r.name)}<div class="small">${link(r.url,'打开频道 ↗')}</div></td><td>${esc(r.manual)}</td><td>${esc(r.prediction)}</td><td><b>${esc(c.predicted)}</b></td><td>${countBadge(c)}</td><td class="num">${c.count} / ${r.videos.filter(v=>v.p!=null).length}</td><td class="num">${fmt(r.p)}</td><td>${countScoreStrip(r)}</td><td><div class="mini-covers">${r.videos.filter(v=>v.cover).slice(0,2).map(v=>`<img src="${esc(encodeURI(v.cover))}" alt="视频${v.rank}封面" loading="lazy">`).join('')||'<span class="note">无本地封面</span>'}</div></td><td><button data-count-case="${r.id}">标题与封面</button></td></tr>`).join('')+'</tbody></table>':'<div class="empty">这组频道在当前条件下为空。</div>';
  $('count-table').querySelectorAll('[data-count-case]').forEach(el=>el.onclick=()=>openCase(Number(el.dataset.countCase)));
  $('count-table').querySelectorAll('img').forEach(img=>img.onerror=()=>{img.remove()});

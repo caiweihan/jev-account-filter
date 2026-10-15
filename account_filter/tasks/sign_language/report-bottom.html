@@ -1,9 +1,9 @@
 <section class="panel" id="count-change">
-<div class="panel-head"><div><h2 id="count-heading">原预测 + 单条降级与疑难分流：效果如何？</h2><div class="note" id="count-caption">原手语恰好1条 &gt;0.1 时改非手语；原疑难至少2条 &gt;0.1 时判手语，否则非手语。</div></div><select id="count-mode" aria-label="数量规则口径"><option value="single-low">新规则：单条降级 + 疑难按2条 &gt;0.1 分流</option><option value="binary">数量直接二分类：至少 2 条 ≥0.8 判手语</option><option value="gate">只给原预测手语项加至少 2 条 ≥0.8 门槛</option></select></div>
+<div class="panel-head"><div><h2 id="count-heading">候选数量规则的敏感性分析</h2><div class="note" id="count-caption">原手语恰好1条 &gt;0.1 时改非手语；原疑难至少2条 &gt;0.1 时判手语，否则非手语。</div></div><select id="count-mode" aria-label="数量规则口径"><option value="single-low">新规则：单条降级 + 疑难按2条 &gt;0.1 分流</option><option value="binary">数量直接二分类：至少 2 条 ≥0.8 判手语</option><option value="gate">只给原预测手语项加至少 2 条 ≥0.8 门槛</option></select></div>
 <div class="count-controls"><label><input type="checkbox" id="count-ambiguous"> 包括人工“疑难”</label><input type="search" id="count-search" placeholder="搜索这组频道的账户 / 简介" aria-label="搜索改判频道"><button id="count-reset">清空搜索</button><button id="count-all">查看全部改判</button></div>
 <div class="note" id="count-rule-note"></div><div id="count-metrics"></div>
 <div class="count-buttons"><button class="count-button active" data-count-group="fixed"><span class="agree">变对：原预测不符 → 新预测符合</span><b class="agree" id="count-fixed">—</b><span class="note">点击查看这些频道</span></button><button class="count-button" data-count-group="harmed"><span class="wrong">变错：原预测符合 → 新预测不符</span><b class="wrong" id="count-harmed">—</b><span class="note">点击查看新增不符的频道</span></button><button class="count-button" data-count-group="remaining"><span class="wrong">新规则下仍不符：全部条目</span><b class="wrong" id="count-remaining">—</b><span class="note">包括未改判的不符及新变错项</span></button></div>
-<div class="note" id="count-summary"></div><h3 id="count-list-title" style="margin:15px 0 8px">变对的频道</h3>
+<div class="note" id="count-summary"></div><h3 id="count-list-title" style="margin:15px 0 8px">新增一致账户</h3>
 <div class="cases" id="count-table"></div><div class="pager"><span class="note" id="count-page-note"></span><div><button id="count-previous">上一页</button> <button id="count-next">下一页</button></div></div>
-<p class="note">本区单独筛选。上方图表仍按 CSV 原预测统计；详情会并排展示原预测与当前模拟预测，并标记计入数量的候选。本次最多复判 5 条，候选数量不代表全频道的真实手语视频总数。本区使用该 CSV 对应实验中保存的候选和分数。</p>
+<p class="note">本区沿用原人工标注独立模拟，不随上方评估参考切换。上方图表仍按 CSV 原预测统计；详情会并排展示原预测与当前模拟预测，并标记计入数量的候选。本次最多复判 5 条，候选数量不代表全频道的真实手语视频总数。本区使用该 CSV 对应实验中保存的候选和分数。</p>
 </section>

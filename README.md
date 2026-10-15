@@ -24,18 +24,40 @@ An account's profile page already provides useful previews: titles describe vide
 
 ### Contributions and advantages
 
-<p><img src="docs/assets/contributions/fast.en.svg" alt="Fast — illustrated contribution" width="100%"></p>
+We validated this workflow on **2,140 Douyin accounts** using the sign-language category configuration and the off-the-shelf **GPT-6 Luna Decisions** model, without fine-tuning.
 
-<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap — illustrated contribution" width="100%"></p>
+<p><img src="docs/assets/contributions/fast.en.svg" alt="Fast: 2,140 accounts, 1,500 human person-hours versus 11 model hours, a 136.36-fold speedup; multiple questions answered in parallel." width="100%"></p>
 
-<p><img src="docs/assets/contributions/accurate.en.svg" alt="Accurate — illustrated contribution" width="100%"></p>
+<details>
+<summary>Time comparison</summary>
+
+The team reports **1,500 person-hours** of human screening effort and **11 hours** of model screening time, giving `1500 / 11 ≈ 136.36`. Person-hours measure total human effort; parallel human work would have a different elapsed duration.
+
+</details>
+
+<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap: both models have a Standard input rate of $0.10 per million tokens; gpt-6-luna output costs $0.50 per million tokens, while gpt-6-luna-decisions has no output charge." width="100%"></p>
+
+<details>
+<summary>Pricing comparison and sources</summary>
+
+Prices are official Standard rates as of **October 16, 2026**, from the [GPT-6 Luna model documentation (reference 9)](https://developers.openai.com/api/docs/models/gpt-6-luna) and the [Decisions API documentation (reference 5)](https://developers.openai.com/api/docs/guides/decisions); long-context and regional-processing premiums apply. The chart's `gpt-6-luna-decisions` denotes the decision model called through the official API as `gpt-6-luna`. Input and output bars compare per-token rates separately, rather than total experiment costs.
+
+</details>
+
+<p><img src="docs/assets/contributions/accurate.en.svg" alt="Accurate: conditional full-set accuracy estimates of 94.02% for human labels and 96.64% for model predictions; the vertical axis spans 90% to 100%." width="100%"></p>
+
+<details>
+<summary>Second-review results and accuracy definitions</summary>
+
+All **198 accounts** on which the model and original human annotations disagreed underwent a second human review, whose labels serve as the reference. The remaining **1,942 accounts**, where the model and original annotations agree, are assumed to have correct original labels. Under this conditional full-set estimate, the original human annotations are correct on **2012 / 2140** accounts, with **128 errors** and **94.02%** accuracy. The model is correct on **2068 / 2140** accounts, with **72 errors** and **96.64%** accuracy.
+
+These figures compare both sources against the second-review reference. Because matching accounts were not independently re-reviewed, they are not independently verified full-set accuracies.
+
+</details>
 
 <p><img src="docs/assets/contributions/flexible.en.svg" alt="Flexible — illustrated contribution" width="100%"></p>
 
 <p><img src="docs/assets/contributions/promising.en.svg" alt="Promising — illustrated contribution" width="100%"></p>
-
-The sources for multi-question support, speed, and pricing are the [Decisions API documentation (reference 5)](https://developers.openai.com/api/docs/guides/decisions). The official standard prices shown in the cards are dated October 14, 2026; long-context and regional-processing premiums apply. See [reference 6](https://developers.openai.com/api/docs/changelog) for the release record. Independent adjudication statistics for disagreements between the model and human annotations will be added when available.
-<!-- Add independent adjudication results: model errors, original human-annotation errors, and adjudication criteria; then update the accuracy comparison. -->
 
 ## Application domains
 
@@ -68,22 +90,11 @@ Selecting consistent sources from domain-specific accounts can support UGC datas
 
 **Cache reuse and reviewable results.** Collected evidence is saved separately from each experiment's configuration, requests, and model responses. Complete local caches allow new experiments without revisiting the platform. A CSV summarizes account judgments, probabilities, and video links, while an HTML report provides distributions, conditional filters, and thumbnail details. Researchers can trace disagreements, revise screening criteria, and pass accepted accounts to downstream video collection and quality review.
 
-## Experiments
-
-Using the sign-language category configuration, we screened **2,140 Douyin accounts** and compared predictions with the original human annotations. The experiment used the off-the-shelf GPT-6 Luna Decisions model without fine-tuning. **2,136 accounts** had explicit binary annotations; the remaining **4** were annotated as uncertain and excluded from binary agreement calculations.
-
-| Evaluation item | Result |
-| --- | ---: |
-| Total accounts | 2140 |
-| Accounts with explicit binary human annotations | 2136 |
-| Predictions matching original human annotations | 1942 |
-| Binary annotation agreement | **90.92%** |
-
-These metrics measure agreement with the original human annotations. Accounts with disagreements retain their thumbnails and judgment scores for independent adjudication. A comparison of model accuracy with the original human annotations will be added after that adjudication is complete.
-
 ## Getting started
 
 **[Installation and environment](docs/installation.md)** · **[Commands](docs/commands.md)** · **[Configuration](docs/configuration.md)** · **[Development and testing](docs/development.md)**
+
+To inspect existing results, open [`analysis.html`](analysis.html) and select a CSV and optional external cache folders. Reuse the same page for different experiments without starting a server or regenerating reports.
 
 Douyin and Kuaishou are currently supported. Adapters for WeChat, YouTube, TikTok, and other platforms are planned.
 
@@ -115,3 +126,4 @@ If this project helps your dataset collection or research, you can use the follo
 6. OpenAI. **[API Changelog — October 6, 2026](https://developers.openai.com/api/docs/changelog)**. GPT-6 Luna Decisions release record.
 7. TypeSafe AI. **[Jev / System One Models: Introduction](https://docs.typesafe.ai/introduction)**. Accessed October 15, 2026.
 8. Weiying Wang, Yongcheng Wang, Shizhe Chen, and Qin Jin. **[YouMakeup: A Large-Scale Domain-Specific Multimodal Dataset for Fine-Grained Semantic Comprehension](https://aclanthology.org/D19-1517/)**. EMNLP-IJCNLP, 2019.
+9. OpenAI. **[GPT-6 Luna — Model and Pricing](https://developers.openai.com/api/docs/models/gpt-6-luna)**. Accessed October 16, 2026.

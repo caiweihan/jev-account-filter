@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src blob: data:; frame-src 'self' about:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Jev Account Filter · 账户分类评估</title>
+<style>label[hidden],.file-choice[hidden],#report[hidden]{display:none}</style>
+<style>.file-choice{display:grid;gap:5px;max-width:420px}.file-choice>span:first-child{font-size:12px;color:#536178}.selected-file{font-size:12px;color:#087568;overflow-wrap:anywhere}details#advanced-settings{margin-top:12px}#advanced-settings summary{cursor:pointer;color:#536178;font-size:12px}#selection-summary{font-size:12px;color:#536178;margin:8px 0}#report{overflow:hidden}</style>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font:14px/1.5 "Segoe UI","Microsoft YaHei",sans-serif;color:#18253a;background:#f3f6fa}header{padding:16px 24px 12px;background:#fff;border-bottom:1px solid #dce3ed}h1{font-size:20px;margin:0 0 5px}.note{font-size:12px;color:#65738a;margin:3px 0}.controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px 16px;margin:12px 0 8px}label{display:grid;gap:4px;font-size:12px;color:#536178}input,select,button{font:inherit}select,button{padding:6px 10px;background:#fff;border:1px solid #ccd5e2;border-radius:6px;color:#18253a}input[type=file]{max-width:285px}button{cursor:pointer}button:disabled,input:disabled,select:disabled{opacity:.5;cursor:default}input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #8aa8ff;outline-offset:2px}#status{min-height:20px;font-size:12px;white-space:pre-wrap}#status.error{color:#b42318}#status.ok{color:#087568}#custom-labels{display:flex;gap:12px}#custom-labels[hidden]{display:none}#report{border:0;display:block;width:100%;height:600px;min-height:300px;background:#f3f6fa}#empty{padding:60px 24px;text-align:center;color:#65738a;flex:1}#empty h2{color:#18253a;font-size:23px}progress{width:140px;height:6px;vertical-align:middle;margin-left:10px}progress[hidden],iframe[hidden]{display:none}@media(max-width:650px){header{padding:12px}.controls{gap:8px}h1{font-size:18px}label{max-width:100%}input[type=file]{max-width:240px}}
+</style>
+</head>
+<body>
+<header>
+<h1>Jev Account Filter · 账户分类评估</h1>
+<p class="note">选择结果 CSV，可选添加实验目录或外部缓存文件夹。文件仅在浏览器中读取，不上传、不访问视频平台或模型。</p>
+<div class="controls">
+<div class="file-choice"><span>结果 CSV</span><input id="csv-file" type="file" accept=".csv,text/csv" aria-label="结果 CSV" hidden><button id="choose-csv" type="button">选择 CSV</button><span id="csv-selected" class="selected-file">尚未选择</span></div>
+<button id="pick-csv" type="button" hidden>选择 CSV</button>
+<div class="file-choice"><span>本地证据目录（可多次添加）</span><input id="cache-folder" type="file" webkitdirectory multiple aria-label="本地证据目录" hidden><button id="choose-folder" type="button">添加缓存目录</button><span id="folder-selected" class="selected-file">尚未添加</span></div>
+<button id="pick-folder" type="button" hidden>选择缓存目录</button>
+<button id="clear-cache" type="button" disabled>清除缓存选择</button>
+</div>
+<div class="controls">
+<div class="file-choice"><span>二次人工核验 CSV（可选）</span><input id="review-file" type="file" accept=".csv,text/csv" aria-label="二次人工核验 CSV" hidden><button id="choose-review" type="button">选择核验 CSV</button><span id="review-selected" class="selected-file">尚未选择</span></div>
+<button id="pick-review" type="button" hidden>选择核验 CSV</button>
+<button id="clear-review" type="button" disabled>清除二次核验</button>
+<span class="note" id="review-note">支持审核表格式：主页网址或账户id，以及审核结果。作为分类性能与错误分析的共同参考，原标注保留。</span>
+</div>
+<div id="selection-summary">类别和编码自动识别；仅在无法确定或需要调整时使用分析设置。</div>
+<details id="advanced-settings"><summary>分析设置（通常无需修改）</summary><div class="controls">
+<label>分析类别<select id="category"><option value="">自动识别</option><option value="custom">自定义标签</option></select></label>
+<div id="custom-labels" hidden><label>目标类别（正类）<select id="positive"><option value="">请选择</option></select></label><label>非目标类别（负类）<select id="negative"><option value="">请选择</option></select></label></div>
+<label>结果 CSV 编码<select id="encoding"><option value="auto">自动识别</option><option value="utf-8">UTF-8</option><option value="gb18030">GB18030 / GBK</option></select></label>
+<label>核验 CSV 编码<select id="review-encoding"><option value="auto">自动识别</option><option value="utf-8">UTF-8</option><option value="gb18030">GB18030 / GBK</option></select></label>
+<span class="note">类别用于确定正负标签和专属分析；不会改变分类模型或原 CSV。无法唯一识别的类别需手动指定。</span></div></details>
+<div class="note" id="cache-note">未选择缓存：仍可查看 CSV 统计和筛选；简介、标题、封面等补充信息暂缺。</div>
+<div class="controls"><span id="session-note" class="note">正在载入上次分析…</span><button id="refresh-files" type="button" hidden>更新本地文件</button><button id="forget-session" type="button" hidden>忘记上次选择</button></div>
+<div id="status" role="status" aria-live="polite">请选择结果 CSV；类别和编码将自动识别。</div><progress id="progress" hidden></progress>
+</header>
+<div id="empty"><h2>载入实验数据</h2><p>选择结果 CSV 后生成交互评估报告，可选添加二次核验与本地证据。</p><p>缓存可以来自本项目，也可以来自其它磁盘或目录；只读取你选择的文件。</p></div>
+<iframe id="report" title="结果可视化" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" hidden></iframe>
+<script id="viewer-bundle" type="application/json">__VIEWER_BUNDLE__</script>
+<script>__VIEWER_SCRIPT__</script>
+</body>
+</html>

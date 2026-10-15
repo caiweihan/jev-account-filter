@@ -24,18 +24,40 @@
 
 ### 贡献与优势
 
-<p><img src="docs/assets/contributions/fast.svg" alt="Fast — 图文贡献卡片" width="100%"></p>
+我们使用手语类别配置，在 **2140 个抖音账户**上验证了这套流程，直接使用现成的 **GPT-6 Luna Decisions**，未进行模型微调。
 
-<p><img src="docs/assets/contributions/cheap.svg" alt="Cheap — 图文贡献卡片" width="100%"></p>
+<p><img src="docs/assets/contributions/fast.svg" alt="Fast：2140 个账户，人工 1500 人时，模型 11 小时，加速 136.36 倍；单请求并行回答多个问题。" width="100%"></p>
 
-<p><img src="docs/assets/contributions/accurate.svg" alt="Accurate — 图文贡献卡片" width="100%"></p>
+<details>
+<summary>耗时比较口径</summary>
+
+团队提供的人工筛选总工时为 **1500 人时**，模型筛选耗时为 **11 小时**，二者比值为 `1500 / 11 ≈ 136.36`。人工工时是投入的总劳动时间，人工并行作业时的日历耗时会不同。
+
+</details>
+
+<p><img src="docs/assets/contributions/cheap.svg" alt="Cheap：标准输入单价均为每百万 tokens 0.10 美元；gpt-6-luna 输出单价 0.50 美元，gpt-6-luna-decisions 输出免费。" width="100%"></p>
+
+<details>
+<summary>价格比较口径与来源</summary>
+
+价格比较采用截至 **2026-10-16** 的官方标准单价，分别依据 [GPT-6 Luna 模型文档（参考文献 9）](https://developers.openai.com/api/docs/models/gpt-6-luna)和 [Decisions API 文档（参考文献 5）](https://developers.openai.com/api/docs/guides/decisions)；长上下文与区域处理另有加价。图中的 `gpt-6-luna-decisions` 指决策接口使用的模型，官方接口通过 `gpt-6-luna` 调用；输入与输出两组柱分别比较单位 token 价格，不代表整次实验的总费用。
+
+</details>
+
+<p><img src="docs/assets/contributions/accurate.svg" alt="Accurate：全量条件估计中，人工标注准确率 94.02%，模型预测准确率 96.64%；纵轴范围为 90% 至 100%。" width="100%"></p>
+
+<details>
+<summary>二次核验数据与准确率口径</summary>
+
+对原预测与人工标注不一致的全部 **198 个账户**进行二次人工核验，以二次标签为参考；其余 **1942 个**预测与标注一致的条目假定原标注正确。按这一全量条件估计，原人工标注正确 **2012 / 2140**，错误 **128 个**，准确率为 **94.02%**；模型预测正确 **2068 / 2140**，错误 **72 个**，准确率为 **96.64%**。
+
+这些数值比较双方相对于二次核验参考的准确率。由于一致条目未逐一独立复核，不能视为独立验证过的全量准确率。
+
+</details>
 
 <p><img src="docs/assets/contributions/flexible.svg" alt="Flexible — 图文贡献卡片" width="100%"></p>
 
 <p><img src="docs/assets/contributions/promising.svg" alt="Promising — 图文贡献卡片" width="100%"></p>
-
-决策接口的多问题能力、速度与价格依据见 [Decisions API 文档（参考文献 5）](https://developers.openai.com/api/docs/guides/decisions)；卡片中的官方标准价格截至 2026-10-14，长上下文与区域处理另有加价。发布记录见 [参考文献 6](https://developers.openai.com/api/docs/changelog)。人工与模型差异的独立复核统计将在完成后补充。
-<!-- 待补充独立复核结果：模型错误数、原人工标注错误数与复核标准；据此更新准确性比较。 -->
 
 ## 应用领域
 
@@ -68,22 +90,11 @@
 
 **缓存复用与结果复核。** 程序将采集资料与每次实验的配置、请求和模型响应分别保存，支持在不重新访问平台的情况下，基于完整本地缓存重新实验。CSV 汇总账户判断、概率与视频链接，HTML 报告提供分布分析、条件筛选和封面详情。研究者可以追溯差异、调整筛选标准，并将接受的账户交给后续视频采集与质量审核流程。
 
-## 实验
-
-我们使用手语类别配置，对 **2140 个抖音账户**进行筛选，并与原人工标注比较。实验直接使用现成的 GPT-6 Luna Decisions，未进行模型微调。二类标注明确的账户共 **2136 个**，其余 **4 个**人工标注为疑难，未纳入二类一致率计算。
-
-| 评估项 | 结果 |
-| --- | ---: |
-| 账户总数 | 2140 |
-| 人工二类标注明确的账户 | 2136 |
-| 预测与原人工标注一致 | 1942 |
-| 二类标注一致率 | **90.92%** |
-
-上述指标衡量预测与原人工标注的一致程度。两者不一致的账户保留对应封面与判断分数，供独立复核；模型与原人工标注的准确性比较将在复核完成后补充。
-
 ## 开始使用
 
 **[安装与环境](docs/installation.zh-CN.md)** · **[运行指南](docs/commands.zh-CN.md)** · **[配置说明](docs/configuration.zh-CN.md)** · **[扩展与测试](docs/development.zh-CN.md)**
+
+查看已有结果可直接打开 [`analysis.html`](analysis.html)，在页面中选择 CSV 和可选的外部缓存文件夹，复用同一页面分析不同实验，无需启动服务或重新生成报告。
 
 目前支持抖音、快手，后续计划适配微信、YouTube、TikTok 等平台。
 
@@ -115,3 +126,4 @@
 6. OpenAI. **[API Changelog — October 6, 2026](https://developers.openai.com/api/docs/changelog)**. GPT-6 Luna Decisions 发布记录。
 7. TypeSafe AI. **[Jev / System One Models: Introduction](https://docs.typesafe.ai/introduction)**. 访问日期：2026-10-15。
 8. Weiying Wang, Yongcheng Wang, Shizhe Chen, and Qin Jin. **[YouMakeup: A Large-Scale Domain-Specific Multimodal Dataset for Fine-Grained Semantic Comprehension](https://aclanthology.org/D19-1517/)**. EMNLP-IJCNLP, 2019.
+9. OpenAI. **[GPT-6 Luna — Model and Pricing](https://developers.openai.com/api/docs/models/gpt-6-luna)**. 访问日期：2026-10-16。

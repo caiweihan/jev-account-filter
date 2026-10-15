@@ -2,6 +2,8 @@
 
 # 安装与环境
 
+如果只查看已有结果，可直接在 Edge 或 Chrome 中打开根目录的 [`analysis.html`](../analysis.html)，选择 CSV 和可选缓存文件夹；无需安装 Python 环境。以下步骤用于运行采集、模型实验或重新打包查看器。
+
 在项目根目录执行命令。Python 需 3.11 及以上，当前本地为 3.12。现有 `.venv` 可继续使用，本次整理没有新增运行依赖。
 
 新环境先安装 [uv](https://docs.astral.sh/uv/getting-started/installation/)，然后运行：

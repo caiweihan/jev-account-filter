@@ -1,51 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
-  <title id="title">Fast: Scale up screening decisions</title>
-  <desc id="description">One request answers several independent questions in parallel, sharing titles and thumbnails to judge the account category and multiple candidate videos. The official API is about 10 times faster than the Responses API. [5] No full-video downloading, decoding, or viewing is required.</desc>
-  <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
-      <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </marker>
-  </defs>
-  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
-    <g class="contribution" data-kind="Fast" transform="translate(4,4)">
-      <rect x="0" y="0" width="1432" height="405" rx="26" fill="#eef4ff" stroke="#cadbf6" stroke-width="1.5" />
-      <g class="copy">
-        <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#285ad0" stroke="none" />
-        <text x="57" y="65" font-size="38" fill="#285ad0" font-weight="700">Fast</text>
-        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Scale up screening decisions</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">One request answers several independent questions in parallel,</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">sharing titles and thumbnails to judge the account category and</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">multiple candidate videos. The official API is about 10 times faster</text>
-        <text x="38" y="260" font-size="25" fill="#43516a">than the Responses API. [5] No full-video downloading, decoding, or</text>
-        <text x="38" y="295" font-size="25" fill="#43516a">viewing is required.</text>
-      </g>
-      <text x="1396" y="32" font-size="17" fill="#285ad0" opacity=".55" font-weight="600" text-anchor="end">01</text>
-      <path d="M843 43V362" fill="none" stroke="#cadbf6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-      <g class="artwork" transform="translate(876,62.5)">
-        <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#cadbf6" fill-opacity=".76" />
-        <text x="25" y="31" font-size="19" fill="#285ad0" font-weight="600">Shared evidence. Parallel questions.</text>
-        <rect x="23" y="92" width="124" height="100" rx="16" fill="#cadbf6" stroke="none" />
-        <rect x="43" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0" />
-        <rect x="48" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none" />
-        <path d="M49 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="77" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0" />
-        <rect x="82" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none" />
-        <path d="M83 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-        <text x="85" y="174" font-size="16" fill="#285ad0" font-weight="600" text-anchor="middle">Titles + images</text>
-        <path d="M148 142H191V83H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="58" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="88" font-size="17" fill="#24344e" font-weight="600">Account category</text>
-        <text x="470" y="88" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">yes / no</text>
-        <path d="M148 142H191V149H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="124" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="154" font-size="17" fill="#24344e" font-weight="600">Candidate video A</text>
-        <text x="470" y="154" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(A)</text>
-        <path d="M148 142H191V215H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
-        <rect x="234" y="190" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6" />
-        <text x="250" y="220" font-size="17" fill="#24344e" font-weight="600">Candidate video B</text>
-        <text x="470" y="220" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(B)</text>
-        <text x="255" y="263" font-size="17" fill="#64748b" text-anchor="middle">Independent questions, one shared input</text>
-      </g>
-    </g>
-  </g>
-</svg>
+<title id="title">Fast: Screen the same accounts 136.36× faster</title><desc id="description">Screen the same accounts 136.36× faster Human screening: 1,500 person-hours for 2,140 accounts. The model screened the same accounts in just 11 hours. One request answers multiple questions in parallel, sharing titles and thumbnails across account and video judgments, without watching each full video. Human and model screening times supplied by the team.</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1L7 4.5L1 8" fill="none" stroke="#285ad0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif"><g class="contribution" data-kind="Fast" transform="translate(4,4)">
+<rect width="1432" height="405" rx="26" fill="#eef4ff" stroke="#cadbf6" stroke-width="1.5"/>
+<g class="copy"><rect x="38" y="35" width="5" height="37" rx="2.5" fill="#285ad0"/>
+<text x="57" y="65" font-size="38" fill="#285ad0" font-weight="700">Fast</text><text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Screen the same accounts 136.36× faster</text>
+<text x="38" y="158" font-size="24" fill="#43516a">Human screening: 1,500 person-hours for 2,140 accounts.</text><text x="38" y="193" font-size="24" fill="#43516a">The model screened the same accounts in just 11 hours.</text><text x="38" y="228" font-size="24" fill="#43516a">One request answers multiple questions in parallel,</text><text x="38" y="263" font-size="24" fill="#43516a">sharing titles and thumbnails across account and video</text><text x="38" y="298" font-size="24" fill="#43516a">judgments, without watching each full video.</text>
+<text x="38" y="350" font-size="18" fill="#64748b">Human and model screening times supplied by the team.</text></g>
+<text x="1396" y="32" font-size="17" fill="#285ad0" font-weight="600" text-anchor="end">01</text>
+<path d="M843 43V362" stroke="#cadbf6" stroke-width="1.2"/>
+<g class="artwork" transform="translate(876,62.5)"><rect width="510" height="280" rx="22" fill="#fff" fill-opacity=".8" stroke="#cadbf6"/><text x="25" y="31" font-size="19" fill="#285ad0" font-weight="600">Screening time · 2,140 accounts</text><text x="25" y="89" font-size="21" fill="#24344e" font-weight="600">Human</text><text x="485" y="89" font-size="24" fill="#285ad0" font-weight="700" text-anchor="end">1,500 h</text><rect x="25" y="105" width="460" height="22" rx="5" fill="#afc5ef"/><text x="25" y="174" font-size="21" fill="#24344e" font-weight="600">Model</text><text x="485" y="174" font-size="24" fill="#285ad0" font-weight="700" text-anchor="end">11 h</text><rect x="25" y="190" width="3.373" height="22" rx="1" fill="#285ad0"/><text x="255" y="257" font-size="30" fill="#285ad0" font-weight="700" text-anchor="middle">136.36× speedup</text></g>
+</g></g></svg>

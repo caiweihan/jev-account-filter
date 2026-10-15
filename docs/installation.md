@@ -2,6 +2,8 @@
 
 # Installation and environment
 
+To inspect existing results, open [`analysis.html`](../analysis.html) in Edge or Chrome and select a CSV and optional cache folders. No Python environment is required. The steps below are for collection, model experiments, or rebuilding the viewer.
+
 Run commands from the project root. Python 3.11 or later is required; the current local environment uses 3.12. You can continue using the existing `.venv`; the project reorganization did not add runtime dependencies.
 
 For a new environment, install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run:

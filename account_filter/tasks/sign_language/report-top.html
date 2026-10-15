@@ -1,5 +1,5 @@
 <section class="panel" id="front-audit" hidden>
-<div class="panel-head"><div><h2>候选封面是否都有人物正面或“手语”文字？</h2><div class="note" id="front-meta"></div></div><select id="front-scope" aria-label="封面猜想口径"><option value="all">所有候选封面都符合</option><option value="any">至少一张候选封面符合</option></select></div>
+<div class="panel-head"><div><h2>候选封面视觉特征核验</h2><div class="note" id="front-meta"></div></div><select id="front-scope" aria-label="封面猜想口径"><option value="all">所有候选封面都符合</option><option value="any">至少一张候选封面符合</option></select></div>
 <p class="note">每个频道一次请求，最多5张本地缓存封面；配置的模型直接判断整组及每张图片。模型未收到频道名称、人工标签、标题或手语分数。符合任一条件即可：①主要视觉内容为真实人物正面，允许看不到脸、只看到身体和手；②封面本身有可辨读的“手语”文字。两项不必同时满足，不要求特定表情或手势。</p>
 <div class="front-summary" id="front-summary"></div>
 <div class="count-controls"><label>模型判断 <select id="front-status"><option value="不符合">不符合猜想</option><option value="符合">符合猜想</option><option value="无法判断">无法判断 / 缺图</option><option value="调用失败">调用失败</option><option value="待处理">待处理</option><option value="">全部</option></select></label><label><input type="checkbox" id="front-conflicts"> 只看整组与逐张答案冲突</label><input type="search" id="front-search" placeholder="搜索账户 / 候选标题" aria-label="搜索封面检查"><button id="front-reset">清空搜索</button><a id="front-csv">下载独立检查CSV</a></div>

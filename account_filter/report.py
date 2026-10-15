@@ -90,6 +90,7 @@ def load_rows(csv_path, labels=None):
             comparable = raw['人工标注'] in labels and raw['预测结果'] in labels
             values = [v['p'] for v in videos if v['p'] is not None]
             rows.append({'id': index, 'name': raw['账户名称'], 'url': raw['频道网址'],
+                         'account_id': raw.get('账户id', ''), 'platform': raw.get('平台', ''),
                          'manual': raw['人工标注'], 'prediction': raw['预测结果'], 'p': p,
                          'comparable': comparable, 'wrong': comparable and raw['人工标注'] != raw['预测结果'],
                          'max': max(values) if values else None,
@@ -168,6 +169,9 @@ def report_extension(payload):
 
 def assemble_html(payload):
     template = (Path(__file__).parent / 'templates/analysis.html').read_text(encoding='utf-8')
+    scripts = '\n'.join((Path(__file__).parent / 'templates' / name).read_text(encoding='utf-8')
+                        for name in ('analysis-extra.js', 'analysis-cluster.js', 'analysis-evaluation.js'))
+    template = template.replace('__ANALYSIS_SCRIPTS__', scripts)
     extension = report_extension(payload)
     components = extension.components() if extension else {}
     for slot in ('top', 'bottom', 'evidence', 'scripts', 'nav', 'style'):

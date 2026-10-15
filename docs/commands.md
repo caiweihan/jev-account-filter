@@ -61,6 +61,42 @@ Collection-only runs need neither model nor category configuration and do not ca
 
 ## Visualization
 
+Open [`analysis.html`](../analysis.html) in the project root with Edge or Chrome. No server or Python process is needed:
+
+1. Choose the experiment's `results.csv`. Encoding is detected automatically; the category is matched to configured labels or an exact experiment configuration. Only ambiguous cases require the collapsed analysis settings to select a category or custom positive/negative labels.
+2. Optionally add `data/channels/` or an external folder with the same cache structure to display biographies, candidate titles, and thumbnails.
+3. Add the experiment's entire timestamp directory for first-pass title scores, original snapshots, or an existing independent thumbnail audit. You can add multiple folders in separate selections. A matching experiment's `category.json` restores the category if none has been selected.
+4. Choose another CSV to switch experiments; reselect a CSV after editing it. Each load resets chart filters.
+5. Optionally load a second-review CSV to compare original human annotations and model predictions within the same performance summaries, confusion matrix, error distributions, and account table. Clearing it restores original-label agreement analysis.
+
+Selections are remembered by default: results CSV, review CSV, multiple cache folders, category, and encodings. The browser also saves the last analysis and its used thumbnails. Reopening the same HTML directly displays that analysis without a restore click. When read permission remains valid, latest files are loaded automatically; otherwise the previous analysis is shown with its cache time. Use “更新本地文件” (update local files) only to synchronize newer disk changes, granting access if the browser requires it. “忘记上次选择” (forget previous selection) removes saved choices and browser snapshots while keeping the current analysis open.
+
+Automatic file rereading requires Edge / Chrome with File System Access support; restoring an analysis snapshot requires available browser storage with sufficient space. Only data and thumbnails used by the analysis are cached, not the entire cache directory. Data is neither uploaded nor embedded in the HTML. Use the same browser and HTML path; private browsing and clearing browser data can remove saved state. Without file-handle support, regular file selection is used and saved analysis snapshots still restore, but changed disk files need to be selected again.
+
+Opening the local `analysis.html` directly (`file://`) uses regular file inputs by default: a browser may expose native pickers but still reject `getFile()`. Native handles saved by older releases are not reread in this mode. The last analysis, second review, and used thumbnails still restore automatically; reselect files to read new disk changes. When served as a web page, denied native reads reveal regular file inputs while retaining existing analysis. Individual unreadable cache entries are skipped with a notice instead of failing the entire folder.
+
+The file controls scroll with the whole page, and added folder names remain visible rather than relying on native input filenames. Category and encoding settings are collapsed by default. Automatic decoding tries UTF-8 then GB18030, and recognizes BOM-marked UTF-16. Manual settings are overrides for ambiguous data or troubleshooting; they never modify the input files.
+
+The page starts with full-dataset human-label and prediction proportions, separately counting missing annotations, uncertain labels, and invalid predictions. Performance, score distributions, feature clusters, error types, and evidence then share one evaluation workflow.
+
+Clustering uses the prediction category and video scores 1–5. Category one-hot encoding gives differing categories a squared distance of 1; scores remain on their original 0–1 scale. Deterministic K-means defaults to five clusters, adjustable from two to eight, capped by the number of distinct feature vectors. Only valid predictions with all five scores participate; missing scores are not filled with zero. PCA is used only for the two-dimensional display, with explained variance shown. Cluster tables expose overlapping points. Human annotations are not clustering inputs, and predictions remain unchanged.
+
+Second reviews support the annotation-table layout `平台,账户id,账户昵称,主页网址,审核结果`; the minimum is `主页网址,审核结果`. The aliases `频道网址` and `二次标注` / `人工标注` are accepted. ID-only reviews require an account-ID column in the results CSV too. Numeric labels `1/0/-1` map to the current category's positive, uncertain, and negative classes. Review-file encoding is detected independently and can be overridden in settings.
+
+With valid second reviews, the default comparison uses the same reviewed cohort for both accuracies: original annotations versus second labels for human accuracy, and model predictions versus second labels for model accuracy. Reference labels, original annotations, and predictions must all belong to the configured label set. Error rates can be compared by reference class, feature cluster, or maximum-score range, with account filters for human errors, model errors, and errors by both. Errors may overlap. Original labels, second labels, and predictions remain side by side in one table.
+
+The evaluation reference switches between full original-label agreement, reviewed-subset accuracy, and a full-dataset conditional estimate using second labels where available. The last mode assumes unreviewed original labels are correct and is not independently verified full-dataset accuracy. Reviewing only original disagreements cannot support population-wide accuracy estimates. Conflicting, unknown, or ambiguous review records appear under evaluation methods and data quality; CSV changes rematch by identity rather than row number. Legacy task-specific rule simulations explicitly retain original-label scope. All changes affect presentation only, never source results.
+
+Files are read locally in your browser, without uploads, platform/model requests, or changes to CSVs and caches. The browser can only read folders you explicitly select; thumbnails in a separate canonical cache require selecting that folder too. Channels and videos are matched by URL, and ambiguous duplicate thumbnails remain missing. CSV statistics work without caches; biographies, titles, thumbnails, and first-pass scores are not inferred from CSV fields. UTF-8 and GB18030 / GBK encodings are supported.
+
+The supplied `analysis.html` contains no experiment data. After modifying category configurations or report templates, rebuild it once; the resulting page can still load different CSVs repeatedly:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m account_filter.viewer
+```
+
+The previous command remains available for exporting an HTML snapshot containing a fixed set of results:
+
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 -m account_filter.report "output/实验/时间目录/results.csv"
 ```
