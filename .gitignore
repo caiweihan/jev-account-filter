@@ -1,0 +1,22 @@
+.venv/
+.env
+.env.*
+.cache/
+.browser/
+output/
+data/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+cookies*.json
+
+# Team-collected datasets stay local. Only the synthetic CSV is public.
+*.csv
+/input/*
+!/input/channels.example.csv
+
+# Browser/network diagnostics may contain account data or credentials.
+*.har
+trace*.zip
+playwright-report/
+test-results/
