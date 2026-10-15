@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Jev Account Filter: video-platform account screening">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b35" /><stop offset="1" stop-color="#1b254d" /></linearGradient></defs>
+  <rect width="1200" height="320" rx="24" fill="url(#bg)" />
+  <circle cx="1100" cy="40" r="185" fill="#818cf8" opacity=".07" />
+  <circle cx="880" cy="310" r="180" fill="#22d3ee" opacity=".06" />
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <text x="62" y="68" fill="#a5b4fc" font-size="13" letter-spacing="4">VIDEO ACCOUNTS × DECISION MODELS</text>
+    <text x="58" y="143" fill="white" font-size="54" font-weight="700">Jev Account Filter</text>
+    <text x="62" y="193" fill="#cbd5e1" font-size="21">Screen video-platform accounts. Find domain data sources.</text>
+    <rect x="62" y="235" width="360" height="3" rx="1.5" fill="#67e8f9" />
+    <text x="62" y="270" fill="#94a3b8" font-size="15">Fast　·　Cheap　·　Accurate　·　Flexible　·　Promising</text>
+    <g transform="translate(795,88)">
+      <rect width="128" height="150" rx="13" fill="#263453" stroke="#536585" />
+      <circle cx="40" cy="40" r="15" fill="#a5b4fc" />
+      <path d="M26 42h28M40 28v28" stroke="#1b254d" stroke-width="3" />
+      <rect x="20" y="79" width="88" height="7" rx="3.5" fill="#94a3b8" />
+      <rect x="20" y="97" width="66" height="7" rx="3.5" fill="#64748b" />
+      <text x="20" y="134" fill="#cbd5e1" font-size="12">ACCOUNTS</text>
+      <path d="M140 75h34m-10-9 10 9-10 9" stroke="#67e8f9" stroke-width="3" fill="none" />
+      <rect x="189" width="128" height="150" rx="13" fill="#263453" stroke="#536585" />
+      <circle cx="229" cy="40" r="15" fill="#67e8f9" />
+      <path d="m221 40 6 6 11-13" stroke="#1b254d" stroke-width="3" fill="none" />
+      <rect x="209" y="79" width="88" height="7" rx="3.5" fill="#94a3b8" />
+      <rect x="209" y="97" width="66" height="7" rx="3.5" fill="#64748b" />
+      <text x="209" y="134" fill="#cbd5e1" font-size="12">CATEGORY</text>
+    </g>
+  </g>
+</svg>

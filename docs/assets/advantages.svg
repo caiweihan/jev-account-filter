@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2129" viewBox="0 0 1440 2129" role="img" aria-labelledby="title description">
+<title id="title">Jev Account Filter 的五项优点</title>
+<desc id="description">Fast: 同一请求可并行回答多个独立问题，共用标题与封面，一次判断账户类别及多个候选视频。官方接口速度约为Responses API 的 10 倍。[5]无需下载、解码或逐个观看完整视频。 Cheap: 决策接口标准输入价格为$0.10 / 百万 tokens，不收输出费用。[5]先用标题筛选，再发送前 N 张封面，以少量输入完成账户与视频判断。缓存可复用，规则实验无需重新采集。 Accurate: 与 2140 个抖音账户的人工标注比较，二类标注明确的 2136 个账户中，模型与人工一致 1942 个，标注一致率为 90.92%。保留封面与分数，支持逐项复核差异。 Flexible: 类别边界、账户类型与证据要求，都可以通过配置反复调整和比较。复用同一份缓存重新实验，减少人工规则变化后的重复审阅，让筛选标准跟着研究问题迭代。 Promising: 项目未微调模型，在 GPT-6 Luna Decisions 于 2026-10-06 发布约一周内开始构建与验证。[6] 这是决策模型用于领域数据集采集的早期探索。随着模型视觉理解与决策能力提升，同一套流程有望获得更好的筛选质量，并扩展到更多研究领域与视频平台。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+<g class="contribution" data-kind="Fast" transform="translate(4,4)">
+<rect x="0" y="0" width="1432" height="405" rx="26" fill="#eef4ff" stroke="#cadbf6" stroke-width="1.5"/>
+<g class="copy">
+<rect x="38" y="35" width="5" height="37" rx="2.5" fill="#285ad0" stroke="none"/>
+<text x="57" y="65" font-size="38" fill="#285ad0" font-weight="700">Fast</text>
+<text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">让判断跟上数据的规模</text>
+<text x="38" y="155" font-size="25" fill="#43516a">同一请求可并行回答多个独立问题，共用标题与封面，一次判断账户</text>
+<text x="38" y="190" font-size="25" fill="#43516a">类别及多个候选视频。官方接口速度约为Responses API 的 10 倍。</text>
+<text x="38" y="225" font-size="25" fill="#43516a">[5]无需下载、解码或逐个观看完整视频。</text>
+</g>
+<text x="1396" y="32" font-size="17" fill="#285ad0" opacity=".55" font-weight="600" text-anchor="end">01</text>
+<path d="M843 43V362" fill="none" stroke="#cadbf6" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+<g class="artwork" transform="translate(876,62.5)">
+<rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#cadbf6" fill-opacity=".76"/><text x="25" y="31" font-size="19" fill="#285ad0" font-weight="600">共享证据，一次并行判断</text><rect x="23" y="92" width="124" height="100" rx="16" fill="#cadbf6" stroke="none"/><rect x="43" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0"/><rect x="48" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none"/><path d="M49 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><rect x="77" y="108" width="29" height="37" rx="6" fill="#ffffff" stroke="#285ad0"/><rect x="82" y="115" width="19" height="11" rx="3" fill="#285ad0" stroke="none"/><path d="M83 133h17m-17 6h11" fill="none" stroke="#285ad0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><text x="85" y="174" font-size="16" fill="#285ad0" font-weight="600" text-anchor="middle">标题 + 封面</text><path d="M148 142H191V83H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="234" y="58" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6"/><text x="250" y="88" font-size="17" fill="#24344e" font-weight="600">账户类别</text><text x="470" y="88" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">yes / no</text><path d="M148 142H191V149H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="234" y="124" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6"/><text x="250" y="154" font-size="17" fill="#24344e" font-weight="600">候选视频 A</text><text x="470" y="154" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(A)</text><path d="M148 142H191V215H230" fill="none" stroke="#285ad0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="234" y="190" width="249" height="50" rx="12" fill="#ffffff" stroke="#cadbf6"/><text x="250" y="220" font-size="17" fill="#24344e" font-weight="600">候选视频 B</text><text x="470" y="220" font-size="16" fill="#285ad0" font-weight="600" text-anchor="end">p(B)</text><text x="255" y="263" font-size="17" fill="#64748b" text-anchor="middle">多个独立问题，共用一次输入</text>
+</g>
+</g>
+<g class="contribution" data-kind="Cheap" transform="translate(4,433)">
+<rect x="0" y="0" width="1432" height="405" rx="26" fill="#effaf5" stroke="#c5e8d7" stroke-width="1.5"/>
+<g class="copy">
+<rect x="38" y="35" width="5" height="37" rx="2.5" fill="#087a55" stroke="none"/>
+<text x="57" y="65" font-size="38" fill="#087a55" font-weight="700">Cheap</text>
+<text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">让大规模筛选用得起</text>
+<text x="38" y="155" font-size="25" fill="#43516a">决策接口标准输入价格为$0.10 / 百万 tokens，不收输出费用。[5]先</text>
+<text x="38" y="190" font-size="25" fill="#43516a">用标题筛选，再发送前 N 张封面，以少量输入完成账户与视频判断。</text>
+<text x="38" y="225" font-size="25" fill="#43516a">缓存可复用，规则实验无需重新采集。</text>
+</g>
+<text x="1396" y="32" font-size="17" fill="#087a55" opacity=".55" font-weight="600" text-anchor="end">02</text>
+<path d="M843 43V362" fill="none" stroke="#c5e8d7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+<g class="artwork" transform="translate(876,62.5)">
+<rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#c5e8d7" fill-opacity=".76"/><text x="26" y="54" font-size="46" fill="#087a55" font-weight="700">$0.10</text><text x="26" y="82" font-size="18" fill="#64748b">/ 百万输入 tokens [5]</text><rect x="324" y="25" width="160" height="62" rx="16" fill="#c5e8d7" stroke="none"/><text x="404" y="51" font-size="16" fill="#087a55" text-anchor="middle">输出费用</text><text x="404" y="76" font-size="25" fill="#087a55" font-weight="700" text-anchor="middle">$0</text><rect x="35" y="124" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.25"/><rect x="35" y="142" width="86" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.37"/><rect x="35" y="160" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.49"/><rect x="35" y="178" width="86" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.61"/><rect x="35" y="196" width="108" height="8" rx="4" fill="#087a55" stroke="none" opacity="0.73"/><path d="M186 125H264L239 162V188H213V162Z" fill="none" stroke="#087a55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /><text x="225" y="217" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">Top N</text><path d="M151 156H179" fill="none" stroke="#087a55" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><path d="M272 156H311" fill="none" stroke="#087a55" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="329" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55"/><rect x="334" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none"/><path d="M335 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><rect x="377" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55"/><rect x="382" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none"/><path d="M383 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><rect x="425" y="134" width="29" height="37" rx="6" fill="#ffffff" stroke="#087a55"/><rect x="430" y="141" width="19" height="11" rx="3" fill="#087a55" stroke="none"/><path d="M431 159h17m-17 6h11" fill="none" stroke="#087a55" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><text x="86" y="240" font-size="17" fill="#64748b" text-anchor="middle">全部标题</text><text x="390" y="217" font-size="18" fill="#087a55" font-weight="600" text-anchor="middle">候选封面</text><text x="255" y="268" font-size="17" fill="#64748b" text-anchor="middle">先文本排序，再集中图像输入</text>
+</g>
+</g>
+<g class="contribution" data-kind="Accurate" transform="translate(4,862)">
+<rect x="0" y="0" width="1432" height="405" rx="26" fill="#f5f1ff" stroke="#ded2f5" stroke-width="1.5"/>
+<g class="copy">
+<rect x="38" y="35" width="5" height="37" rx="2.5" fill="#7040b9" stroke="none"/>
+<text x="57" y="65" font-size="38" fill="#7040b9" font-weight="700">Accurate</text>
+<text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">用真实账户检验筛选质量</text>
+<text x="38" y="155" font-size="25" fill="#43516a">与 2140 个抖音账户的人工标注比较，二类标注明确的 2136 个账户</text>
+<text x="38" y="190" font-size="25" fill="#43516a">中，模型与人工一致 1942 个，标注一致率为 90.92%。保留封面与</text>
+<text x="38" y="225" font-size="25" fill="#43516a">分数，支持逐项复核差异。</text>
+</g>
+<text x="1396" y="32" font-size="17" fill="#7040b9" opacity=".55" font-weight="600" text-anchor="end">03</text>
+<path d="M843 43V362" fill="none" stroke="#ded2f5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+<g class="artwork" transform="translate(876,62.5)">
+<rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#ded2f5" fill-opacity=".76"/><text x="25" y="30" font-size="19" fill="#7040b9" font-weight="600">与原人工标注对照</text><circle cx="126" cy="142" r="76" fill="none" stroke="#ded2f5" stroke-width="20"/><circle cx="126" cy="142" r="76" fill="none" stroke="#7040b9" stroke-width="20" stroke-dasharray="434.1516 477.5221" transform="rotate(-90 126 142)"/><text x="126" y="142" font-size="34" fill="#7040b9" font-weight="700" text-anchor="middle">90.92%</text><text x="126" y="169" font-size="17" fill="#64748b" text-anchor="middle">标注一致率</text><rect x="247" y="76" width="11" height="40" rx="5" fill="#7040b9" stroke="none"/><text x="275" y="100" font-size="30" fill="#24344e" font-weight="700">1942</text><text x="367" y="98" font-size="18" fill="#64748b">一致</text><rect x="247" y="144" width="11" height="40" rx="5" fill="#b6a0d7" stroke="none"/><text x="275" y="168" font-size="30" fill="#24344e" font-weight="700">194</text><text x="367" y="166" font-size="18" fill="#64748b">不符</text><text x="255" y="251" font-size="17" fill="#64748b" text-anchor="middle">2136 个二类样本 · 4 个疑难未计入</text>
+</g>
+</g>
+<g class="contribution" data-kind="Flexible" transform="translate(4,1291)">
+<rect x="0" y="0" width="1432" height="405" rx="26" fill="#fff7ed" stroke="#f3ddbb" stroke-width="1.5"/>
+<g class="copy">
+<rect x="38" y="35" width="5" height="37" rx="2.5" fill="#ad5b16" stroke="none"/>
+<text x="57" y="65" font-size="38" fill="#ad5b16" font-weight="700">Flexible</text>
+<text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">让筛选规则可以反复试验</text>
+<text x="38" y="155" font-size="25" fill="#43516a">类别边界、账户类型与证据要求，都可以通过配置反复调整和比较。</text>
+<text x="38" y="190" font-size="25" fill="#43516a">复用同一份缓存重新实验，减少人工规则变化后的重复审阅，让筛选</text>
+<text x="38" y="225" font-size="25" fill="#43516a">标准跟着研究问题迭代。</text>
+</g>
+<text x="1396" y="32" font-size="17" fill="#ad5b16" opacity=".55" font-weight="600" text-anchor="end">04</text>
+<path d="M843 43V362" fill="none" stroke="#f3ddbb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+<g class="artwork" transform="translate(876,62.5)">
+<rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#f3ddbb" fill-opacity=".76"/><text x="25" y="31" font-size="19" fill="#ad5b16" font-weight="600">同一份缓存，反复试验规则</text><ellipse cx="90" cy="113" rx="54" ry="17" fill="#f3ddbb" stroke="#ad5b16" stroke-width="2.5"/><path d="M36 113V171C36 194 144 194 144 171V113M36 141C36 164 144 164 144 141" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /><text x="90" y="222" font-size="17" fill="#ad5b16" font-weight="600" text-anchor="middle">资料缓存</text><path d="M145 150H190V80H234" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="239" y="57" width="242" height="45" rx="11" fill="#ffffff" stroke="#f3ddbb"/><text x="257" y="85" font-size="17" fill="#24344e" font-weight="600">筛选规则</text><rect x="421" y="66" width="42" height="27" rx="8" fill="#f3ddbb" stroke="none"/><text x="442" y="85" font-size="16" fill="#ad5b16" font-weight="600" text-anchor="middle">v1</text><path d="M145 150H190V142H234" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="239" y="119" width="242" height="45" rx="11" fill="#ffffff" stroke="#f3ddbb"/><text x="257" y="147" font-size="17" fill="#24344e" font-weight="600">筛选规则</text><rect x="421" y="128" width="42" height="27" rx="8" fill="#f3ddbb" stroke="none"/><text x="442" y="147" font-size="16" fill="#ad5b16" font-weight="600" text-anchor="middle">v2</text><path d="M145 150H190V204H234" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><rect x="239" y="181" width="242" height="45" rx="11" fill="#ffffff" stroke="#f3ddbb"/><text x="257" y="209" font-size="17" fill="#24344e" font-weight="600">筛选规则</text><rect x="421" y="190" width="42" height="27" rx="8" fill="#f3ddbb" stroke="none"/><text x="442" y="209" font-size="16" fill="#ad5b16" font-weight="600" text-anchor="middle">v3</text><text x="255" y="267" font-size="17" fill="#64748b" text-anchor="middle">调整 → 重跑 → 比较</text>
+</g>
+</g>
+<g class="contribution" data-kind="Promising" transform="translate(4,1720)">
+<rect x="0" y="0" width="1432" height="405" rx="26" fill="#eef8fc" stroke="#c8e4ef" stroke-width="1.5"/>
+<g class="copy">
+<rect x="38" y="35" width="5" height="37" rx="2.5" fill="#16748c" stroke="none"/>
+<text x="57" y="65" font-size="38" fill="#16748c" font-weight="700">Promising</text>
+<text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">无需微调，还有更大的提升空间</text>
+<text x="38" y="155" font-size="25" fill="#43516a">项目未微调模型，在 GPT-6 Luna Decisions 于 2026-10-06 发布约</text>
+<text x="38" y="190" font-size="25" fill="#43516a">一周内开始构建与验证。[6] 这是决策模型用于领域数据集采集的早</text>
+<text x="38" y="225" font-size="25" fill="#43516a">期探索。随着模型视觉理解与决策能力提升，同一套流程有望获得更</text>
+<text x="38" y="260" font-size="25" fill="#43516a">好的筛选质量，并扩展到更多研究领域与视频平台。</text>
+</g>
+<text x="1396" y="32" font-size="17" fill="#16748c" opacity=".55" font-weight="600" text-anchor="end">05</text>
+<path d="M843 43V362" fill="none" stroke="#c8e4ef" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+<g class="artwork" transform="translate(876,62.5)">
+<rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#c8e4ef" fill-opacity=".76"/><text x="25" y="31" font-size="19" fill="#16748c" font-weight="600">无需微调，探索下一步可能</text><path d="M116 122H217" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/><path d="M292 122H390" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 7"/><circle cx="82" cy="122" r="34" fill="#c8e4ef"/><circle cx="255" cy="122" r="34" fill="#c8e4ef"/><circle cx="429" cy="122" r="34" fill="#c8e4ef"/><rect x="65" y="106" width="34" height="30" rx="6" fill="#ffffff" stroke="#16748c"/><path d="M72 115H92M72 123H86" fill="none" stroke="#16748c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M241 122L251 132L270 110" fill="none" stroke="#16748c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" /><path d="M429 101V143M408 122H450M414 107L444 137M414 137L444 107" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /><text x="82" y="184" font-size="16" fill="#24344e" font-weight="600" text-anchor="middle">2026-10-06</text><text x="255" y="184" font-size="16" fill="#24344e" font-weight="600" text-anchor="middle">约一周后</text><text x="429" y="184" font-size="16" fill="#24344e" font-weight="600" text-anchor="middle">未来模型</text><text x="82" y="210" font-size="16" fill="#64748b" text-anchor="middle">模型发布</text><text x="255" y="210" font-size="16" fill="#64748b" text-anchor="middle">项目验证</text><text x="429" y="210" font-size="16" fill="#64748b" text-anchor="middle">更多领域</text><text x="255" y="264" font-size="17" fill="#64748b" text-anchor="middle">早期探索 · 可扩展的筛选流程</text>
+</g>
+</g>
+</g>
+</svg>

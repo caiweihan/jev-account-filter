@@ -1,0 +1,23 @@
+# 两轮推理使用相同配置；修改此文件后开始的新请求会采用新设置。
+# api 是请求/响应协议，不是服务商名称。
+# decisions 保留现有实验；chat 是通用 OpenAI 兼容 Chat Completions 协议。
+model = "openai/gpt-6-luna-decisions"
+api = "decisions"
+
+# 本文件是一份明确选择的服务配置，程序不会自动加载它。
+endpoint = "https://openrouter.ai/api/alpha/decisions"
+
+# 这里只填写环境变量名称，不能填写密钥。密钥仍放项目 .env 或系统环境变量中。
+api_key_env = "OPENROUTER_API_KEY"
+timeout_seconds = 120
+
+# 项目自行设置的输入估算预算，不是模型官方上下文上限或精确 token 数。
+# 估算 = 文本 UTF-8 字节数 + 每张图片的估值 + 预留量；超预算会报错。
+context_budget = 1000000
+
+# 发送给模型的封面最长边，等比例缩小，不放大小图；原始本地封面不受影响。
+# 512 节省传输量；若封面小字或手部细节难以辨认，可调到 768 或 1024。
+image_side = 512
+
+# 每张图片的固定预算估值，既不控制分辨率，也不是实际计费 token 数。
+image_token_estimate = 1536

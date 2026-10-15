@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
+  <title id="title">Accurate: 用真实账户检验筛选质量</title>
+  <desc id="description">与 2140 个抖音账户的人工标注比较，二类标注明确的 2136 个账户中，模型与人工一致 1942 个，标注一致率为 90.92%。保留封面与分数，支持逐项复核差异。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+      <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </marker>
+  </defs>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <g class="contribution" data-kind="Accurate" transform="translate(4,4)">
+      <rect x="0" y="0" width="1432" height="405" rx="26" fill="#f5f1ff" stroke="#ded2f5" stroke-width="1.5" />
+      <g class="copy">
+        <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#7040b9" stroke="none" />
+        <text x="57" y="65" font-size="38" fill="#7040b9" font-weight="700">Accurate</text>
+        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">用真实账户检验筛选质量</text>
+        <text x="38" y="155" font-size="25" fill="#43516a">与 2140 个抖音账户的人工标注比较，二类标注明确的 2136 个账户</text>
+        <text x="38" y="190" font-size="25" fill="#43516a">中，模型与人工一致 1942 个，标注一致率为 90.92%。保留封面与</text>
+        <text x="38" y="225" font-size="25" fill="#43516a">分数，支持逐项复核差异。</text>
+      </g>
+      <text x="1396" y="32" font-size="17" fill="#7040b9" opacity=".55" font-weight="600" text-anchor="end">03</text>
+      <path d="M843 43V362" fill="none" stroke="#ded2f5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+      <g class="artwork" transform="translate(876,62.5)">
+        <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#ded2f5" fill-opacity=".76" />
+        <text x="25" y="30" font-size="19" fill="#7040b9" font-weight="600">与原人工标注对照</text>
+        <circle cx="126" cy="142" r="76" fill="none" stroke="#ded2f5" stroke-width="20" />
+        <circle cx="126" cy="142" r="76" fill="none" stroke="#7040b9" stroke-width="20" stroke-dasharray="434.1516 477.5221" transform="rotate(-90 126 142)" />
+        <text x="126" y="142" font-size="34" fill="#7040b9" font-weight="700" text-anchor="middle">90.92%</text>
+        <text x="126" y="169" font-size="17" fill="#64748b" text-anchor="middle">标注一致率</text>
+        <rect x="247" y="76" width="11" height="40" rx="5" fill="#7040b9" stroke="none" />
+        <text x="275" y="100" font-size="30" fill="#24344e" font-weight="700">1942</text>
+        <text x="367" y="98" font-size="18" fill="#64748b">一致</text>
+        <rect x="247" y="144" width="11" height="40" rx="5" fill="#b6a0d7" stroke="none" />
+        <text x="275" y="168" font-size="30" fill="#24344e" font-weight="700">194</text>
+        <text x="367" y="166" font-size="18" fill="#64748b">不符</text>
+        <text x="255" y="251" font-size="17" fill="#64748b" text-anchor="middle">2136 个二类样本 · 4 个疑难未计入</text>
+      </g>
+    </g>
+  </g>
+</svg>

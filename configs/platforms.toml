@@ -1,0 +1,11 @@
+# Available collectors. A platform adapter must exist before it can be enabled.
+# 中文：目前只有快手、抖音可用；新增平台需实现 platforms/ 下的采集适配。
+[kuaishou]
+name = "快手"
+hosts = ["www.kuaishou.com", "kuaishou.com"]
+profile_path = "profile"
+
+[douyin]
+name = "抖音"
+hosts = ["www.douyin.com", "douyin.com"]
+profile_path = "user"

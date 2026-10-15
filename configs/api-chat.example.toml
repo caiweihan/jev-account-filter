@@ -1,0 +1,10 @@
+# 服务商无关的 Chat Completions 示例；使用前替换模型与地址，并配置密钥环境变量。
+# 模型需支持图片输入，以及本项目的 JSON 输出和请求参数。
+api = "chat"
+model = "YOUR_VISION_MODEL"
+endpoint = "https://your-provider.example/v1/chat/completions"
+api_key_env = "MODEL_API_KEY"
+timeout_seconds = 120
+context_budget = 1000000
+image_side = 512
+image_token_estimate = 1536

@@ -1,0 +1,4 @@
+# Fictional URLs for format reference only. Replace before running.
+# 虚构链接，仅展示格式；运行前替换为你自己的频道链接。
+https://www.douyin.com/user/EXAMPLE_DOUYIN_ACCOUNT_A
+https://www.kuaishou.com/profile/EXAMPLE_KUAISHOU_ACCOUNT_B
