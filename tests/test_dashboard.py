@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from test_viewer import browser, viewer, data, pick_csv, ready, sized
+from test_viewer import browser, viewer, data, pick_csv, ready, sized, parent_click, report_click
 from test_second_review import csv_text, load_review
 
 
@@ -35,7 +35,7 @@ def test_clustering_uses_prediction_and_five_scores_without_label_leakage(viewer
     assert independent == result['ids']
     frame.locator('#cluster-profiles [data-cluster]').first.click()
     assert frame.locator('#case-table tbody tr').count() == 2
-    frame.locator('#clear-cluster').click()
+    report_click(page, '#clear-cluster')
     assert frame.locator('#case-table tbody tr').count() == 8
     frame.locator('#cluster-k').select_option('2')
     assert frame.locator('body').evaluate('()=>clusterResult.groups.length') == 2
@@ -53,25 +53,53 @@ def test_integrated_accuracy_and_error_filters_share_reference_cohort(viewer):
         ['E', 'https://example.com/e', '手语频道', '不是手语频道', '.8'],
     ]))
     ready(page, '已载入 5 个频道')
+    frame = page.frame_locator('#report')
+    assert frame.locator('#comparison-basis').count() == 0
+    assert frame.locator('#eval-summary .value').all_text_contents() == ['5', '—', '20.00%', '—']
     original = json.dumps(data(page), ensure_ascii=False)
     load_review(page, ['主页网址', '审核结果'], [[f'https://example.com/{key}', '1'] for key in 'abcd'])
     frame = page.frame_locator('#report')
     assert frame.locator('#second-review').count() == 0
-    assert frame.locator('#comparison-basis').input_value() == 'reviewed'
-    assert frame.locator('#eval-summary .value').all_text_contents() == ['4', '50.00%', '50.00%', '+0.00 pp']
-    assert '不能外推' in frame.locator('#evaluation-note').inner_text()
+    assert frame.locator('body').evaluate('()=>evaluationBasis()') == 'combined'
+    assert frame.locator('#eval-summary .value').all_text_contents() == ['5', '60.00%', '40.00%', '-20.00 pp']
+    assert '条件估计' in frame.locator('#evaluation-note').inner_text()
     assert frame.locator('#distribution-stats tbody tr').first.locator('td').nth(1).inner_text() == '2 / 0'
     frame.locator('#review-filter').select_option('human-error')
     assert frame.locator('#case-table tbody tr').count() == 2
     frame.locator('#review-filter').select_option('model-error')
+    assert frame.locator('#case-table tbody tr').count() == 3
+    frame.locator('#review-filter').select_option('')
+    report_click(page, '#manual-composition .composition-line:has-text("不是手语频道") button')
     assert frame.locator('#case-table tbody tr').count() == 2
-    frame.locator('#comparison-basis').select_option('combined')
-    assert frame.locator('#eval-summary .value').all_text_contents() == ['5', '60.00%', '40.00%', '-20.00 pp']
-    assert '条件估计' in frame.locator('#evaluation-note').inner_text()
-    frame.locator('#comparison-basis').select_option('original')
+    assert frame.locator('body').evaluate('()=>evaluationBasis()') == 'combined'
+    frame.locator('#reset').click()
+    parent_click(page, '#clear-review')
+    ready(page, '已载入 5 个频道')
     assert frame.locator('#eval-summary .value').all_text_contents() == ['5', '—', '20.00%', '—']
     assert data(page)['rows'][0]['manual'] == json.loads(original)['rows'][0]['manual']
     assert frame.locator('#error-profile tbody tr').count() == 3
+
+
+def test_compact_aligned_file_rows_and_side_by_side_clusters(viewer):
+    page, _, _ = viewer
+    page.set_viewport_size({'width': 1440, 'height': 1000})
+    headers = ['账户名称', '频道网址', '预测结果', '人工标注', '频道概率', *[f'视频{i}分数' for i in range(1, 6)]]
+    pick_csv(page, csv_text(headers, [[str(i), f'https://example.com/{i}', '手语频道', '手语频道', '.9', *([i/10]*5)] for i in range(5)]))
+    ready(page, '已载入 5 个频道')
+    buttons = [page.locator(selector).bounding_box() for selector in ('#choose-csv', '#choose-folder', '#choose-review')]
+    assert max(b['x'] for b in buttons)-min(b['x'] for b in buttons) < 1
+    review, clear = [page.locator(selector).bounding_box() for selector in ('#choose-review', '#clear-review')]
+    assert abs(review['y']+review['height']/2-clear['y']-clear['height']/2) < 1
+    assert page.locator('#review-note').count() == 0
+    frame = page.frame_locator('#report')
+    scatter, profiles = [frame.locator(selector).bounding_box() for selector in ('#cluster-scatter', '#cluster-profiles')]
+    assert profiles['x'] >= scatter['x']+scatter['width']
+    assert abs(profiles['y']-scatter['y']) < 1
+    assert frame.locator('#count-change').count() == 0
+    assert frame.locator('.count-detail').count() == 0
+    page.set_viewport_size({'width': 650, 'height': 900})
+    page.wait_for_function('()=>matchMedia("(max-width:700px)").matches')
+    assert page.locator('body').evaluate('el=>el.scrollWidth<=document.documentElement.clientWidth')
 
 
 def test_file_controls_scroll_away_and_settings_are_optional(tmp_path, viewer):
@@ -88,7 +116,7 @@ def test_file_controls_scroll_away_and_settings_are_optional(tmp_path, viewer):
     folder.mkdir()
     (folder / 'channel.json').write_text(json.dumps({'url': 'https://example.com/a', 'videos': []}), encoding='utf-8')
     page.locator('#cache-folder').set_input_files(folder)
-    ready(page, '缓存匹配 1/1')
+    ready(page, '数据匹配 1/1')
     assert page.locator('#folder-selected').inner_text() == 'evidence-cache'
     assert page.locator('#cache-folder').input_value() == ''
     assert page.locator('#cache-folder').is_hidden()

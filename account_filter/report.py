@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from .category import resolve_category, category_labels
 
-SHARED_CACHE = Path(__file__).resolve().parents[1] / 'data' / 'channels'
+COLLECTED_DATA = Path(__file__).resolve().parents[1] / 'data' / 'channels'
 
 
 def score(value):
@@ -41,7 +41,7 @@ def relative_file(path, root):
     """只引用实验目录或项目正式缓存中的本地文件，不使用远程封面地址。"""
     try:
         resolved = path.resolve()
-        if not (resolved.is_relative_to(root.resolve()) or resolved.is_relative_to(SHARED_CACHE.resolve())):
+        if not (resolved.is_relative_to(root.resolve()) or resolved.is_relative_to(COLLECTED_DATA.resolve())):
             return None
         return Path(os.path.relpath(resolved, root.resolve())).as_posix() if resolved.is_file() else None
     except (OSError, ValueError):

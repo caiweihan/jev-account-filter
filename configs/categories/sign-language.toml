@@ -42,7 +42,3 @@ candidate_criterion = "Video key={key} has the strongest signing evidence."
 none_criterion = "No candidate has credible signing evidence."
 
 analysis_warning = "仅分析标题和静态封面，未确认视频的连续手语动作；模型概率未经本任务标注数据校准。"
-
-
-# 此任务的专用封面检查与数量规则报告，仅显式选择本配置时启用。
-report_extension = "account_filter.tasks.sign_language.report"

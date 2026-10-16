@@ -6,7 +6,7 @@ import pytest
 from PIL import Image
 from pillow_heif import register_heif_opener
 
-from account_filter.collector import download_cover
+from account_filter.collection.browser import download_cover
 
 
 @pytest.mark.parametrize('format', ['JPEG', 'HEIF'])

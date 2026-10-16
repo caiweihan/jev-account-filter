@@ -1,0 +1,46 @@
+{
+  "platform": "douyin",
+  "id": "MS4wLjABAAAA8n7LUd2B94pdTNQg6lLtU_xpc9VOaRwoPdRYqweiX0E",
+  "url": "https://www.douyin.com/user/MS4wLjABAAAA8n7LUd2B94pdTNQg6lLtU_xpc9VOaRwoPdRYqweiX0E",
+  "name": "天涯手语",
+  "bio": "欢迎来到手语乐园 手语主播（右手） 分享手语，增添乐趣",
+  "videos": [
+    {
+      "id": "7690901621584700393",
+      "title": "医生问诊手语：疼一般在饭前还是饭后？手语怎么表达#手语 #手语教学",
+      "url": "https://www.douyin.com/video/7690901621584700393",
+      "cover_path": "covers/7690901621584700393.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7688667621429254838",
+      "title": "第115集｜表达、感恩、初步、发表、理由、惊讶手语怎么表达#手语 #手语教学",
+      "url": "https://www.douyin.com/video/7688667621429254838",
+      "cover_path": "covers/7688667621429254838.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7687949224772424147",
+      "title": "手语教学：医生与聋人患者手语模拟对话 #手语教学 #无障碍沟通 #医患沟通手语",
+      "url": "https://www.douyin.com/video/7687949224772424147",
+      "cover_path": "covers/7687949224772424147.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7686072606600443562",
+      "title": "第114集｜偶尔、疏忽、随便、体验、冤枉、委屈、翻旧帐、啰嗦、优秀手语怎么表达#手语 #手语教学",
+      "url": "https://www.douyin.com/video/7686072606600443562",
+      "cover_path": "covers/7686072606600443562.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7696093511722267563",
+      "title": "第117集｜手语复习：刚才、昨天、前天、大前天、以前#手语教学",
+      "url": "https://www.douyin.com/video/7696093511722267563",
+      "cover_path": "covers/7696093511722267563.jpg",
+      "content_type": "video"
+    }
+  ],
+  "scope": "Public demonstration subset: five selected candidates, not the full first page.",
+  "no_posts": false
+}

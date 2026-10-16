@@ -10,6 +10,10 @@ from test_viewer import browser, data, ready, parent_click, sized
 from task_helpers import TASK
 
 
+def frame_asset_count(page):
+    return page.frame_locator('#report').locator('body').evaluate('()=>viewerURLs.size')
+
+
 @pytest.fixture
 def viewer(tmp_path, browser):
     from account_filter.viewer import build
@@ -58,7 +62,7 @@ def test_restore_files_folders_review_and_settings_with_fresh_contents(viewer):
     page.locator('#pick-csv').click()
     ready(page, '已载入 1 个频道')
     page.locator('#pick-folder').click()
-    ready(page, '缓存匹配 1/1')
+    ready(page, '数据匹配 1/1')
     page.locator('#pick-review').click()
     ready(page, '二次核验匹配 1 个频道')
     page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动保存")')
@@ -80,7 +84,7 @@ def test_restore_files_folders_review_and_settings_with_fresh_contents(viewer):
     page.locator('#clear-review').click()
     ready(page, '已载入 1 个频道')
     page.locator('#clear-cache').click()
-    ready(page, '缓存匹配 0/1')
+    ready(page, '数据匹配 0/1')
     page.reload()
     ready(page, '已载入 1 个频道')
     assert 'second_review' not in data(page)
@@ -101,7 +105,7 @@ def test_expired_permission_automatically_displays_cached_review_and_covers(view
     page.locator('#pick-csv').click()
     ready(page, '已载入 1 个频道')
     page.locator('#pick-folder').click()
-    ready(page, '缓存匹配 1/1')
+    ready(page, '数据匹配 1/1')
     page.locator('#pick-review').click()
     ready(page, '二次核验匹配 1 个频道')
     page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动保存")')
@@ -118,7 +122,8 @@ def test_expired_permission_automatically_displays_cached_review_and_covers(view
     assert page.locator('#restore-session').count() == 0
     assert data(page)['rows'][0]['name'] == '虚构账户'
     assert data(page)['rows'][0]['bio'] == '恢复的简介'
-    assert data(page)['rows'][0]['videos'][0]['cover'].startswith('blob:')
+    assert data(page)['rows'][0]['videos'][0]['cover'].startswith('viewer-asset:')
+    assert frame_asset_count(page) == 0
     assert data(page)['second_review']['matched'] == 1
     # The report is immediately interactive, including the cached thumbnail.
     frame = page.frame_locator('#report')
@@ -148,6 +153,73 @@ def test_unavailable_storage_falls_back_to_regular_file_controls(tmp_path, brows
     assert page.locator('#choose-csv').is_visible()
     assert '无法使用本地持久存储' in page.locator('#session-note').inner_text()
     page.close()
+
+
+def test_asset_cache_is_separate_and_idle_restore_does_not_rewrite_it(viewer):
+    page, _, _ = viewer
+    prepare_handles(page)
+    page.locator('#pick-csv').click()
+    ready(page, '已载入 1 个频道')
+    page.locator('#pick-folder').click()
+    ready(page, '数据匹配 1/1')
+    assert frame_asset_count(page) == 0
+    saved = page.evaluate("""async()=>{
+      const tx=session.db.transaction(['selection','assets']);
+      const read=r=>new Promise((yes,no)=>{r.onsuccess=()=>yes(r.result);r.onerror=()=>no(r.error)});
+      const view=await read(tx.objectStore('selection').get('view-v2'));
+      return {date:view.date,assets:view.view.assets,stored:await read(session.db.transaction('assets').objectStore('assets').count())};
+    }""")
+    assert saved['stored'] == 2
+    assert all('file' not in item for item in saved['assets'])
+    page.add_init_script("""window.assetWrites=0;const put=IDBObjectStore.prototype.put;IDBObjectStore.prototype.put=function(...args){if(this.name==='assets')window.assetWrites++;return put.apply(this,args)};FileSystemFileHandle.prototype.queryPermission=async()=>'prompt';FileSystemDirectoryHandle.prototype.queryPermission=async()=>'prompt'""")
+    page.reload()
+    page.wait_for_function('()=>!model.busy&&model.lastView?.assets.length===2')
+    assert page.evaluate('window.assetWrites') == 0
+    assert frame_asset_count(page) == 0
+    frame = page.frame_locator('#report')
+    frame.locator('#case-table [data-case]').first.click()
+    expect(frame.locator('#detail-content img')).to_have_js_property('naturalWidth', 2)
+    assert frame_asset_count(page) <= 2
+    page.wait_for_function('()=>assetBroker.active===0&&assetBroker.queue.length===0')
+
+
+def test_legacy_bulk_snapshot_is_not_read_during_upgrade(viewer):
+    page, _, _ = viewer
+    page.wait_for_function('()=>!model.busy')
+    page.evaluate("""async()=>{
+      session.db.close();
+      const name='jev-viewer:'+location.pathname;
+      await new Promise((yes,no)=>{const r=indexedDB.deleteDatabase(name);r.onsuccess=yes;r.onerror=no});
+      const db=await new Promise((yes,no)=>{const r=indexedDB.open(name,1);r.onupgradeneeded=()=>r.result.createObjectStore('selection');r.onsuccess=()=>yes(r.result);r.onerror=no});
+      await new Promise((yes,no)=>{const tx=db.transaction('selection','readwrite');tx.objectStore('selection').put({csv:null,folders:[],review:null,encoding:'auto'},'last');tx.objectStore('selection').put({old:true},'view');tx.oncomplete=yes;tx.onerror=no});db.close();
+    }""")
+    page.add_init_script("""
+      for(const method of ['get','delete']){const original=IDBObjectStore.prototype[method];IDBObjectStore.prototype[method]=function(key){if(this.name==='selection'&&key==='view')throw Error('Legacy bulk value must not be read or deleted');return original.call(this,key)}}
+      const clear=IDBObjectStore.prototype.clear;IDBObjectStore.prototype.clear=function(){if(this.name==='selection')throw Error('Clearing selection would touch the legacy bulk value');return clear.call(this)};
+    """)
+    page.reload()
+    page.wait_for_function('()=>!model.busy&&session.legacy')
+    assert '重新选择' in page.locator('#session-note').inner_text()
+    assert page.locator('#choose-csv').is_visible() or page.locator('#pick-csv').is_visible()
+    assert page.locator('#report').is_hidden()
+    # Loading a new CSV automatically saves, then forgetting and reopening must
+    # also avoid the legacy value. Deleting it caused a real browser-process OOM.
+    page.locator('#advanced-settings').evaluate('el=>el.open=true')
+    page.locator('#category').select_option(label=TASK['name'])
+    text = ('账户名称,频道网址,预测结果,人工标注,频道概率\n'
+            f'虚构账户,https://example.com/a,{TASK["positive_label"]},{TASK["positive_label"]},.8\n')
+    page.locator('#csv-file').set_input_files({
+        'name': 'results.csv', 'mimeType': 'text/csv', 'buffer': text.encode('utf-8')})
+    ready(page, '已载入 1 个频道')
+    assert '已自动保存' in page.locator('#session-note').inner_text()
+    page.reload()
+    ready(page, '已载入 1 个频道')
+    page.locator('#forget-session').click()
+    page.wait_for_function('()=>!model.busy')
+    assert '已忘记' in page.locator('#session-note').inner_text()
+    page.reload()
+    page.wait_for_function('()=>!model.busy')
+    assert page.locator('#report').is_hidden()
 
 
 def test_missing_files_and_picker_rejection_keep_recovery_controls(viewer):
@@ -262,7 +334,7 @@ def test_unreadable_cache_entry_is_skipped_without_unhandled_rejection(viewer):
       };
     }""")
     page.locator('#pick-folder').click()
-    ready(page, '缓存匹配 1/1')
+    ready(page, '数据匹配 1/1')
     assert data(page)['rows'][0]['bio'] == '恢复的简介'
     assert data(page)['rows'][0]['videos'][0]['title'] == '恢复的标题'
     assert data(page)['rows'][0]['videos'][0]['cover'] is None

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
   <title id="title">Flexible: Iterate on the screening criteria</title>
-  <desc id="description">Adjust and compare category boundaries, account types, and evidence requirements through configuration. Rerun on the same cache to reduce repeated manual review when rules change, and let the screening criteria evolve with the research question.</desc>
+  <desc id="description">Adjust and compare category boundaries, account types, and evidence requirements through configuration. Rerun on the same data to reduce repeated manual review when rules change, and let the screening criteria evolve with the research question.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -15,7 +15,7 @@
         <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Iterate on the screening criteria</text>
         <text x="38" y="155" font-size="25" fill="#43516a">Adjust and compare category boundaries, account types, and</text>
         <text x="38" y="190" font-size="25" fill="#43516a">evidence requirements through configuration. Rerun on the same</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">cache to reduce repeated manual review when rules change, and let</text>
+        <text x="38" y="225" font-size="25" fill="#43516a">data to reduce repeated manual review when rules change, and let</text>
         <text x="38" y="260" font-size="25" fill="#43516a">the screening criteria evolve with the research question.</text>
       </g>
       <text x="1396" y="32" font-size="17" fill="#ad5b16" opacity=".55" font-weight="600" text-anchor="end">04</text>
@@ -25,7 +25,7 @@
         <text x="25" y="31" font-size="19" fill="#ad5b16" font-weight="600">Same evidence. Different criteria.</text>
         <ellipse cx="90" cy="113" rx="54" ry="17" fill="#f3ddbb" stroke="#ad5b16" stroke-width="2.5" />
         <path d="M36 113V171C36 194 144 194 144 171V113M36 141C36 164 144 164 144 141" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        <text x="90" y="222" font-size="17" fill="#ad5b16" font-weight="600" text-anchor="middle">Evidence cache</text>
+        <text x="90" y="222" font-size="17" fill="#ad5b16" font-weight="600" text-anchor="middle">Collected data</text>
         <path d="M145 150H190V80H234" fill="none" stroke="#ad5b16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
         <rect x="239" y="57" width="242" height="45" rx="11" fill="#ffffff" stroke="#f3ddbb" />
         <text x="257" y="85" font-size="17" fill="#24344e" font-weight="600">Screening rules</text>

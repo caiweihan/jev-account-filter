@@ -9,8 +9,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
-from ...classifier import call_model_api, encode_cover, probability
-from ...config import load_config
+from ...screening.classifier import call_model_api, encode_cover, probability
+from ...screening.config import load_config
 from ...progress import Progress
 from ...report import load_rows
 

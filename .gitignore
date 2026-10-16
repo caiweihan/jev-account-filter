@@ -3,8 +3,8 @@
 .env.*
 .cache/
 .browser/
-output/
-data/
+/output/
+/data/
 __pycache__/
 .pytest_cache/
 *.egg-info/
@@ -20,3 +20,12 @@ cookies*.json
 trace*.zip
 playwright-report/
 test-results/
+
+# Private notes, full-data analysis exports, and inference results.
+/local/
+/results/
+
+# Only these explicitly authorized real demonstration CSVs are public.
+!/examples/real-demo/results.csv
+!/examples/real-demo/second-review.csv
+!/examples/real-demo/data/manifest.csv

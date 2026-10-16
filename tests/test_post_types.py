@@ -6,9 +6,10 @@ from contextlib import asynccontextmanager
 import pytest
 from PIL import Image
 
-from account_filter import __main__ as cli, cache
-from account_filter.collector import CollectionError, collect, save_channel, recover_post_type_failure
-from account_filter.platforms.douyin import DOM_SCRIPT, parse_douyin_payload, reconcile_dom_types, filter_image_posts, excluded_post_counts
+from account_filter.collection import runner as cli
+from account_filter.experiments import write_json
+from account_filter.collection.browser import CollectionError, collect, save_channel, recover_post_type_failure
+from account_filter.collection.platforms.douyin import DOM_SCRIPT, parse_douyin_payload, reconcile_dom_types, filter_image_posts, excluded_post_counts
 
 
 def test_image_with_play_address_is_not_video_and_unknown_type_is_preserved():
@@ -110,41 +111,6 @@ def test_only_inspected_dom_links_can_restore_missing_video_type():
     assert posts[0]['content_type'] == 'unknown'
 
 
-def test_resume_recovers_saved_dom_without_revisiting_channel(tmp_path, monkeypatch):
-    url = 'https://www.douyin.com/user/abc'
-    run = tmp_path / 'refresh'
-    folder = cli.channel_folder(run, 1, url)
-    channel = {'platform': 'douyin', 'url': url, 'name': '虚构测试账号A', 'bio': '简介',
-               'collection_state': 'failed', 'videos': [
-                   {'id': '1', 'title': '手语', 'url': 'https://www.douyin.com/video/1',
-                    'content_type': 'unknown', 'source': 'profile_dom', 'image_stack_icon': False, 'type_evidence': []}]}
-    save_channel(channel, folder)
-    cli.write_json(folder / 'collection-status.json', {'status': 'collection_failed',
-        'error_type': 'CollectionError', 'error': '有1个作品缺少可靠的视频类型证据，未更新正式缓存；请重试。'})
-    cli.write_json(folder / 'first-page-posts.json', {'source': 'initial_dom', 'channel_url': url, 'posts': channel['videos']})
-    cli.write_json(run / 'refresh-settings.json', {'refresh_cache': True})
-    cli.write_results(run / 'results.csv', [cli.empty_row({'url': url}, '失败：CollectionError')])
-    formal = cache.channel_dir(url)
-    (formal / 'covers').mkdir(parents=True)
-    Image.new('RGB', (10, 10)).save(formal / 'covers/1.jpg')
-    @asynccontextmanager
-    async def session(*args, **kwargs):
-        yield object()
-    async def forbidden(*args, **kwargs):
-        pytest.fail('保存的DOM证据可恢复，不能重访频道或调用模型')
-    monkeypatch.setattr(cli, 'browser_session', session)
-    monkeypatch.setattr(cli, 'collect', forbidden)
-    monkeypatch.setattr(cli, 'cached_model_call', forbidden)
-    assert asyncio.run(cli.main(parse_task_args(cli, ['batch', '--resume', str(run)]))) == 0
-    restored = json.loads((formal / 'channel.json').read_text(encoding='utf-8'))
-    assert restored['videos'][0]['content_type'] == 'video'
-    assert restored['collection_state'] == 'ready'
-    assert cli.CACHE_REFRESHED in (run / 'results.csv').read_text(encoding='utf-8-sig')
-    assert not recover_post_type_failure(folder, url)  # 幂等：不再次修复成功记录。
-    # 不把其它失败类型的半成品当成完整缓存。
-    save_channel(channel, folder)
-    cli.write_json(folder / 'collection-status.json', {'error_type': 'CollectionError', 'error': '未获得频道名称和作品'})
-    assert not recover_post_type_failure(folder, url)
 
 
 def test_saved_api_article_type_failure_recovers_without_website(tmp_path):
@@ -153,9 +119,9 @@ def test_saved_api_article_type_failure_recovers_without_website(tmp_path):
              {'id': '2', 'aweme_type': 0, 'content_type': 'video', 'source': 'profile_response'}]
     save_channel({'platform': 'douyin', 'name': '文章和视频', 'url': url, 'videos': posts,
                   'collection_state': 'failed'}, tmp_path)
-    cli.write_json(tmp_path / 'collection-status.json', {'error_type': 'CollectionError',
+    write_json(tmp_path / 'collection-status.json', {'error_type': 'CollectionError',
         'error': '有1个作品缺少可靠的视频类型证据，未更新正式缓存；请重试。'})
-    cli.write_json(tmp_path / 'first-page-posts.json', {'source': 'profile_response', 'channel_url': url, 'posts': posts})
+    write_json(tmp_path / 'first-page-posts.json', {'source': 'profile_response', 'channel_url': url, 'posts': posts})
     assert recover_post_type_failure(tmp_path, url)
     restored = json.loads((tmp_path / 'channel.json').read_text(encoding='utf-8'))
     assert [v['id'] for v in restored['videos']] == ['2']
@@ -163,75 +129,3 @@ def test_saved_api_article_type_failure_recovers_without_website(tmp_path):
     assert restored['first_page_source'] == 'profile_response'
     status = json.loads((tmp_path / 'post-type-status.json').read_text(encoding='utf-8'))
     assert status['excluded_article_count'] == 1 and status['excluded_image_count'] == 0
-
-
-def test_refresh_reuses_covers_never_calls_model_and_resume_keeps_mode(tmp_path, monkeypatch):
-    url = 'https://www.douyin.com/user/abc'
-    formal = cache.channel_dir(url)
-    (formal / 'covers').mkdir(parents=True)
-    cover = formal / 'covers/1.jpg'
-    Image.new('RGB', (10, 10)).save(cover)
-    before = cover.read_bytes()
-    events = []
-    @asynccontextmanager
-    async def session(*args, **kwargs):
-        events.append('browser')
-        yield object()
-    async def capture(url, output, browser_dir, **kwargs):
-        assert kwargs['require_video_types']
-        events.append('collect')
-        channel = {'platform': 'douyin', 'url': url, 'name': '重新采集', 'bio': '新简介',
-                   'post_type_version': 'douyin-post-types-v2',
-                   'videos': [{'id': '1', 'content_type': 'video', 'aweme_type': 0,
-                               'title': '手语舞', 'url': 'https://www.douyin.com/video/1'}],
-                   'excluded_posts': [{'id': '2', 'content_type': 'image'}]}
-        save_channel(channel, output)
-        cli.write_json(output / 'first-page-posts.json', {'posts': channel['videos'] + channel['excluded_posts']})
-        return channel
-    async def forbidden(*args, **kwargs):
-        pytest.fail('缓存更新不调用模型或下载已有封面')
-    monkeypatch.setattr(cli, 'browser_session', session)
-    monkeypatch.setattr(cli, 'collect', capture)
-    monkeypatch.setattr(cli, 'cached_model_call', forbidden)
-    monkeypatch.setattr('account_filter.collector.download_cover', forbidden)
-    args = parse_task_args(cli, ['batch', url, '--refresh-cache', '--output', str(tmp_path / 'refresh')])
-    assert asyncio.run(cli.main(args)) == 0
-    run = next((tmp_path / 'refresh').iterdir())
-    assert cli.batch_inputs(parse_task_args(cli, ['batch', '--resume', str(run)]))[0]['url'] == url
-    assert json.loads((formal / 'channel.json').read_text(encoding='utf-8'))['bio'] == '新简介'
-    assert (formal / 'first-page-posts.json').is_file()
-    assert cover.read_bytes() == before
-    assert asyncio.run(cli.main(parse_task_args(cli, ['batch', '--resume', str(run)]))) == 0
-    assert events.count('collect') == 1
-    assert cli.batch_inputs(parse_task_args(cli, ['batch', '--resume', str(run)]))
-    assert cli.CACHE_REFRESHED in (run / 'results.csv').read_text(encoding='utf-8-sig')
-
-
-@pytest.mark.parametrize('flag', ['--from-cache', '--dry-run', '--backfill-only'])
-def test_refresh_rejects_conflicting_modes(flag):
-    args = parse_task_args(cli, ['batch', 'https://www.douyin.com/user/abc', '--refresh-cache', flag])
-    with pytest.raises(ValueError, match='refresh-cache'):
-        asyncio.run(cli.main(args))
-
-
-def test_unverified_type_does_not_replace_formal_cache(tmp_path):
-    url = 'https://www.douyin.com/user/abc'
-    folder = cache.channel_dir(url)
-    save_channel({'platform': 'douyin', 'url': url, 'name': '旧资料', 'videos': [], 'no_posts': True}, folder)
-    before = (folder / 'channel.json').read_bytes()
-    class Page:
-        context = None
-        def on(self, *args): pass
-        def remove_listener(self, *args): pass
-        async def goto(self, *args, **kwargs): pass
-        async def evaluate(self, script):
-            return {'name': '新资料', 'bio': '', 'videos': [{'id': '1', 'content_type': 'unknown'}]}
-        def locator(self, selector): return self
-        async def inner_text(self): return '作品'
-        async def wait_for_timeout(self, ms): await asyncio.sleep(.1)
-        async def screenshot(self, **kwargs): pass
-    output = tmp_path / 'unknown'
-    with pytest.raises(CollectionError, match='缺少可靠的视频类型证据'):
-        asyncio.run(collect(url, output, tmp_path / 'browser', page=Page(), timeout=1))
-    assert (folder / 'channel.json').read_bytes() == before
-    assert json.loads((output / 'post-type-status.json').read_text(encoding='utf-8'))['unknown_ids'] == ['1']

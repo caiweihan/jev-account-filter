@@ -4,9 +4,9 @@ import json
 import httpx
 import pytest
 
-from account_filter import __main__ as cli
-from account_filter.api import call_model_api
-from account_filter.config import load_config
+from account_filter.screening import runner as cli
+from account_filter.screening.api import call_model_api
+from account_filter.screening.config import load_config
 from task_helpers import parse_task_args
 
 BASE = {'model': 'test-vision', 'api': 'chat', 'endpoint': 'https://provider.example/v1/chat/completions', 'api_key_env': 'TEST_API_KEY'}
@@ -37,7 +37,7 @@ def test_invalid_config_fails_before_network(tmp_path, overrides):
 def test_explicit_config_changes_request_and_secret_source(tmp_path, monkeypatch):
     path = config_file(tmp_path / 'other.toml', model='other-vision-model', timeout_seconds=30,
                        context_budget=12000, image_side=1024, image_token_estimate=2000)
-    args = parse_task_args(cli, ['analyze', 'channel.json', '--config', str(path)])
+    args = argparse.Namespace(**load_config(path))
     monkeypatch.setenv('TEST_API_KEY', 'other-test-key')
     def handler(request):
         assert str(request.url) == BASE['endpoint']
@@ -61,17 +61,17 @@ def test_changed_endpoint_and_failed_request_never_reuse_old_response(tmp_path, 
             raise RuntimeError('new service failed')
         return {'answers': {'v001': {'type': 'noul', 'noul': .9}}}
     monkeypatch.setattr(cli, 'call_model_api', model)
-    args = argparse.Namespace(output=tmp_path, api='decisions', reuse_cache=True,
+    args = argparse.Namespace(output=tmp_path, api='decisions', resume=True,
                               endpoint='https://provider.example/decisions', api_key_env='TEST_API_KEY')
     payload = {'model': 'test', 'state': ['title'], 'questions': {'v001': {}}}
     preview = {'model': 'test', 'api': 'decisions', 'state_text': ['title'], 'questions': payload['questions']}
     async def check():
-        await cli.cached_model_call(args, payload, preview, 'title')
+        await cli.model_call(args, payload, preview, 'title')
         args.endpoint = 'https://other.example/decisions'
         with pytest.raises(RuntimeError):
-            await cli.cached_model_call(args, payload, preview, 'title')
-        await cli.cached_model_call(args, payload, preview, 'title')
-        await cli.cached_model_call(args, payload, preview, 'title')
+            await cli.model_call(args, payload, preview, 'title')
+        await cli.model_call(args, payload, preview, 'title')
+        await cli.model_call(args, payload, preview, 'title')
     asyncio.run(check())
     assert len(calls) == 3
 
@@ -88,5 +88,5 @@ def test_matching_explicit_endpoint_reuses_response(tmp_path, monkeypatch):
     async def forbidden(*args, **kwargs):
         pytest.fail('Matching requests must reuse their existing response.')
     monkeypatch.setattr(cli, 'call_model_api', forbidden)
-    args = argparse.Namespace(output=tmp_path, api='decisions', reuse_cache=True, endpoint=endpoint)
-    assert asyncio.run(cli.cached_model_call(args, payload, preview, 'title')) == {'answers': {}}
+    args = argparse.Namespace(output=tmp_path, api='decisions', resume=True, endpoint=endpoint)
+    assert asyncio.run(cli.model_call(args, payload, preview, 'title')) == {'answers': {}}

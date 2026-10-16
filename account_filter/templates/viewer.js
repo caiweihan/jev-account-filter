@@ -11,7 +11,7 @@ const dirname=path=>path.slice(0,path.lastIndexOf('/'));
 const basename=path=>String(path).replaceAll('\\','/').split('/').at(-1);
 const imageName=name=>/\.(?:jpe?g|png|webp|gif|avif|bmp|heic|heif)$/i.test(name);
 const jsonEscape=value=>JSON.stringify(value).replaceAll('<','\\u003c').replaceAll('&','\\u0026');
-function asset(file,assets){const id=`viewer-asset:${assets.length}`;assets.push({id,file});return id}
+function asset(file,assets){const id=`viewer-asset:${assets.length}`;assets.push({id,file,key:assetKey(file),size:file.size});return id}
 async function sha256(bytes){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('')}
 function probability(value,line,column){if(value==null||!String(value).trim())return null;const text=String(value).trim();const n=Number(text);if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(text)||!Number.isFinite(n)||n<0||n>1)throw Error(`CSV 数据行 ${line}，${column}：无效概率 ${text}`);return n}
 function csvTable(text){
@@ -84,6 +84,7 @@ function inferCategory(){
  $('category').value=unique.length===1?String(unique[0].index):'';
 }
 function updateSelection(){
+ $('demo-note').hidden=model.file?.name!=='demo-results.csv';
  $('csv-selected').textContent=model.file?.name||'尚未选择';$('review-selected').textContent=model.review?.file.name||'尚未选择';$('folder-selected').textContent=model.folderNames.length?model.folderNames.join('；'):'尚未添加';
  const category=selectedCategory();$('selection-summary').textContent=`分析类别：${category?.name||'尚未确定'}${model.categoryAuto?'（自动）':''} · 结果编码：${model.encodingDetected||'自动识别'}${model.review?' · 核验编码：'+(model.reviewEncodingDetected||'自动识别'):''}。`;
 }
@@ -127,7 +128,7 @@ async function enrich(rows,roots,assets){
   const row=rows[i],candidates=(model.channels.get(identity(row.url))||[]).map(record=>{const match=roots.some(r=>r.group===record.group&&record.folder.startsWith(r.folder+'/intermediate/'));const ids=new Set((record.value.videos||[]).map(v=>identity(v.url)).filter(Boolean));return{record,score:(match?100000:0)+row.videos.filter(v=>ids.has(identity(v.url))).length}}).sort((a,b)=>b.score-a.score);
   const record=candidates[0]?.record;row.bio='';row.page_count=null;row.no_posts=false;row.snapshot=null;
   for(const video of row.videos){video.title='';video.title_p=null;video.cover=null}
-  if(record){matched++;row.bio=typeof record.value.bio==='string'?record.value.bio:'';row.no_posts=Boolean(record.value.no_posts);row.page_count=Array.isArray(record.value.videos)?record.value.videos.length:null;row.snapshot=asset(new Blob([JSON.stringify(record.value,null,2)],{type:'application/json'}),assets);
+  if(record){matched++;row.bio=typeof record.value.bio==='string'?record.value.bio:'';row.no_posts=Boolean(record.value.no_posts);row.page_count=Array.isArray(record.value.videos)?record.value.videos.length:null;row.snapshot=asset(record.file,assets);
    const byURL=new Map((record.value.videos||[]).filter(v=>identity(v.url)).map(v=>[identity(v.url),v]));
    const rankingFile=model.groups[record.group].files.get(record.folder+'/title-ranking.json');let ranking={};if(rankingFile){try{rankingFile.value??=JSON.parse(await rankingFile.file.text());ranking=Object.fromEntries((rankingFile.value.videos||[]).map(v=>[v.id,v.title_probability]))}catch{}}
    for(const video of row.videos){const cached=byURL.get(identity(video.url));if(!cached)continue;video.title=typeof cached.title==='string'?cached.title:'';titles+=Boolean(video.title);const p=ranking[cached.id];video.title_p=typeof p==='number'&&Number.isFinite(p)&&p>=0&&p<=1?p:null;const cover=findCover(record,cached);if(cover){video.cover=asset(cover.file,assets);covers++}}
@@ -148,7 +149,7 @@ async function auditData(roots,assets){
  for(const root of roots){const group=model.groups[root.group],pointer=group.files.get(root.folder+'/cover-audit/latest.json');if(!pointer)continue;
   try{const latest=JSON.parse(await pointer.file.text()),entry=group.files.get(normalize(root.folder+'/'+latest.path));if(!entry)continue;const audit=JSON.parse(await entry.file.text());if(audit.source_sha256!==model.hash)continue;
    for(const row of audit.rows||[])for(const video of row.videos||[]){const record={group:root.group,folder:root.folder};const file=video.cover&&findCover(record,{id:video.id,cover_path:video.cover});video.cover=file?asset(file.file,assets):null}
-   for(const row of audit.rows||[]){const entry=row.response&&group.files.get(normalize(root.folder+'/'+row.response));row.response=entry?asset(new Blob([await entry.file.text()],{type:'application/json'}),assets):null}
+   for(const row of audit.rows||[]){const entry=row.response&&group.files.get(normalize(root.folder+'/'+row.response));row.response=entry?asset(entry.file,assets):null}
    const csv=group.files.get(normalize(root.folder+'/'+audit.csv));audit.csv=csv?asset(csv.file,assets):'';return audit;
   }catch{}
  }return null;
@@ -164,26 +165,26 @@ async function renderReport(){
   const review=attachReview(rows,labels);if(review)payload.second_review=review;
   if(extension&&supported){const audit=await auditData(roots,assets)||(model.cachedView?.payload.sha256===model.hash?model.cachedView.payload.cover_audit:null);if(audit)payload.cover_audit=audit}
   await showReport(payload,assets);
-  if(review)$('review-note').textContent=`${review.source}：${review.total} 条核验，匹配 ${review.matched} 个频道；一致重复 ${review.duplicates} 条、冲突 ${review.conflicts} 组、未知标签 ${review.unknown} 组。已合并至分类性能与错误分析；匹配问题见数据质量说明。`;
-  say(`已载入 ${rows.length} 个频道；可对照 ${payload.summary.comparable}，不符 ${payload.summary.mismatch}。缓存匹配 ${metadata.matched}/${rows.length} 个频道，标题 ${metadata.titles} 条，封面 ${metadata.covers} 张。${review?`二次核验匹配 ${review.matched} 个频道。`:''}${extension&&!supported?'此页面未打包该类别扩展，使用通用分析。':''}`);
+  say(`已载入 ${rows.length} 个频道；可对照 ${payload.summary.comparable}，不符 ${payload.summary.mismatch}。数据匹配 ${metadata.matched}/${rows.length} 个频道，标题 ${metadata.titles} 条，封面 ${metadata.covers} 张。${review?`二次核验匹配 ${review.matched} 个频道。`:''}${extension&&!supported?'此页面未打包该类别扩展，使用通用分析。':''}`);
 }
 async function showReport(payload,assets){
  const extension=payload.category.report_extension||'',template=bundle.templates[extension]||bundle.templates[''];
  const html=template.replace('__VIEWER_PAYLOAD__',()=>jsonEscape(payload)),token=crypto.randomUUID();
  model.reportToken=token;
+ const used=new Set(assetReferences(payload).map(([object,key])=>object[key]).filter(Boolean));assetBroker.items=new Map(assets.filter(item=>used.has(item.id)).map(item=>[item.id,item]));assetBroker.queue=[];
  await new Promise((resolve,reject)=>{
   const timer=setTimeout(()=>{window.removeEventListener('message',ready);reject(Error('分析页面载入超时，请重新打开页面。'))},15000);
   function ready(event){if(event.source!==$('report').contentWindow||event.data?.type!=='viewer-ready'||event.data.token!==token)return;clearTimeout(timer);window.removeEventListener('message',ready);resolve()}
   window.addEventListener('message',ready);
-  $('report').onload=()=>$('report').contentWindow.postMessage({type:'viewer-files',token,assets},'*');$('report').srcdoc=html;$('report').hidden=false;$('empty').hidden=true;
+  $('report').onload=()=>$('report').contentWindow.postMessage({type:'viewer-files',token},'*');$('report').srcdoc=html;$('report').hidden=false;$('empty').hidden=true;
  });
  model.lastView={payload,assets};
  model.lastInputs={file:model.file,records:model.records,ranks:model.ranks,hash:model.hash,review:model.review,folderNames:model.folderNames,encodingDetected:model.encodingDetected,reviewEncodingDetected:model.reviewEncodingDetected};
 }
 window.addEventListener('message',event=>{if(event.source!==$('report').contentWindow||event.data?.token!==model.reportToken||event.data.type!=='viewer-height')return;const height=event.data.height;if(Number.isFinite(height)&&height>=300&&height<=1000000&&Math.abs($('report').getBoundingClientRect().height-height)>1)$('report').style.height=height+'px'});
-async function loadCSV(file){const bytes=await file.arrayBuffer(),decoded=decodeCSV(bytes,$('encoding').value,'结果 CSV'),parsed=parseCSV(decoded.text);model.encodingDetected=decoded.encoding;model.file=file;model.records=parsed.rows;model.ranks=parsed.ranks;model.hash=await sha256(bytes);customOptions();updateSelection();await renderReport()}
+async function loadCSV(file){const bytes=await file.arrayBuffer(),decoded=decodeCSV(bytes,$('encoding').value,'结果 CSV'),parsed=parseCSV(decoded.text);if(model.file?.name==='demo-results.csv'&&file.name!=='demo-results.csv'){model.groups=[];model.channels.clear();model.categories=[];model.folderNames=[];model.review=null;model.cachedView=null;session.review=null;session.folders=[];$('review-file').value='';$('cache-note').textContent='已切换到自己的结果；可添加对应的采集数据。'}model.encodingDetected=decoded.encoding;model.file=file;model.records=parsed.rows;model.ranks=parsed.ranks;model.hash=await sha256(bytes);customOptions();updateSelection();await renderReport()}
 async function action(work){if(model.busy)return false;busy(true);try{await work();return true}catch(error){if(error.name!=='AbortError')say(`${error.message}${!$('report').hidden?'\n新数据未载入，分析区仍显示上一次成功载入的结果。':''}`,true);return false}finally{busy(false)}}
-async function loadReview(file){const bytes=await file.arrayBuffer(),decoded=decodeCSV(bytes,$('review-encoding').value,'核验 CSV'),rows=parseReview(decoded.text);model.reviewEncodingDetected=decoded.encoding;model.review={file,rows};updateSelection();$('review-note').textContent=`已读取 ${file.name}，${rows.length} 条，等待与结果匹配。`;await renderReport()}
+async function loadReview(file){const bytes=await file.arrayBuffer(),decoded=decodeCSV(bytes,$('review-encoding').value,'核验 CSV'),rows=parseReview(decoded.text);model.reviewEncodingDetected=decoded.encoding;model.review={file,rows};updateSelection();await renderReport()}
 $('csv-file').onchange=()=>{const file=$('csv-file').files[0];if(file)action(()=>loadCSV(file))};
 $('cache-folder').onchange=()=>{const files=Array.from($('cache-folder').files);if(files.length)action(async()=>{await addFolder(files);$('cache-folder').value='';await renderReport()})};
 $('category').onchange=()=>{model.categoryAuto=$('category').value==='';$('custom-labels').hidden=$('category').value!=='custom';action(renderReport)};
@@ -192,5 +193,5 @@ $('encoding').onchange=()=>{const file=$('csv-file').files[0]||model.file;action
 $('clear-cache').onclick=()=>action(async()=>{model.groups=[];model.folderNames=[];model.channels.clear();model.categories=[];model.cachedView=null;updateSelection();$('cache-note').textContent='已清除缓存选择。仅使用 CSV 分析，简介、标题和封面暂缺。';await renderReport()});
 $('review-file').onchange=()=>{const file=$('review-file').files[0];if(file)action(()=>loadReview(file))};
 $('review-encoding').onchange=()=>{const file=$('review-file').files[0]||model.review?.file;action(async()=>{if(file)await loadReview(file)})};
-$('clear-review').onclick=()=>action(async()=>{model.review=null;$('review-file').value='';updateSelection();$('review-note').textContent='已清除二次核验，原人工标注保持不变。';await renderReport()});
+$('clear-review').onclick=()=>action(async()=>{model.review=null;$('review-file').value='';updateSelection();await renderReport()});
 for(const [button,input] of [['choose-csv','csv-file'],['choose-folder','cache-folder'],['choose-review','review-file']])$(button).onclick=()=>$(input).click();

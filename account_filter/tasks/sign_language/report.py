@@ -6,7 +6,7 @@ from pathlib import Path
 def components():
     directory = Path(__file__).parent
     return {slot: (directory / f'report-{slot}.{"js" if slot == "scripts" else "html"}').read_text(encoding='utf-8')
-            for slot in ('top', 'bottom', 'evidence', 'scripts', 'nav', 'style')}
+            for slot in ('top', 'evidence', 'scripts', 'nav', 'style')}
 
 
 def augment_payload(payload, csv_path, output):

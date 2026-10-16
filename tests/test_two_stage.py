@@ -5,15 +5,15 @@ import json
 import pytest
 from PIL import Image
 
-from account_filter import __main__ as cli
-from account_filter.classifier import rank_titles
+from account_filter.collection import runner as cli
+from account_filter.screening.classifier import rank_titles
 from task_helpers import build_title_request, build_request
-from account_filter.collector import profile_info
-from account_filter.platforms.douyin import is_douyin_response, parse_douyin_payload
+from account_filter.collection.browser import profile_info
+from account_filter.collection.platforms.douyin import is_douyin_response, parse_douyin_payload
 
 
 def test_douyin_excludes_image_posts_and_preserves_type_evidence():
-    from account_filter.platforms.douyin import filter_image_posts, is_image_post
+    from account_filter.collection.platforms.douyin import filter_image_posts, is_image_post
     payload = {'aweme_list': [
         {'aweme_id': '101', 'aweme_type': 0, 'desc': '视频', 'video': {'cover': {'url_list': ['video.jpg']}}},
         {'aweme_id': '102', 'aweme_type': 68, 'desc': '图文', 'images': [{'display_image': {'url_list': ['photo.jpg']}}]},
@@ -36,21 +36,6 @@ def test_douyin_excludes_image_posts_and_preserves_type_evidence():
     assert filter_image_posts({'platform': 'douyin', 'videos': posts[1:]})['no_video_posts']
 
 
-def test_image_only_cached_channel_does_not_call_model(tmp_path, monkeypatch):
-    channel = {'platform': 'douyin', 'name': '图文账户', 'url': 'https://www.douyin.com/user/abc',
-               'bio': '手语', 'videos': [{'id': '102', 'aweme_type': 68, 'url': 'https://www.douyin.com/note/102'}]}
-    source = tmp_path / 'channel.json'
-    source.write_text(json.dumps(channel, ensure_ascii=False), encoding='utf-8')
-    async def no_api(*args, **kwargs):
-        raise AssertionError('仅图文，不应调用模型')
-    monkeypatch.setattr(cli, 'cached_model_call', no_api)
-    args = parse_task_args(cli, ['analyze', str(source), '--output', str(tmp_path / 'analysis')])
-    args.output.mkdir(parents=True, exist_ok=True)
-    result = asyncio.run(cli.process_channel(args))
-    assert result['row']['预测结果'] == '不是手语频道'
-    assert not result['row']['频道概率']
-    status = json.loads((args.output / 'classification-status.json').read_text(encoding='utf-8'))
-    assert status['status'] == 'no_video_posts' and not status['model_called']
 
 
 def test_douyin_author_and_first_page_filter():
@@ -67,15 +52,10 @@ def test_douyin_author_and_first_page_filter():
     assert len(videos) == 1 and videos[0]['url'] == 'https://www.douyin.com/video/123'
 
 
-def test_mixed_platform_input(tmp_path):
-    source = tmp_path / 'mixed.csv'
-    source.write_text('平台,主页网址,审核结果\n快手,https://www.kuaishou.com/profile/abc,1\n抖音,https://www.douyin.com/user/abc,-1\n', encoding='utf-8-sig')
-    args = parse_task_args(cli, ['batch', '--input-csv', str(source)])
-    assert len(cli.batch_inputs(args)) == 2
 
 
 def test_login_popup_waits_before_collecting(tmp_path, capsys):
-    from account_filter.collector import collect
+    from account_filter.collection.browser import collect
     events = []
     class Page:
         logged_in = False
@@ -113,7 +93,7 @@ def test_login_popup_waits_before_collecting(tmp_path, capsys):
 
 def test_douyin_dom_excludes_recommendations_and_reads_target_profile(tmp_path):
     from playwright.async_api import async_playwright
-    from account_filter.platforms.douyin import DOM_SCRIPT
+    from account_filter.collection.platforms.douyin import DOM_SCRIPT
     async def check():
         async with async_playwright() as playwright:
             context = await playwright.chromium.launch_persistent_context(str(tmp_path / 'browser'),
@@ -206,40 +186,3 @@ def test_first_stage_cannot_use_account_metadata(api):
     c, _ = build_title_request({'videos': titles}, model='test', api=api)
     assert a == b == c
     assert 'PRIVATE_' not in json.dumps(a)
-
-
-def test_ranking_precedes_cover_download_and_second_round(tmp_path, monkeypatch):
-    source = tmp_path / 'channel.json'
-    channel = {'platform': 'douyin', 'name': '日常', 'url': 'https://www.douyin.com/user/abc',
-               'videos': [{'id': str(i), 'title': f'标题{i}', 'url': f'https://www.douyin.com/video/{i}'} for i in range(8)]}
-    source.write_text(json.dumps(channel), encoding='utf-8')
-    events = []
-    async def model(payload, api, **kwargs):
-        if 'channel' not in payload['questions']:
-            events.append('rank')
-            assert len(payload['questions']) == 8 and all(isinstance(p, str) for p in payload['state'])
-            return {'answers': {f'v{i+1:03d}': {'type': 'noul', 'noul': i / 10} for i in range(8)}}
-        events.append('review')
-        assert events == ['rank', 'covers', 'review']
-        texts = [json.loads(p) for p in payload['state'][2:] if isinstance(p, str)]
-        assert [v['id'] for v in texts] == ['7', '6', '5']
-        assert sum(isinstance(p, dict) for p in payload['state']) == 3
-        assert 'sign-language channel' in payload['questions']['channel']['instructions']
-        assert 'personal/media' in payload['questions']['channel']['instructions']
-        return {'answers': {'channel': {'type': 'choice', 'choice': 'yes', 'probabilities': {'yes': .95, 'no': .05}},
-            'channel_probability': {'type': 'noul', 'noul': .95},
-            **{f'v{i:03d}': {'type': 'noul', 'noul': .9} for i in range(1, 4)},
-            'best_video': {'type': 'choice', 'choice': 'v001', 'probabilities': {'v001': .7, 'v002': .1, 'v003': .1, 'none': .1}}}}
-    async def covers(channel, videos, root, output, page):
-        events.append('covers')
-        assert [v['id'] for v in videos] == ['7', '6', '5']
-        for video in videos:
-            path = output / f"{video['id']}.jpg"
-            Image.new('RGB', (10, 10)).save(path)
-            video['cover_path'] = str(path)
-    monkeypatch.setattr(cli, 'call_model_api', model)
-    monkeypatch.setattr(cli, 'download_selected_covers', covers)
-    args = parse_task_args(cli, ['analyze', str(source), '--top-videos', '3', '--output', str(tmp_path / 'output')])
-    assert asyncio.run(cli.main(args)) == 0
-    assert (args.output / 'title-ranking.json').is_file()
-    assert (args.output / 'selected-videos.json').is_file()

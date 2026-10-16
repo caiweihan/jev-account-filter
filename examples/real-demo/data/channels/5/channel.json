@@ -1,0 +1,46 @@
+{
+  "platform": "douyin",
+  "id": "MS4wLjABAAAAK6RGGzUyvbZYgBfNMO0SyqLdp4ekxKOiLz6uNx7Vq44",
+  "url": "https://www.douyin.com/user/MS4wLjABAAAAK6RGGzUyvbZYgBfNMO0SyqLdp4ekxKOiLz6uNx7Vq44",
+  "name": "手语律师唐帅  指间正义",
+  "bio": "我是一名律师，但更是一名手语律师。我的使命就是利用我的双手将“冰冷”的法律“热起来”“动起来”让全国的聋人朋友能够认识它，熟悉它，最终敬畏它，遵守它，并且能够运用它！！！",
+  "videos": [
+    {
+      "id": "7694986281243200802",
+      "title": "命能换钱，钱能买命么 #热点新闻事件 #网约车 #猝死 #手语普法",
+      "url": "https://www.douyin.com/video/7694986281243200802",
+      "cover_path": "covers/7694986281243200802.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7696090465875070217",
+      "title": "爱情不是提款的工具 #热点新闻事件 #手语普法 #公益普法 #恋爱 #赚差价",
+      "url": "https://www.douyin.com/video/7696090465875070217",
+      "cover_path": "covers/7696090465875070217.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7690915843525381412",
+      "title": "贷款中介时代终结了 #手语普法 #热点新闻事件 #公益普法 #贷款中介",
+      "url": "https://www.douyin.com/video/7690915843525381412",
+      "cover_path": "covers/7690915843525381412.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7691308344086220083",
+      "title": "月子中心的虐待 #月子中心 #热点新闻事件 #婴儿 #手语普法 #公益普法",
+      "url": "https://www.douyin.com/video/7691308344086220083",
+      "cover_path": "covers/7691308344086220083.jpg",
+      "content_type": "video"
+    },
+    {
+      "id": "7695743176459521289",
+      "title": "见死不救，有期徒刑13年 #热点新闻事件 #夫妻 #见死不救 #手语普法",
+      "url": "https://www.douyin.com/video/7695743176459521289",
+      "cover_path": "covers/7695743176459521289.jpg",
+      "content_type": "video"
+    }
+  ],
+  "scope": "Public demonstration subset: five selected candidates, not the full first page.",
+  "no_posts": false
+}

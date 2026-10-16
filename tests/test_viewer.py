@@ -49,7 +49,7 @@ def data(page):
 def ready(page, fragment):
     page.wait_for_function('(text)=>document.querySelector("#status").textContent.includes(text)', arg=fragment)
     page.wait_for_function('()=>!document.querySelector("#csv-file").disabled')
-    if fragment.startswith('已载入') or fragment.startswith(('封面 ', '缓存匹配 ')):
+    if fragment.startswith('已载入') or fragment.startswith(('封面 ', '数据匹配 ')):
         page.frame_locator('#report').locator('#eval-summary .value').first.wait_for()
         sized(page)
 
@@ -67,6 +67,14 @@ def parent_click(page, selector):
     page.locator(selector).click()
 
 
+def report_click(page, selector):
+    sized(page)
+    button = page.frame_locator('#report').locator(selector)
+    button.scroll_into_view_if_needed()
+    page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
+    button.click()
+
+
 def test_viewer_matches_existing_statistics_and_reloads_without_stale_state(tmp_path, viewer):
     page, _, _ = viewer
     source = fixture_csv(tmp_path)
@@ -80,7 +88,7 @@ def test_viewer_matches_existing_statistics_and_reloads_without_stale_state(tmp_
     frame.locator('#agreement').select_option('wrong')
     assert frame.locator('#case-table tbody tr').count() == 2
     assert frame.locator('#case-table img').count() == 0
-    frame.locator('#case-table [data-case]').first.click()
+    report_click(page, '#case-table [data-case] >> nth=0')
     assert frame.locator('#detail-content h2').inner_text().startswith('不符</script>')
     assert frame.locator('#detail-content img').count() == 0
     frame.locator('#close-detail').click()
@@ -130,8 +138,8 @@ def test_external_cache_and_second_cover_folder_follow_video_links(tmp_path, vie
     assert data(page)['rows'][0]['videos'][0]['title'] == '高分标题'
     assert data(page)['rows'][0]['videos'][0]['title_p'] == .95
     assert data(page)['summary']['missing_cover'] == 2
-    assert data(page)['cover_audit']['source_sha256'] == hashlib.sha256(source.read_bytes()).hexdigest()
-    assert page.frame_locator('#report').locator('#front-audit').is_visible()
+    assert 'cover_audit' not in data(page)
+    assert page.frame_locator('#report').locator('#front-audit').count() == 0
     covers = tmp_path / 'independent-covers'
     covers.mkdir()
     Image.new('RGB', (11, 17), 'red').save(covers / '1.jpg')
@@ -144,12 +152,12 @@ def test_external_cache_and_second_cover_folder_follow_video_links(tmp_path, vie
     images.first.wait_for()
     assert images.first.evaluate('img=>img.decode().then(()=>img.naturalWidth)') == 17
     assert images.nth(1).evaluate('img=>img.decode().then(()=>img.naturalWidth)') == 11
-    assert data(page)['rows'][0]['videos'][0]['cover'].startswith('blob:')
+    assert data(page)['rows'][0]['videos'][0]['cover'].startswith('viewer-asset:')
     frame.locator('#close-detail').click()
     assert not frame.locator('#detail').evaluate('el=>el.open'), 'dialog still open'
     sized(page)
     parent_click(page, '#clear-cache')
-    ready(page, '缓存匹配 0/1')
+    ready(page, '数据匹配 0/1')
     assert data(page)['rows'][0]['bio'] == ''
     assert data(page)['summary']['missing_cover'] == 2
 
@@ -205,7 +213,7 @@ def test_ambiguous_cover_files_remain_missing(tmp_path, viewer):
         target.mkdir(parents=True)
         Image.new('RGB', (10, 10)).save(target / 'duplicate.jpg')
     page.locator('#cache-folder').set_input_files(folder)
-    ready(page, '缓存匹配 1/1')
+    ready(page, '数据匹配 1/1')
     assert data(page)['rows'][0]['videos'][0]['title'] == '唯一标题'
     assert data(page)['rows'][0]['videos'][0]['cover'] is None
 

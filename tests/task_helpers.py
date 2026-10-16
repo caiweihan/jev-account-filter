@@ -1,8 +1,9 @@
 """Explicit fixtures for regression cases belonging to the existing example task."""
 from pathlib import Path
-from account_filter import classifier, report
+from account_filter import report
+from account_filter.screening import classifier
 from account_filter.category import load_category, category_labels
-from account_filter.config import load_config
+from account_filter.screening.config import load_config
 
 PROJECT = Path(__file__).resolve().parents[1]
 API_PATH = PROJECT / 'configs/api.toml'

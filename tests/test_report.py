@@ -14,7 +14,7 @@ def test_report_can_reference_formal_cache_but_not_other_external_files(tmp_path
     root.mkdir()
     shared = tmp_path / 'data' / 'channels'
     shared.mkdir(parents=True)
-    monkeypatch.setattr(report, 'SHARED_CACHE', shared)
+    monkeypatch.setattr(report, 'COLLECTED_DATA', shared)
     image = shared / 'cover.jpg'
     image.write_bytes(b'local')
     relative = report.relative_file(image, root)

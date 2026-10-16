@@ -6,9 +6,10 @@ import httpx
 import pytest
 from PIL import Image
 
-from account_filter.api import call_model_api
+from account_filter.screening.api import call_model_api
 from task_helpers import build_request, normalize_result
-from account_filter.collector import RiskControlError, check_risk_control, is_profile_response, parse_profile_payload, profile_id, import_cookies
+from account_filter.collection.browser import RiskControlError, profile_id, import_cookies
+from account_filter.collection.platforms.kuaishou import check_risk_control, is_profile_response, parse_profile_payload
 
 
 @pytest.fixture

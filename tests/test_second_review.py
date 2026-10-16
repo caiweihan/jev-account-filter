@@ -2,7 +2,7 @@
 import csv
 import io
 
-from test_viewer import browser, viewer, data, pick_csv, ready
+from test_viewer import browser, viewer, data, pick_csv, ready, parent_click
 from task_helpers import TASK
 
 
@@ -83,12 +83,11 @@ def test_reannotation_preserves_original_and_uses_fixed_denominators(viewer):
     frame.locator('#case-table [data-case]').click()
     assert '二次人工核验' in frame.locator('#detail-content .verify-detail').inner_text()
     frame.locator('#close-detail').click()
-    frame.locator('#comparison-basis').select_option('original')
     frame.locator('#review-filter').select_option('pending-review')
     assert frame.locator('#case-table tbody tr').count() == 1
     frame.locator('#metric').select_option('mean')
     assert '0 /' in frame.locator('#distribution-stats').inner_text()
-    page.locator('#clear-review').click()
+    parent_click(page, '#clear-review')
     ready(page, '已载入 5 个频道')
     assert frame.locator('#second-review').count() == 0
     assert data(page)['summary'] == original

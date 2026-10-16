@@ -2,23 +2,38 @@
 
 # Installation and environment
 
-To inspect existing results, open [`analysis.html`](../analysis.html) in Edge or Chrome and select a CSV and optional cache folders. No Python environment is required. The steps below are for collection, model experiments, or rebuilding the viewer.
+To inspect existing results, open [`analysis.html`](../analysis.html) in Edge or Chrome and select a CSV and optional data folders. No Python environment is required. The steps below are for collection, model experiments, or rebuilding the viewer.
 
 Run commands from the project root. Python 3.11 or later is required; the current local environment uses 3.12. You can continue using the existing `.venv`; the project reorganization did not add runtime dependencies.
 
-For a new environment, install [uv](https://docs.astral.sh/uv/getting-started/installation/) first, then run:
+Installation is documented directly, without a platform-specific setup script. Dependencies and browser downloads stay inside the project.
+
+### Windows PowerShell
 
 ```powershell
-.\setup.ps1
+py -3 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --cache-dir .cache/pip -r requirements.txt
+$env:PLAYWRIGHT_BROWSERS_PATH = "$PWD/.cache/ms-playwright"
+.\.venv\Scripts\python.exe -m playwright install chromium
 ```
 
-The script creates `.venv/` inside the project, installs `requirements.txt`, and downloads Playwright Chromium. When Edge is available on Windows, collection uses the installed Edge browser by default.
+### macOS / Linux
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install --cache-dir .cache/pip -r requirements.txt
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" .venv/bin/python -m playwright install chromium
+```
+
+Linux also needs Playwright's system libraries. Collection defaults to the installed Edge on Windows when available and to downloaded Chromium otherwise. For other commands in these docs, replace `.\.venv\Scripts\python.exe` with `.venv/bin/python` on macOS/Linux; activation is not required.
 
 ## Credentials and configuration
 
 ```powershell
-Copy-Item configs/env.example .env
+.\.venv\Scripts\python.exe -c "from pathlib import Path; Path('.env').write_bytes(Path('configs/env.example').read_bytes())"
 ```
+
+On macOS/Linux, use `.venv/bin/python` for the same copy command.
 
 In `.env`, set the variable named by `api_key_env` in your chosen API configuration. The variable name is entirely configuration-driven; `MODEL_API_KEY` is a generic example, and the program does not default to any provider's credential variable. You can also use environment variables. Keep keys out of TOML files.
 
@@ -32,12 +47,9 @@ See [Configuration](configuration.md) for model and endpoint settings.
 
 Scan the QR code in the browser. New sessions are saved to the platform-neutral `.browser/profile/` directory, with one browser window per batch. To reuse an earlier session, explicitly add `--browser-dir .browser/kuaishou`; the old directory has not been deleted or moved. Two tasks cannot use the same session directory simultaneously.
 
-Do not commit `.env`, cookies, browser sessions, or experiment caches to a public repository. See [Commands](commands.md) for everyday usage.
 
-## Public sample and private data
+## Next steps
 
-[`input/channels.example.csv`](../input/channels.example.csv) contains three entirely fictional accounts and demonstrates the supported CSV columns. Its IDs, names, URLs, and labels are invented, not sampled from the team's dataset. Replace the example URLs before running; `1` and `-1` map to the selected category's positive and negative labels, and a blank annotation is allowed. [`configs/channels.example.txt`](../configs/channels.example.txt) provides fictional URL-list examples too.
+Run `collect --input-csv input/accounts.csv --output data/my-dataset`, then `screen --data data/my-dataset --config configs/api.toml --category sign-language --output results/my-experiment`. These are independent collection and screening steps. See [Commands](commands.md) for complete invocations and [Data format](data-format.md) to use your own sources.
 
-The publication boundary is defined in `.gitignore`: real input CSVs, `output/`, the canonical `data/` cache, `.cache/`, `.browser/`, `.venv/`, credentials, and cookies stay local. The synthetic sample CSV is explicitly allowed. Channel names, biographies, titles, thumbnails, and model requests/responses can identify the team's collected accounts even when stored outside `input/` and `output/`.
-
-Git ignore rules apply to Git file selection, not to manually zipping the entire project directory. Share source files and the synthetic examples, rather than an archive of the full local workspace. Summary experiment statistics in the public documentation do not include individual account identities.
+No installation is needed to inspect the demonstration: open the root `analysis.html` to analyze six real public examples.
