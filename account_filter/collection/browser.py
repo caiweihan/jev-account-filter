@@ -5,7 +5,8 @@ import re
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
+from urllib.request import getproxies
 
 from playwright.async_api import async_playwright
 from .platforms.registry import PLATFORMS, adapter
@@ -17,12 +18,15 @@ from ..errors import CollectionError, RiskControlError, UserNotFoundError
 def profile_info(url: str) -> tuple[str, str]:
     parsed = urlparse(url)
     if parsed.scheme == 'https' and parsed.port in (None, 443):
-        for platform, adapter in PLATFORMS.items():
-            hosts, path = adapter['hosts'], adapter['profile_path']
-            match = re.fullmatch(rf'/{path}/([A-Za-z0-9_-]+)/?', parsed.path)
-            if parsed.hostname in hosts and match:
-                return platform, match[1]
-    raise ValueError('请输入已配置平台的 HTTPS 账户主页链接：' + '；'.join(f"{item['name']} https://{item['hosts'][0]}/{item['profile_path']}/<id>" for item in PLATFORMS.values()))
+        for platform, settings in PLATFORMS.items():
+            if parsed.hostname not in settings['hosts'] or parsed.username or parsed.password:
+                continue
+            patterns = settings.get('profile_patterns') or [rf"/{settings['profile_path']}/(?P<id>[A-Za-z0-9_-]+)/?"]
+            for pattern in patterns:
+                if match := re.fullmatch(pattern, unquote(parsed.path)):
+                    return platform, match['id']
+    examples = [item.get('example_url') or f"https://{item['hosts'][0]}/{item['profile_path']}/<id>" for item in PLATFORMS.values()]
+    raise ValueError('请输入已配置平台的 HTTPS 账户主页链接：' + '；'.join(examples))
 
 
 def profile_id(url: str) -> str:
@@ -37,7 +41,7 @@ def import_cookies(path: Path) -> list[dict]:
     clean = []
     for cookie in cookies:
         domain = cookie.get('domain', '')
-        if not any(domain.lstrip('.') == host or domain.endswith('.' + host) for item in PLATFORMS.values() for host in item['hosts']):
+        if not any(domain.lstrip('.') == host or domain.endswith('.' + host) for item in PLATFORMS.values() for host in item.get('cookie_domains', item['hosts'])):
             continue
         item = {k: cookie[k] for k in ('name', 'value', 'domain', 'path', 'expires', 'httpOnly', 'secure', 'sameSite') if k in cookie}
         item.setdefault('path', '/')
@@ -53,8 +57,19 @@ def import_cookies(path: Path) -> list[dict]:
 async def browser_session(browser_dir, *, headless=False, browser_channel=None, cookies=None):
     browser_dir.mkdir(parents=True, exist_ok=True)
     async with async_playwright() as playwright:
+        # Chromium uses the OS proxy by default, but its APIRequestContext does
+        # not. Explicitly share the configured proxy so CDN downloads agree.
+        proxy_url = getproxies().get('https') or getproxies().get('http')
+        network = {}
+        if proxy_url:
+            proxy = urlparse(proxy_url)
+            server = f'{proxy.scheme}://{proxy.hostname}' + (f':{proxy.port}' if proxy.port else '')
+            settings = {'server': server}
+            if proxy.username:
+                settings.update(username=unquote(proxy.username), password=unquote(proxy.password or ''))
+            network['proxy'] = settings
         context = await playwright.chromium.launch_persistent_context(str(browser_dir.resolve()),
-            channel=browser_channel, headless=headless, viewport={'width': 1440, 'height': 1000}, locale='zh-CN')
+            channel=browser_channel, headless=headless, viewport={'width': 1440, 'height': 1000}, locale='zh-CN', **network)
         try:
             if cookies:
                 await context.add_cookies(import_cookies(cookies))
@@ -84,6 +99,7 @@ async def collect(url: str, output: Path, browser_dir: Path, *, max_videos: int 
     pending = set()
     first_feed_received = False
     first_page_posts = []
+    response_errors = []
     async def capture(response):
         nonlocal first_feed_received, first_page_posts
         try:
@@ -102,6 +118,8 @@ async def collect(url: str, output: Path, browser_dir: Path, *, max_videos: int 
                 first_page_posts = [dict(v) for v in videos]
                 merge(videos)
                 first_feed_received = True
+        except CollectionError as exc:
+            response_errors.append(exc)
         except Exception:
             # Non-JSON responses and aborted requests are normal during navigation.
             return
@@ -124,6 +142,8 @@ async def collect(url: str, output: Path, browser_dir: Path, *, max_videos: int 
         task.add_done_callback(pending.discard)
     page.on('response', on_response)
     def check_page(dom, body_text):
+        if response_errors:
+            raise response_errors[0]
         platform_adapter.check_page(dom, body_text)
     async def read_dom():
         return await platform_adapter.read_dom(page)
@@ -152,7 +172,8 @@ async def collect(url: str, output: Path, browser_dir: Path, *, max_videos: int 
                 on_status('采集频道')
             else:
                 print('检测到登录会话，开始获取频道。', flush=True)
-        await page.goto(url, wait_until='domcontentloaded', timeout=timeout * 1000)
+        destination = getattr(platform_adapter, 'collection_url', lambda value, identity: value)(url, user_id)
+        await page.goto(destination, wait_until='domcontentloaded', timeout=timeout * 1000)
         deadline = asyncio.get_running_loop().time() + timeout
         last_count, stable_since = -1, asyncio.get_running_loop().time()
         while asyncio.get_running_loop().time() < deadline:
@@ -203,8 +224,8 @@ async def collect(url: str, output: Path, browser_dir: Path, *, max_videos: int 
         channel['collection_state'] = 'private' if is_private else 'no_posts' if no_posts else 'ready'
         if no_posts:
             channel['empty_reason'] = '主页明确显示：该账号还未发布过作品。'
-        channel['first_page_source'] = 'profile_response' if first_feed_received else 'initial_dom'
-        if not first_feed_received:
+        channel.setdefault('first_page_source', 'profile_response' if first_feed_received else 'initial_dom')
+        if not first_feed_received and channel['first_page_source'] == 'initial_dom':
             channel['scope'] = 'All loaded creator posts in the initial DOM; no scrolling or pagination.'
             channel['warnings'].append('未捕获第一页作品响应，使用首次加载的页面作品；没有翻页或滚动。')
         # Feed responses can arrive before the profile text has rendered.

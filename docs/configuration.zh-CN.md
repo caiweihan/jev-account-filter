@@ -45,6 +45,10 @@ api_key_env = "MODEL_API_KEY"
 
 ## 平台与类别独立
 
-平台域名和路径在 `configs/platforms.toml`，解析在 `account_filter/collection/platforms/`。目前实现抖音、快手。按链接自动识别平台只是路由，不会选择目标类别或模型服务。
+平台域名和路径在 `configs/platforms.toml`，解析在 `account_filter/collection/platforms/`。目前实现抖音、快手、YouTube、哔哩哔哩。按链接自动识别平台只是路由，不会选择目标类别或模型服务。
 
-微信、YouTube、TikTok 尚未实现；仅添加 TOML 条目不能获得采集能力。所有现有类别均使用“第一页视频标题 → 候选封面”证据流程，需要正文或视频帧的任务仍需扩展采集流程。
+YouTube 支持 `https://www.youtube.com/@handle/videos` 和 `https://www.youtube.com/channel/UC…/videos`，也接受不带 `/videos` 的主页。仅解析 Videos 标签的初始数据，不混入 Shorts、播放列表和推荐，不请求后续分页。哔哩哔哩支持 `https://space.bilibili.com/<uid>/upload/video`、`/<uid>/video` 和空间主页；从正常浏览器发出的首个作者视频列表响应采集，不自行构造签名请求。各平台首屏条数由网站决定。
+
+公开频道通常无需登录；验证、登录或地区网络限制仍需正常处理。浏览器及封面下载共用环境变量或系统配置的 HTTP/HTTPS 代理。遇到平台访问验证或限流会停止采集，失败记录可续跑；作品数非零但列表未加载时，不会保存为“未投稿”。
+
+微信、TikTok 尚未实现；仅添加 TOML 条目不能获得采集能力。所有现有类别均使用“第一页视频标题 → 候选封面”证据流程，需要正文或视频帧的任务仍需扩展采集流程。

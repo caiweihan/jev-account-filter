@@ -21,6 +21,14 @@ One or more profile URLs may also be supplied directly:
 
 The dataset contains names, biographies, first-page video titles, URLs, and local thumbnails. A collection run shares one browser window, without scrolling or pagination. Image posts and articles are excluded from video candidates. Risk-control errors stop collection while preserving completed data.
 
+Douyin, Kuaishou, YouTube, and Bilibili can be mixed in one batch. Public YouTube and Bilibili channels can usually be collected without running `login` first:
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m account_filter collect "https://www.youtube.com/@YOUR_HANDLE/videos" "https://space.bilibili.com/YOUR_UID/upload/video" --output data/mixed-platforms
+```
+
+Replace `YOUR_HANDLE` and `YOUR_UID` with real accounts. Screening, resuming, and visualization use the same commands as other platforms.
+
 ```powershell
 .\.venv\Scripts\python.exe -m account_filter collect --resume data/my-dataset
 ```

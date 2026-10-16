@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="756" viewBox="0 0 1100 756" role="img" aria-labelledby="title description">
+  <title id="title">From account collection to prompt iteration</title>
+  <desc id="description">Four vertically stacked rounded boxes: collect data, rank titles, classify accounts, then analyze and revise the prompt. A left-side feedback arrow returns from the last box to the second, reusing collected data.</desc>
+  <defs>
+    <marker id="down" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 8 5 1 9" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="back" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2 2 10 6 2 10" fill="none" stroke="#b76c18" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <path d="M160 660 H78 Q58 660 58 640 V304 Q58 284 78 284 H156" fill="none" stroke="#b76c18" stroke-width="2.8" marker-end="url(#back)"/>
+    <text x="32" y="472" text-anchor="middle" transform="rotate(-90 32 472)" font-size="18" font-weight="600" fill="#b76c18">Reuse collected data · Iterate prompts</text>
+    <g>
+      <rect x="160" y="24" width="910" height="144" rx="18" fill="#f0f5ff" stroke="#c9d8fb" stroke-width="1.5"/>
+      <rect x="184" y="45" width="40" height="34" rx="10" fill="#345bd3"/>
+      <text x="204" y="69" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">01</text>
+      <text x="240" y="70" font-size="26" font-weight="700" fill="#345bd3">Collect account data</text>
+      <text x="184" y="110" font-size="21" font-weight="600" fill="#20334e">Account URLs → Profile + first-page videos → Structured dataset</text>
+      <text x="184" y="143" font-size="19" fill="#5c6c82">Save names, bios, video titles, URLs and thumbnails; exclude image posts.</text>
+    </g>
+    <path d="M615 177 V204" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="212" width="910" height="144" rx="18" fill="#f5f1ff" stroke="#dacdf4" stroke-width="1.5"/>
+      <rect x="184" y="233" width="40" height="34" rx="10" fill="#7250b8"/>
+      <text x="204" y="257" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">02</text>
+      <text x="240" y="258" font-size="26" font-weight="700" fill="#7250b8">Pass 1 · Select candidates by title</text>
+      <text x="184" y="298" font-size="21" font-weight="600" fill="#20334e">All first-page video titles → Relevance ranking → Top N candidates</text>
+      <text x="184" y="331" font-size="19" fill="#5c6c82">Titles only: no account name, biography or images. Default N = 5; adjustable.</text>
+    </g>
+    <path d="M615 365 V392" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="400" width="910" height="144" rx="18" fill="#eef9f6" stroke="#bee6dd" stroke-width="1.5"/>
+      <rect x="184" y="421" width="40" height="34" rx="10" fill="#118579"/>
+      <text x="204" y="445" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">03</text>
+      <text x="240" y="446" font-size="26" font-weight="700" fill="#118579">Pass 2 · Classify with multimodal evidence</text>
+      <text x="184" y="486" font-size="21" font-weight="600" fill="#20334e">Name + bio + candidate titles and thumbnails → Category + scores</text>
+      <text x="184" y="519" font-size="19" fill="#5c6c82">Account category is an independent model decision, not a video-score threshold.</text>
+    </g>
+    <path d="M615 553 V580" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="588" width="910" height="144" rx="18" fill="#fff7ed" stroke="#f1d8b8" stroke-width="1.5"/>
+      <rect x="184" y="609" width="40" height="34" rx="10" fill="#b76c18"/>
+      <text x="204" y="633" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">04</text>
+      <text x="240" y="634" font-size="26" font-weight="700" fill="#b76c18">Analyze results and refine the prompt</text>
+      <text x="184" y="674" font-size="21" font-weight="600" fill="#20334e">Distributions + clusters → Review differences and evidence → Revise prompt</text>
+      <text x="184" y="707" font-size="19" fill="#5c6c82">Return to pass 1 using local data; no new visits to the video platform.</text>
+    </g>
+  </g>
+</svg>

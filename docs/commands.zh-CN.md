@@ -21,6 +21,14 @@
 
 数据包括名称、简介、第一页视频的标题、链接和本地封面。每次采集共用一个浏览器窗口；仅获取第一页，不滚动翻页。图文和文章不作为视频。遇到风控停止，已有数据保留。
 
+支持在同一批次混合抖音、快手、YouTube 和哔哩哔哩。公开 YouTube、哔哩哔哩频道通常可直接采集，无需先执行 `login`：
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m account_filter collect "https://www.youtube.com/@YOUR_HANDLE/videos" "https://space.bilibili.com/YOUR_UID/upload/video" --output data/mixed-platforms
+```
+
+将 `YOUR_HANDLE` 和 `YOUR_UID` 替换为实际账户。后续 `screen`、续跑和可视化用法与其它平台相同。
+
 ```powershell
 .\.venv\Scripts\python.exe -m account_filter collect --resume data/my-dataset
 ```

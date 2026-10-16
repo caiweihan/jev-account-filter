@@ -1,0 +1,14 @@
+Platform icon sources (retrieved 2026-10-16)
+
+Douyin: official website favicon, converted from ICO to PNG without visual edits.
+https://www.douyin.com/favicon.ico
+
+Kuaishou, YouTube, Bilibili: Simple Icons, CC0-1.0.
+https://github.com/simple-icons/simple-icons
+https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/kuaishou.svg
+https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg
+https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/bilibili.svg
+License text: LICENSE-simple-icons.txt
+
+Brand marks identify their respective platforms. Custom-source symbol is drawn
+for this project. The combined figures inline all assets for offline rendering.

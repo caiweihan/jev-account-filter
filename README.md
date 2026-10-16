@@ -82,23 +82,43 @@ Selecting consistent sources from domain-specific accounts can support UGC datas
 
 ## Supported platforms
 
-<p><img src="docs/assets/supported-platforms.en.svg" alt="Douyin and Kuaishou supported; YouTube and Bilibili planned; custom datasets supported" width="100%"></p>
+<p><img src="docs/assets/supported-platforms.en.svg" alt="Douyin, Kuaishou, YouTube, Bilibili, and custom datasets supported" width="100%"></p>
 
 Collection adapters and category rules are independent. Custom sources only need to follow the [data format](docs/data-format.md); a platform adapter is unnecessary.
 
 ## Method
 
-**Task and evidence.** The collection stage takes a list of video-platform account URLs and collects each account's name and biography, together with the titles, URLs, and thumbnails of videos on its first page, and stores them in the collected dataset. Extraction is restricted to videos by the target creator, excluding image posts and other non-video content. Account positioning and individual works jointly provide evidence; results refer to the collected profile-page snapshot.
+<p><img src="docs/assets/method.en.svg" alt="Method: collect account data → rank video titles → classify accounts with multimodal evidence → analyze results and refine the prompt. A left-side feedback arrow returns from the final step to the second, reusing collected data." width="100%"></p>
 
-Collection and screening are independent steps: `collect` turns `input` into a documented `data` dataset; `screen` turns `data` into `results`, contacting only the selected model API. Custom sources can start directly at the second step.
+Collection and screening run independently: `collect` turns `input` into structured `data`; `screen` produces `results` from `data`, contacting only the selected model API. Custom sources following the [data format](docs/data-format.md) can start at the second box. Two sequential model calls select candidates and classify accounts. Reuse the same collected dataset after revising the prompt, compare experiments, and pass accepted accounts to downstream video collection and quality review.
 
-**Title-based candidate selection.** The first pass sends only the titles of all first-page videos to the model. Videos are ranked by their estimated relevance to the target category, and the top **N** candidates are selected. The default is **N = 5**, adjustable by task. This pass excludes the account name, biography, and thumbnails so that candidates are initially judged on their own titles, while concentrating second-pass image inputs on the most promising works.
+## Visual analysis
 
-**Multimodal account classification.** The second pass combines candidate titles and their corresponding thumbnails with the account name and biography, using complementary semantic and visual evidence to assess the account's focus. Within one request, the model independently answers questions about the account category, account probability, and each candidate video's relevance. The model selects the account category directly; no individual video's score or fixed threshold replaces that judgment. Video relevance probabilities express the strength of evidence for individual candidates. The two passes require separate model calls because the second depends on candidate selection in the first.
+Screening produces more than an account list. The interactive analysis page brings together class composition, classification performance, score distributions, and feature clusters. Select a group in a chart to inspect individual accounts, candidate titles, thumbnails, and model scores. Adding a second-review CSV automatically updates the evaluation reference and enables a comparison of human annotation errors and model errors.
 
-**Dataset reuse and reviewable results.** Collected evidence is saved separately from each experiment's configuration, requests, and model responses. Complete local datasets allow new experiments without revisiting the platform. A CSV summarizes account judgments, probabilities, and video links, while an HTML report provides distributions, conditional filters, and thumbnail details. Researchers can trace disagreements, revise screening criteria, and pass accepted accounts to downstream video collection and quality review.
+The statistical views below come from the complete experiment on **2,140 Douyin accounts**; account-level evidence uses the explicitly published demo subset. The team's full account list and collected works remain private.
 
-Opening [`analysis.html`](analysis.html) first displays six real public examples. Select a CSV and optional external data folders. Reuse the same page for different experiments without starting a server or regenerating reports.
+**Dataset composition and performance.** Class proportions describe the sample, while the reviewed comparison separates model errors from original annotation errors. Accuracy is a conditional estimate: the 198 original disagreements use second-review labels, and the remaining 1,942 agreements retain their original labels, assumed correct without independent review.
+
+<p><img src="docs/assets/visualization/overview.en.png" alt="Class composition and performance across 2,140 accounts: conditional human accuracy of 94.02% and model accuracy of 96.64%." width="100%"></p>
+
+**Errors and score distributions.** The confusion matrix separates missed accounts from false inclusions. Normalized histograms compare account probabilities for human-error and model-error samples, helping identify score ranges that warrant closer review. The two error groups can overlap.
+
+<p><img src="docs/assets/visualization/distributions.en.png" alt="Confusion matrix against the reviewed reference, and account-probability distributions for human and model errors." width="100%"></p>
+
+**Clusters of model outputs.** The predicted category and five candidate-video scores describe groups with different evidence profiles. The scatter plot shows a PCA projection; group panels report mean video scores and within-group error rates. Accounts missing any of the five scores are excluded without zero imputation. Clustering describes the results without changing the classification rules.
+
+<p><img src="docs/assets/visualization/clusters.en.png" alt="Five clusters of 1,957 accounts with complete features, alongside mean video scores and error rates for each group." width="100%"></p>
+
+**Human annotation and model error profiles.** Compare within-group error rates by reference category, feature cluster, or highest video score. The two grouping views below show that the model does not outperform humans in every score range; differences in intermediate-score groups can help prioritize further review. The same conditional evaluation reference applies.
+
+<p><img src="docs/assets/visualization/error-features.en.png" alt="Full-experiment human and model error profiles, grouped by reference category and highest video score." width="100%"></p>
+
+**Account evaluation and supporting evidence.** Original annotations, second reviews, current reference labels, and model predictions are shown side by side to distinguish annotation errors from model errors. This partial view shows three explicitly published accounts and one account's five candidate titles, thumbnails, and scores. The interactive page supports filtering and opening other records.
+
+<p><img src="docs/assets/visualization/account-evidence.en.png" alt="Evaluation results for three public demo accounts, plus five candidate thumbnails, video titles, and model scores for Tianya Sign Language." width="100%"></p>
+
+Opening [`analysis.html`](analysis.html) first displays **six real public examples**. Select your own result CSV and optional external data folders to analyze different experiments in the same page, without starting a server or regenerating reports. Statistical figures above use the full experiment; the account screenshot and default interactive demo use the public subset.
 
 ## Getting started
 

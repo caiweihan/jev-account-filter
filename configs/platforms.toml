@@ -1,5 +1,5 @@
 # Available collectors. A platform adapter must exist before it can be enabled.
-# 中文：目前只有快手、抖音可用；新增平台需实现 platforms/ 下的采集适配。
+# 中文：每个平台的 URL 路由对应 platforms/ 下的独立采集适配。
 [kuaishou]
 name = "快手"
 hosts = ["www.kuaishou.com", "kuaishou.com"]
@@ -9,3 +9,16 @@ profile_path = "profile"
 name = "抖音"
 hosts = ["www.douyin.com", "douyin.com"]
 profile_path = "user"
+
+[youtube]
+name = "YouTube"
+hosts = ["www.youtube.com", "youtube.com"]
+profile_patterns = ['/(?P<id>@[^\s/\\:*?"<>|]+)(?:/videos)?/?', '/channel/(?P<id>UC[A-Za-z0-9_-]+)(?:/videos)?/?']
+example_url = "https://www.youtube.com/@handle/videos"
+
+[bilibili]
+name = "哔哩哔哩"
+hosts = ["space.bilibili.com"]
+cookie_domains = ["bilibili.com"]
+profile_patterns = ['/(?P<id>[0-9]+)(?:/(?:upload/video|video))?/?']
+example_url = "https://space.bilibili.com/<uid>/upload/video"

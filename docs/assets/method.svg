@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="756" viewBox="0 0 1100 756" role="img" aria-labelledby="title description">
+  <title id="title">从账户采集到 Prompt 迭代</title>
+  <desc id="description">四个纵向圆角框依次表示采集数据、标题初筛、多模态判别、分析并调整 Prompt。最后一步的箭头从左侧返回第二步，复用采集数据重新筛选。</desc>
+  <defs>
+    <marker id="down" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 8 5 1 9" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="back" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2 2 10 6 2 10" fill="none" stroke="#b76c18" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
+    <path d="M160 660 H78 Q58 660 58 640 V304 Q58 284 78 284 H156" fill="none" stroke="#b76c18" stroke-width="2.8" marker-end="url(#back)"/>
+    <text x="32" y="472" text-anchor="middle" transform="rotate(-90 32 472)" font-size="18" font-weight="600" fill="#b76c18">复用采集数据 · 迭代 Prompt</text>
+    <g>
+      <rect x="160" y="24" width="910" height="144" rx="18" fill="#f0f5ff" stroke="#c9d8fb" stroke-width="1.5"/>
+      <rect x="184" y="45" width="40" height="34" rx="10" fill="#345bd3"/>
+      <text x="204" y="69" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">01</text>
+      <text x="240" y="70" font-size="26" font-weight="700" fill="#345bd3">采集账户数据</text>
+      <text x="184" y="110" font-size="21" font-weight="600" fill="#20334e">账户链接清单 → 账户名称、简介与第一页视频 → 正式数据集</text>
+      <text x="184" y="143" font-size="19" fill="#5c6c82">仅采集目标作者的视频，排除图文；保存标题、链接和封面。</text>
+    </g>
+    <path d="M615 177 V204" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="212" width="910" height="144" rx="18" fill="#f5f1ff" stroke="#dacdf4" stroke-width="1.5"/>
+      <rect x="184" y="233" width="40" height="34" rx="10" fill="#7250b8"/>
+      <text x="204" y="257" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">02</text>
+      <text x="240" y="258" font-size="26" font-weight="700" fill="#7250b8">第一轮：基于标题选择候选</text>
+      <text x="184" y="298" font-size="21" font-weight="600" fill="#20334e">第一页全部视频标题 → 相关性排序 → Top N 候选</text>
+      <text x="184" y="331" font-size="19" fill="#5c6c82">只看视频标题，不输入账户名称、简介或封面；默认 N = 5，可调整。</text>
+    </g>
+    <path d="M615 365 V392" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="400" width="910" height="144" rx="18" fill="#eef9f6" stroke="#bee6dd" stroke-width="1.5"/>
+      <rect x="184" y="421" width="40" height="34" rx="10" fill="#118579"/>
+      <text x="204" y="445" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">03</text>
+      <text x="240" y="446" font-size="26" font-weight="700" fill="#118579">第二轮：多模态账户判别</text>
+      <text x="184" y="486" font-size="21" font-weight="600" fill="#20334e">账户名称与简介 + 候选标题与封面 → 账户类别、概率与视频分数</text>
+      <text x="184" y="519" font-size="19" fill="#5c6c82">账户是否属于目标类别由模型独立判断，不以视频分数阈值替代。</text>
+    </g>
+    <path d="M615 553 V580" fill="none" stroke="#94a3b8" stroke-width="2.4" stroke-linecap="round" marker-end="url(#down)"/>
+    <g>
+      <rect x="160" y="588" width="910" height="144" rx="18" fill="#fff7ed" stroke="#f1d8b8" stroke-width="1.5"/>
+      <rect x="184" y="609" width="40" height="34" rx="10" fill="#b76c18"/>
+      <text x="204" y="633" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">04</text>
+      <text x="240" y="634" font-size="26" font-weight="700" fill="#b76c18">分析筛选结果，并调整 Prompt</text>
+      <text x="184" y="674" font-size="21" font-weight="600" fill="#20334e">分布与聚类 → 定位差异、核验证据 → 调整 Prompt</text>
+      <text x="184" y="707" font-size="19" fill="#5c6c82">返回第二步重新筛选；直接复用本地数据，无需再次访问视频平台。</text>
+    </g>
+  </g>
+</svg>
