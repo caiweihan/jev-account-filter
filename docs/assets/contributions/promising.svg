@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
-  <title id="title">Promising: 无需微调，还有更大的提升空间</title>
-  <desc id="description">项目未微调模型，在 GPT-6 Luna Decisions 于 2026-10-06 发布约一周内开始构建与验证。 这是决策模型用于领域数据集采集的早期探索。随着模型视觉理解与决策能力提升，同一套流程有望获得更好的筛选质量，并扩展到更多研究领域与视频平台。</desc>
+  <title id="title">Promising: 早期探索，仍有更大的提升空间</title>
+  <desc id="description">项目在 GPT-6 Luna Decisions 发布约一周后启动， 探索决策模型用于领域数据集采集的可能。 随着模型视觉理解与决策能力提升， 同一套流程有望获得更好的筛选质量， 并扩展到更多研究领域与视频平台。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -12,17 +12,13 @@
       <g class="copy">
         <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#16748c" stroke="none" />
         <text x="57" y="65" font-size="38" fill="#16748c" font-weight="700">Promising</text>
-        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">无需微调，还有更大的提升空间</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">项目未微调模型，在 GPT-6 Luna Decisions 于 2026-10-06 发布约</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">一周内开始构建与验证。 这是决策模型用于领域数据集采集的早</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">期探索。随着模型视觉理解与决策能力提升，同一套流程有望获得更</text>
-        <text x="38" y="260" font-size="25" fill="#43516a">好的筛选质量，并扩展到更多研究领域与视频平台。</text>
-      </g>
+        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">早期探索，仍有更大的提升空间</text>
+        <text x="38" y="155" font-size="24" fill="#43516a">项目在 GPT-6 Luna Decisions 发布约一周后启动，</text><text x="38" y="190" font-size="24" fill="#43516a">探索决策模型用于领域数据集采集的可能。</text><text x="38" y="225" font-size="24" fill="#43516a">随着模型视觉理解与决策能力提升，</text><text x="38" y="260" font-size="24" fill="#43516a">同一套流程有望获得更好的筛选质量，</text><text x="38" y="295" font-size="24" fill="#43516a">并扩展到更多研究领域与视频平台。</text></g>
       <text x="1396" y="32" font-size="17" fill="#16748c" opacity=".55" font-weight="600" text-anchor="end">05</text>
       <path d="M843 43V362" fill="none" stroke="#c8e4ef" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
       <g class="artwork" transform="translate(876,62.5)">
         <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#c8e4ef" fill-opacity=".76" />
-        <text x="25" y="31" font-size="19" fill="#16748c" font-weight="600">无需微调，探索下一步可能</text>
+        <text x="25" y="31" font-size="19" fill="#16748c" font-weight="600">早期探索，期待更多可能</text>
         <path d="M116 122H217" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
         <path d="M292 122H390" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 7" />
         <circle cx="82" cy="122" r="34" fill="#c8e4ef" />

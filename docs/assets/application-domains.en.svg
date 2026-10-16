@@ -1,48 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="370" viewBox="0 0 1520 370" role="img" aria-labelledby="title description">
-  <title id="title">Application domains</title>
-  <desc id="description">Five horizontal rounded cards, each with an emoji: sign language (OpenASL, YouTube-ASL, YouTube-SL-25), instrument performance (PIAST), makeup tutorials (YouMakeup), dance, and fitness training.</desc>
-  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
-    <rect x="10" y="10" width="284" height="350" rx="22" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
-    <text x="152" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">🤟</text>
-    <text x="152" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#2563eb">Sign language</text>
-    <text x="152" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#2563eb">VALIDATED APPLICATION</text>
-    <text x="152" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">OpenASL</text>
-    <text x="152" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">YouTube-ASL</text>
-    <text x="152" y="282" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">YouTube-SL-25</text>
-    <path d="M34 309h236" stroke="#bfdbfe"/>
-    <text x="152" y="339" text-anchor="middle" font-size="18" fill="#475569">Recognition · Translation</text>
-    <rect x="314" y="10" width="284" height="350" rx="22" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="2"/>
-    <text x="456" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">🎹</text>
-    <text x="456" y="112" text-anchor="middle" font-size="26" font-weight="700" fill="#7c3aed">Instrument</text>
-    <text x="456" y="140" text-anchor="middle" font-size="26" font-weight="700" fill="#7c3aed">performance</text>
-    <text x="456" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#7c3aed">POTENTIAL EXTENSION</text>
-    <text x="456" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">PIAST</text>
-    <text x="456" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">23 selected piano channels</text>
-    <path d="M338 309h236" stroke="#ddd6fe"/>
-    <text x="456" y="339" text-anchor="middle" font-size="18" fill="#475569">Audio · MIDI · Text</text>
-    <rect x="618" y="10" width="284" height="350" rx="22" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="2"/>
-    <text x="760" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💄</text>
-    <text x="760" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#db2777">Makeup tutorials</text>
-    <text x="760" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#db2777">POTENTIAL EXTENSION</text>
-    <text x="760" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">YouMakeup</text>
-    <text x="760" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">Brand and creator channels</text>
-    <path d="M642 309h236" stroke="#fbcfe8"/>
-    <text x="760" y="339" text-anchor="middle" font-size="18" fill="#475569">Fine actions · Procedures</text>
-    <rect x="922" y="10" width="284" height="350" rx="22" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
-    <text x="1064" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💃</text>
-    <text x="1064" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#c2410c">Dance</text>
-    <text x="1064" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#c2410c">POTENTIAL EXTENSION</text>
-    <text x="1064" y="216" text-anchor="middle" font-size="20" font-weight="600" fill="#24324b">Dance generation</text>
-    <text x="1064" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">Multi-person tracking</text>
-    <path d="M946 309h236" stroke="#fed7aa"/>
-    <text x="1064" y="339" text-anchor="middle" font-size="18" fill="#475569">Genres · Choreography</text>
-    <rect x="1226" y="10" width="284" height="350" rx="22" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="2"/>
-    <text x="1368" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💪</text>
-    <text x="1368" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#047857">Fitness training</text>
-    <text x="1368" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#047857">POTENTIAL EXTENSION</text>
-    <text x="1368" y="216" text-anchor="middle" font-size="20" font-weight="600" fill="#24324b">Exercise understanding</text>
-    <text x="1368" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">Action quality assessment</text>
-    <path d="M1250 309h236" stroke="#a7f3d0"/>
-    <text x="1368" y="339" text-anchor="middle" font-size="18" fill="#475569">Posture · Technique</text>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="1251" viewBox="0 0 1520 1251" role="img" aria-labelledby="title description"><title id="title">Application domains</title><desc id="description">2×2 rounded cards: sign language and news research in the first row; instrument performance and makeup tutorials in the second. Examples support training dataset construction and research.</desc><g font-family="Microsoft YaHei, Segoe UI, sans-serif">
+<g class="domain-card" data-domain="sign" transform="translate(16 16)">
+<rect width="732" height="731" rx="24" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">🤟</text>
+<text x="94" y="60" font-size="29" fill="#2563eb" font-weight="700">Sign language</text>
+<text x="32" y="101" font-size="20" fill="#2563eb" font-weight="600">Major datasets · Validated application</text>
+<a href="https://aclanthology.org/2022.emnlp-main.427.pdf#page=3">
+<text x="32" y="142" font-size="24" fill="#2563eb" font-weight="700">OpenASL</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">Sign-language videos were collected from three manually</text>
+<text x="32" y="210" font-size="22" fill="#475569">selected YouTube channels.</text>
+<a href="https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4">
+<text x="32" y="266" font-size="24" fill="#2563eb" font-weight="700">YouTube-ASL</text>
+</a>
+<text x="32" y="304" font-size="22" fill="#475569">Human annotators reviewed candidate videos and could</text>
+<text x="32" y="334" font-size="22" fill="#475569">apply a label to the entire channel.</text>
+<a href="https://arxiv.org/html/2407.11144#S2.SS2">
+<text x="32" y="390" font-size="24" fill="#2563eb" font-weight="700">YouTube-SL-25</text>
+</a>
+<text x="32" y="428" font-size="22" fill="#475569">The author randomly sampled videos from each channel</text>
+<text x="32" y="458" font-size="22" fill="#475569">before accepting, rejecting, or investigating it.</text>
+</g>
+<g class="domain-card" data-domain="news" transform="translate(772 16)">
+<rect width="732" height="731" rx="24" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">📰</text>
+<text x="94" y="60" font-size="29" fill="#b45309" font-weight="700">News &amp; communication research</text>
+<text x="32" y="101" font-size="20" fill="#b45309" font-weight="600">Channel selection also supports sampling and analysis</text>
+<a href="https://www.pewresearch.org/journalism/2020/09/28/youtube-news-methodology/">
+<text x="32" y="142" font-size="24" fill="#b45309" font-weight="700">Pew · YouTube news study (2020)</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">Humans examined 17,797 channels and retained 377</text>
+<text x="32" y="210" font-size="22" fill="#475569">news/current-affairs channels, using titles and thumbnails of</text>
+<text x="32" y="240" font-size="22" fill="#475569">the latest 15 videos.</text>
+<text x="32" y="276" font-size="21" fill="#b45309">For channel characteristics, content, and communication</text>
+<a href="https://ojs.aaai.org/index.php/ICWSM/article/download/18105/17908/21600#page=4">
+<text x="32" y="331" font-size="24" fill="#b45309" font-weight="700">Cross-Partisan Discussions · ICWSM 2021</text>
+</a>
+<text x="32" y="369" font-size="22" fill="#475569">The first author reviewed 10 random videos per channel,</text>
+<text x="32" y="399" font-size="22" fill="#475569">removing inactive or non-US-news/politics channels. The final</text>
+<text x="32" y="429" font-size="22" fill="#475569">dataset has 973 channels, not the initial screening pool.</text>
+<text x="32" y="465" font-size="21" fill="#b45309">For cross-partisan commenting and audience overlap</text>
+<a href="https://www.pewresearch.org/journalism/2024/11/18/news-influencers-methodology/">
+<text x="32" y="520" font-size="24" fill="#b45309" font-weight="700">Pew · America’s News Influencers (2024)</text>
+</a>
+<text x="32" y="558" font-size="22" fill="#475569">After keyword, follower-count, and organization-name filters,</text>
+<text x="32" y="588" font-size="22" fill="#475569">all remaining 3,576 YouTube accounts were manually</text>
+<text x="32" y="618" font-size="22" fill="#475569">reviewed.</text>
+<text x="32" y="654" font-size="21" fill="#b45309">For news creators, content production, and communication</text>
+</g>
+<g class="domain-card" data-domain="music" transform="translate(16 771)">
+<rect width="732" height="464" rx="24" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">🎹</text>
+<text x="94" y="60" font-size="29" fill="#7c3aed" font-weight="700">Instrument performance</text>
+<text x="32" y="101" font-size="20" fill="#7c3aed" font-weight="600">Major dataset · Potential extension</text>
+<a href="https://arxiv.org/html/2411.02551v2#S2.SS2">
+<text x="32" y="142" font-size="24" fill="#7c3aed" font-weight="700">PIAST</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">Piano performances were collected from 23 selected channels</text>
+<text x="32" y="210" font-size="22" fill="#475569">known for piano content.</text>
+<text x="32" y="274" font-size="23" fill="#475569">Selecting consistent performance channels provides a</text>
+<text x="32" y="306" font-size="23" fill="#475569">starting point for music dataset construction.</text>
+<text x="32" y="362" font-size="23" fill="#475569">After preprocessing, PIAST mainly provides audio,</text>
+<text x="32" y="394" font-size="23" fill="#475569">transcribed MIDI, and text.</text>
+</g>
+<g class="domain-card" data-domain="makeup" transform="translate(772 771)">
+<rect width="732" height="464" rx="24" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">💄</text>
+<text x="94" y="60" font-size="29" fill="#db2777" font-weight="700">Makeup tutorials</text>
+<text x="32" y="101" font-size="20" fill="#db2777" font-weight="600">Major dataset · Potential extension</text>
+<a href="https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4">
+<text x="32" y="142" font-size="24" fill="#db2777" font-weight="700">YouMakeup</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">Researchers first compiled brands and beauty bloggers, then</text>
+<text x="32" y="210" font-size="22" fill="#475569">found their official channels and collected tutorials.</text>
+<text x="32" y="274" font-size="23" fill="#475569">Channel screening narrows a broad creator community to</text>
+<text x="32" y="306" font-size="23" fill="#475569">relevant instructional sources.</text>
+<text x="32" y="362" font-size="23" fill="#475569">Jev Account Filter can select accounts by tutorial content</text>
+<text x="32" y="394" font-size="23" fill="#475569">and creator focus.</text>
+</g>
+</g></svg>

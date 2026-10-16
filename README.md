@@ -20,40 +20,17 @@ A common collection pipeline first identifies relevant accounts, then uses video
 
 An account's profile page already provides useful previews: titles describe video topics, thumbnails supply visual cues, and the account name and biography describe the creator's focus. These signals offer a basis for inexpensive source selection. Meanwhile, decision models can turn supplied evidence directly into category choices and relevance probabilities, answering several independent questions in a single request. This makes them suitable for large-scale, repeatable screening.
 
-**To the best of our knowledge, Jev Account Filter is the first project to screen video-platform accounts for domain dataset collection using only video titles and thumbnails as content evidence, without downloading or watching full videos.** It first selects candidates by title, then combines their thumbnails with account metadata to judge the account's category independently, turning a large pool of accounts into a reviewable list of collection sources. Collected evidence and screening rules are stored separately, allowing researchers to revise criteria, replace models, and compare results using the same collected data. Accounts include both creator profiles and channels on video platforms. Sign-language screening is one validated application; other domains can be selected through category configurations.
+**To the best of our knowledge, Jev Account Filter is the first project to screen video-platform accounts without downloading or watching full videos.** It first selects candidates by title, then combines their thumbnails with account metadata to judge the account's category independently, turning a large pool of accounts into a reviewable list of collection sources. Collected evidence and screening rules are stored separately, allowing researchers to revise criteria, replace models, and compare results using the same collected data. Accounts include both creator profiles and channels on video platforms. Sign-language screening is one validated application; other domains can be selected through category configurations.
 
-### Contributions and advantages
+### Advantages
 
-We validated this workflow on **2,140 Douyin accounts** using the sign-language category configuration and the off-the-shelf **GPT-6 Luna Decisions** model, without fine-tuning.
+We used **GPT-6 Luna Decisions** to evaluate sign-language account screening on **2,140 Douyin accounts**.
 
 <p><img src="docs/assets/contributions/fast.en.svg" alt="Fast: 2,140 accounts, 1,500 human person-hours versus 11 model hours, a 136.36-fold speedup; multiple questions answered in parallel." width="100%"></p>
 
-<details>
-<summary>Time comparison</summary>
-
-The team reports **1,500 person-hours** of human screening effort and **11 hours** of model screening time, giving `1500 / 11 ≈ 136.36`. Person-hours measure total human effort; parallel human work would have a different elapsed duration.
-
-</details>
-
-<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap: both models have a Standard input rate of $0.10 per million tokens; gpt-6-luna output costs $0.50 per million tokens, while gpt-6-luna-decisions has no output charge." width="100%"></p>
-
-<details>
-<summary>Pricing comparison and sources</summary>
-
-Prices are official Standard rates as of **October 16, 2026**, from the [GPT-6 Luna model documentation](https://developers.openai.com/api/docs/models/gpt-6-luna) and the [Decisions API documentation](https://developers.openai.com/api/docs/guides/decisions); long-context and regional-processing premiums apply. The chart's `gpt-6-luna-decisions` denotes the decision model called through the official API as `gpt-6-luna`. Input and output bars compare per-token rates separately, rather than total experiment costs.
-
-</details>
+<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap: low-cost decisions, title-first ranking and a small set of thumbnails; shared evidence across questions and reusable collected data." width="100%"></p>
 
 <p><img src="docs/assets/contributions/accurate.en.svg" alt="Accurate: conditional full-set accuracy estimates of 94.02% for human labels and 96.64% for model predictions; the vertical axis spans 90% to 100%." width="100%"></p>
-
-<details>
-<summary>Second-review results and accuracy definitions</summary>
-
-All **198 accounts** on which the model and original human annotations disagreed underwent a second human review, whose labels serve as the reference. The remaining **1,942 accounts**, where the model and original annotations agree, are assumed to have correct original labels. Under this conditional full-set estimate, the original human annotations are correct on **2012 / 2140** accounts, with **128 errors** and **94.02%** accuracy. The model is correct on **2068 / 2140** accounts, with **72 errors** and **96.64%** accuracy.
-
-These figures compare both sources against the second-review reference. Because matching accounts were not independently re-reviewed, they are not independently verified full-set accuracies.
-
-</details>
 
 <p><img src="docs/assets/contributions/flexible.en.svg" alt="Flexible — illustrated contribution" width="100%"></p>
 
@@ -61,24 +38,13 @@ These figures compare both sources against the second-review reference. Because 
 
 ## Application domains
 
-Selecting consistent sources from domain-specific accounts can support UGC dataset collection across multiple fields. Sign language is the application validated in this project; the other domains are potential extensions. Dataset names below are limited to papers that describe selected channel sources or human review at channel level. Expand the evidence notes for the original wording.
+**Jev Account Filter can support both model-training dataset construction and sample selection and analysis for research, including news and communication studies.** The examples below include major datasets and representative studies whose papers and methods document human channel screening or curation of channel sources. The project could replace the manual channel-screening stage in these workflows. Sign language is the validated application; other domains can be explored through new category configurations.
 
-<p><img src="docs/assets/application-domains.en.svg" alt="Five horizontal rounded cards, each with an emoji: sign language (OpenASL, YouTube-ASL, YouTube-SL-25), instrument performance (PIAST), makeup tutorials (YouMakeup), dance, and fitness training." width="100%"></p>
+<p><img src="docs/assets/application-domains.en.svg" alt="A 2×2 grid: sign language and news and communication research in the first row; instrument performance and makeup tutorials in the second. Each card describes channel selection for relevant datasets or studies." width="100%"></p>
 
-<details>
-<summary>Paper evidence: channel sources and human screening</summary>
+Dataset papers: [OpenASL · §3](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · [YouTube-ASL · §2.1, §3.2](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · [YouTube-SL-25 · §2.2](https://arxiv.org/html/2407.11144#S2.SS2) · [PIAST · §2.2](https://arxiv.org/html/2411.02551v2#S2.SS2) · [YouMakeup · §3.1](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4).
 
-**[OpenASL](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · §3.** The authors chose three YouTube sources. The text refers to “in these two channels” before describing the third source. YouTube-ASL [§2.1](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=2) characterizes the OpenASL approach as “manual channel curation”.
-
-**[YouTube-ASL](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · §3.2.** Candidates were retrieved using automatic tags. Human annotators could apply a judgment to a whole channel: “labels held for an entire channel of videos”. Its human component therefore includes channel-level review.
-
-**[YouTube-SL-25](https://arxiv.org/html/2407.11144#S2.SS2) · §2.2.** The author sampled videos per channel before accepting, rejecting, or investigating that channel: “For each channel, the author sampled several random videos”.
-
-**[PIAST](https://arxiv.org/html/2411.02551v2#S2.SS2) · §2.2.** The authors combined tag-based retrieval with “23 selected channels known for their piano content”. The paper describes researcher-selected sources without detailing each channel-screening decision. After preprocessing, the dataset primarily provides audio, transcribed MIDI, and text.
-
-**[YouMakeup](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4) · §3.1.** The authors compiled a list of cosmetic brands and beauty bloggers before collecting tutorials from their official channels: “we search their official channels on the YouTube”. This places source selection before collecting individual works.
-
-</details>
+Study methods: [Pew: YouTube news study (2020)](https://www.pewresearch.org/journalism/2020/09/28/youtube-news-methodology/) · [Cross-Partisan Discussions on YouTube: Conservatives Talk to Liberals but Liberals Don't Talk to Conservatives · §3.2–3.3 (ICWSM 2021)](https://ojs.aaai.org/index.php/ICWSM/article/download/18105/17908/21600#page=4) · [Pew: America’s News Influencers (2024) · YouTube subsection](https://www.pewresearch.org/journalism/2024/11/18/news-influencers-methodology/).
 
 ## Supported platforms
 
@@ -88,9 +54,7 @@ Collection adapters and category rules are independent. Custom sources only need
 
 ## Method
 
-<p><img src="docs/assets/method.en.svg" alt="Method: collect account data → rank video titles → classify accounts with multimodal evidence → analyze results and refine the prompt. A left-side feedback arrow returns from the final step to the second, reusing collected data." width="100%"></p>
-
-Collection and screening run independently: `collect` turns `input` into structured `data`; `screen` produces `results` from `data`, contacting only the selected model API. Custom sources following the [data format](docs/data-format.md) can start at the second box. Two sequential model calls select candidates and classify accounts. Reuse the same collected dataset after revising the prompt, compare experiments, and pass accepted accounts to downstream video collection and quality review.
+<p><img src="docs/assets/method.en.svg" alt="Method: numbered boxes with headings and pictograms on the left, explanations on the right. Collect accounts → rank titles → classify accounts → analyze and refine. A feedback arrow returns from the last step to the second, reusing collected data." width="100%"></p>
 
 ## Visual analysis
 

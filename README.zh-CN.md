@@ -20,40 +20,17 @@
 
 账户主页本身已经提供了丰富的预览信息：标题表达作品主题，封面呈现视觉线索，名称和简介补充创作者定位。这些信息为低成本的来源判断提供了可能。与此同时，决策模型能够把给定证据直接转换为类别选择和相关性概率，并在同一请求中回答多个独立问题，适合大规模、可重复的筛选任务。
 
-**据我们所知，Jev Account Filter 是首个仅以视频标题和封面作为作品证据、为领域数据集采集筛选视频平台账户的项目，无需下载或逐个观看完整视频。** 项目先根据标题选择候选，再结合候选封面与账户资料独立判断账户类别，将大量备选账户转化为可采集、可复核的来源清单。采集资料与筛选规则分别保存，研究者可以在同一份采集数据上反复调整判据、替换模型并比较结果。这里的账户包括视频平台的创作者账号与频道；手语筛选是已经验证的一项应用，其他领域可通过类别配置接入。
+**据我们所知，Jev Account Filter 是首个筛选视频平台账户的项目，无需下载或逐个观看完整视频。** 项目先根据标题选择候选，再结合候选封面与账户资料独立判断账户类别，将大量备选账户转化为可采集、可复核的来源清单。采集资料与筛选规则分别保存，研究者可以在同一份采集数据上反复调整判据、替换模型并比较结果。这里的账户包括视频平台的创作者账号与频道；手语筛选是已经验证的一项应用，其他领域可通过类别配置接入。
 
-### 贡献与优势
+### 优点
 
-我们使用手语类别配置，在 **2140 个抖音账户**上验证了这套流程，直接使用现成的 **GPT-6 Luna Decisions**，未进行模型微调。
+我们使用 **GPT-6 Luna Decisions** 在 **2140 个抖音账户**上验证了手语账户筛选效果。
 
 <p><img src="docs/assets/contributions/fast.svg" alt="Fast：2140 个账户，人工 1500 人时，模型 11 小时，加速 136.36 倍；单请求并行回答多个问题。" width="100%"></p>
 
-<details>
-<summary>耗时比较口径</summary>
-
-团队提供的人工筛选总工时为 **1500 人时**，模型筛选耗时为 **11 小时**，二者比值为 `1500 / 11 ≈ 136.36`。人工工时是投入的总劳动时间，人工并行作业时的日历耗时会不同。
-
-</details>
-
-<p><img src="docs/assets/contributions/cheap.svg" alt="Cheap：标准输入单价均为每百万 tokens 0.10 美元；gpt-6-luna 输出单价 0.50 美元，gpt-6-luna-decisions 输出免费。" width="100%"></p>
-
-<details>
-<summary>价格比较口径与来源</summary>
-
-价格比较采用截至 **2026-10-16** 的官方标准单价，分别依据 [GPT-6 Luna 模型文档](https://developers.openai.com/api/docs/models/gpt-6-luna)和 [Decisions API 文档](https://developers.openai.com/api/docs/guides/decisions)；长上下文与区域处理另有加价。图中的 `gpt-6-luna-decisions` 指决策接口使用的模型，官方接口通过 `gpt-6-luna` 调用；输入与输出两组柱分别比较单位 token 价格，不代表整次实验的总费用。
-
-</details>
+<p><img src="docs/assets/contributions/cheap.svg" alt="Cheap：低成本决策，先用标题筛选，再输入少量候选封面；多个问题共享证据，重复实验复用采集数据。" width="100%"></p>
 
 <p><img src="docs/assets/contributions/accurate.svg" alt="Accurate：全量条件估计中，人工标注准确率 94.02%，模型预测准确率 96.64%；纵轴范围为 90% 至 100%。" width="100%"></p>
-
-<details>
-<summary>二次核验数据与准确率口径</summary>
-
-对原预测与人工标注不一致的全部 **198 个账户**进行二次人工核验，以二次标签为参考；其余 **1942 个**预测与标注一致的条目假定原标注正确。按这一全量条件估计，原人工标注正确 **2012 / 2140**，错误 **128 个**，准确率为 **94.02%**；模型预测正确 **2068 / 2140**，错误 **72 个**，准确率为 **96.64%**。
-
-这些数值比较双方相对于二次核验参考的准确率。由于一致条目未逐一独立复核，不能视为独立验证过的全量准确率。
-
-</details>
 
 <p><img src="docs/assets/contributions/flexible.svg" alt="Flexible — 图文贡献卡片" width="100%"></p>
 
@@ -61,24 +38,13 @@
 
 ## 应用领域
 
-从领域账户中选择稳定的数据来源，可以服务于多种 UGC 数据集采集任务。手语是本项目已验证的应用，其他领域是可拓展方向。下方仅列出论文明确描述了选定频道来源或频道级人工审核的数据集，展开可查看原文依据。
+**Jev Account Filter 既可用于构建模型训练集，也可为新闻传播等研究提供样本筛选与分析支持。** 下方列举了多个领域的重要数据集和代表性研究，它们的论文和方法记录了人工筛选频道或整理频道来源的过程。本项目未来可替代其中的人工频道筛选环节。手语是已验证的应用，其他领域可通过新的类别配置拓展。
 
-<p><img src="docs/assets/application-domains.svg" alt="五个横向圆角卡片：手语（OpenASL、YouTube-ASL、YouTube-SL-25）、乐器演奏（PIAST）、美妆教学（YouMakeup）、舞蹈、健身训练；每个领域均配一个 emoji。" width="100%"></p>
+<p><img src="docs/assets/application-domains.svg" alt="2×2 应用领域卡片：第一行是手语与新闻传播研究，第二行是乐器演奏与美妆教学；各卡片介绍相关数据集或研究的频道选择过程。" width="100%"></p>
 
-<details>
-<summary>论文原文：频道来源与人工筛选依据</summary>
+数据集原文：[OpenASL · §3](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · [YouTube-ASL · §2.1、§3.2](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · [YouTube-SL-25 · §2.2](https://arxiv.org/html/2407.11144#S2.SS2) · [PIAST · §2.2](https://arxiv.org/html/2411.02551v2#S2.SS2) · [YouMakeup · §3.1](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4)。
 
-**[OpenASL](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · §3。** 作者选定三个 YouTube 来源采集手语视频；原文写到 “in these two channels”，随后说明第三个来源。YouTube-ASL 的 [§2.1](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=2) 将 OpenASL 的来源选择归为 “manual channel curation”。
-
-**[YouTube-ASL](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · §3.2。** 候选通过自动标签检索，人工标注者可以把判断应用到整个频道；原文为 “labels held for an entire channel of videos”。这里的人工环节是频道级审核。
-
-**[YouTube-SL-25](https://arxiv.org/html/2407.11144#S2.SS2) · §2.2。** 作者按频道抽查视频，再接受、拒绝或进一步检查该频道；原文为 “For each channel, the author sampled several random videos”。
-
-**[PIAST](https://arxiv.org/html/2411.02551v2#S2.SS2) · §2.2。** 作者结合标签检索与选定频道采集，原文明确为 “23 selected channels known for their piano content”。论文描述的是研究者选定来源，未展开逐频道筛查细节；预处理后主要提供音频、转录 MIDI 和文本。
-
-**[YouMakeup](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4) · §3.1。** 作者先整理知名美妆品牌和博主名单，再搜索其官方频道采集教学视频；原文为 “we search their official channels on the YouTube”。这体现了先选定账户来源、再采集作品的过程。
-
-</details>
+研究方法原文：[Pew：YouTube 新闻研究（2020）](https://www.pewresearch.org/journalism/2020/09/28/youtube-news-methodology/) · [Cross-Partisan Discussions on YouTube: Conservatives Talk to Liberals but Liberals Don't Talk to Conservatives · §3.2–3.3（ICWSM 2021）](https://ojs.aaai.org/index.php/ICWSM/article/download/18105/17908/21600#page=4) · [Pew：America’s News Influencers（2024）· YouTube 小节](https://www.pewresearch.org/journalism/2024/11/18/news-influencers-methodology/)。
 
 ## 支持平台
 
@@ -88,9 +54,7 @@
 
 ## 方法
 
-<p><img src="docs/assets/method.svg" alt="方法流程：采集账户数据 → 标题初筛 → 多模态账户判别 → 分析结果并调整 Prompt；左侧回箭头从最后一步连接第二步，复用采集数据重新筛选。" width="100%"></p>
-
-采集与筛选独立运行：`collect` 将 `input` 转换为正式 `data`，`screen` 从 `data` 生成 `results`，只访问所选模型 API。符合[数据格式](docs/data-format.zh-CN.md)的自定义来源可直接从第二个框开始。两轮模型调用依次完成候选选择和账户判别；调整 Prompt 后复用同一份采集数据，比较各轮结果，再将接受的账户交给后续视频采集与质量审核。
+<p><img src="docs/assets/method.svg" alt="方法流程：左侧圆角框用编号、标题和图标表示采集账户、标题初筛、多模态判别、分析与迭代，右侧给出说明；回箭头从最后一步连接第二步，复用采集数据重新筛选。" width="100%"></p>
 
 ## 可视化分析
 

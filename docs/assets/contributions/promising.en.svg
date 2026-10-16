@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
-  <title id="title">Promising: No fine-tuning, with room to improve</title>
-  <desc id="description">No model fine-tuning was used. Development and validation began approximately one week after GPT-6 Luna Decisions was released on October 6, 2026. This is an early exploration of decision models for domain dataset collection. As visual understanding and decision capabilities improve, the same pipeline could deliver better screening and extend to more research domains and video platforms.</desc>
+  <title id="title">Promising: An early exploration with room to grow</title>
+  <desc id="description">Built about a week after GPT-6 Luna Decisions launched, this project explores decision models for domain dataset collection. As visual understanding and decision capabilities improve, the same workflow could deliver better screening across more research domains and video platforms.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -12,20 +12,13 @@
       <g class="copy">
         <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#16748c" stroke="none" />
         <text x="57" y="65" font-size="38" fill="#16748c" font-weight="700">Promising</text>
-        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">No fine-tuning, with room to improve</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">No model fine-tuning was used. Development and validation began</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">approximately one week after GPT-6 Luna Decisions was released on</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">October 6, 2026. This is an early exploration of decision models</text>
-        <text x="38" y="260" font-size="25" fill="#43516a">for domain dataset collection. As visual understanding and decision</text>
-        <text x="38" y="295" font-size="25" fill="#43516a">capabilities improve, the same pipeline could deliver better</text>
-        <text x="38" y="330" font-size="25" fill="#43516a">screening and extend to more research domains and video</text>
-        <text x="38" y="365" font-size="25" fill="#43516a">platforms.</text>
-      </g>
+        <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">An early exploration with room to grow</text>
+        <text x="38" y="155" font-size="24" fill="#43516a">Built about a week after GPT-6 Luna Decisions launched,</text><text x="38" y="190" font-size="24" fill="#43516a">this project explores decision models</text><text x="38" y="225" font-size="24" fill="#43516a">for domain dataset collection.</text><text x="38" y="260" font-size="24" fill="#43516a">As visual understanding and decision capabilities improve,</text><text x="38" y="295" font-size="24" fill="#43516a">the same workflow could deliver better screening</text><text x="38" y="330" font-size="24" fill="#43516a">across more research domains and video platforms.</text></g>
       <text x="1396" y="32" font-size="17" fill="#16748c" opacity=".55" font-weight="600" text-anchor="end">05</text>
       <path d="M843 43V362" fill="none" stroke="#c8e4ef" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
       <g class="artwork" transform="translate(876,62.5)">
         <rect x="0" y="0" width="510" height="280" rx="22" fill="#ffffff" stroke="#c8e4ef" fill-opacity=".76" />
-        <text x="25" y="31" font-size="19" fill="#16748c" font-weight="600">Off-the-shelf today. Room to grow.</text>
+        <text x="25" y="31" font-size="19" fill="#16748c" font-weight="600">Early exploration. Room to grow.</text>
         <path d="M116 122H217" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" />
         <path d="M292 122H390" fill="none" stroke="#16748c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)" stroke-dasharray="6 7" />
         <circle cx="82" cy="122" r="34" fill="#c8e4ef" />

@@ -1,47 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="370" viewBox="0 0 1520 370" role="img" aria-labelledby="title description">
-  <title id="title">应用领域</title>
-  <desc id="description">五个横向圆角卡片：手语（OpenASL、YouTube-ASL、YouTube-SL-25）、乐器演奏（PIAST）、美妆教学（YouMakeup）、舞蹈、健身训练；每个领域均配一个 emoji。</desc>
-  <g font-family="Segoe UI, Microsoft YaHei, sans-serif">
-    <rect x="10" y="10" width="284" height="350" rx="22" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
-    <text x="152" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">🤟</text>
-    <text x="152" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#2563eb">手语</text>
-    <text x="152" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#2563eb">已验证应用</text>
-    <text x="152" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">OpenASL</text>
-    <text x="152" y="249" text-anchor="middle" font-size="24" font-weight="400" fill="#24324b">YouTube-ASL</text>
-    <text x="152" y="282" text-anchor="middle" font-size="24" font-weight="400" fill="#24324b">YouTube-SL-25</text>
-    <path d="M34 309h236" stroke="#bfdbfe"/>
-    <text x="152" y="339" text-anchor="middle" font-size="18" fill="#475569">识别 · 翻译</text>
-    <rect x="314" y="10" width="284" height="350" rx="22" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="2"/>
-    <text x="456" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">🎹</text>
-    <text x="456" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#7c3aed">乐器演奏</text>
-    <text x="456" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#7c3aed">可拓展方向</text>
-    <text x="456" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">PIAST</text>
-    <text x="456" y="249" text-anchor="middle" font-size="20" font-weight="400" fill="#24324b">23 个选定钢琴频道</text>
-    <path d="M338 309h236" stroke="#ddd6fe"/>
-    <text x="456" y="339" text-anchor="middle" font-size="18" fill="#475569">音频 · MIDI · 文本</text>
-    <rect x="618" y="10" width="284" height="350" rx="22" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="2"/>
-    <text x="760" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💄</text>
-    <text x="760" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#db2777">美妆教学</text>
-    <text x="760" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#db2777">可拓展方向</text>
-    <text x="760" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">YouMakeup</text>
-    <text x="760" y="249" text-anchor="middle" font-size="24" font-weight="400" fill="#24324b">品牌与博主频道</text>
-    <path d="M642 309h236" stroke="#fbcfe8"/>
-    <text x="760" y="339" text-anchor="middle" font-size="18" fill="#475569">精细动作 · 步骤理解</text>
-    <rect x="922" y="10" width="284" height="350" rx="22" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
-    <text x="1064" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💃</text>
-    <text x="1064" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#c2410c">舞蹈</text>
-    <text x="1064" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#c2410c">可拓展方向</text>
-    <text x="1064" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">舞蹈生成</text>
-    <text x="1064" y="249" text-anchor="middle" font-size="24" font-weight="400" fill="#24324b">多人跟踪</text>
-    <path d="M946 309h236" stroke="#fed7aa"/>
-    <text x="1064" y="339" text-anchor="middle" font-size="18" fill="#475569">舞种 · 编舞 · 动作</text>
-    <rect x="1226" y="10" width="284" height="350" rx="22" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="2"/>
-    <text x="1368" y="78" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif" font-size="48">💪</text>
-    <text x="1368" y="127" text-anchor="middle" font-size="26" font-weight="700" fill="#047857">健身训练</text>
-    <text x="1368" y="169" text-anchor="middle" font-size="16" font-weight="600" fill="#047857">可拓展方向</text>
-    <text x="1368" y="216" text-anchor="middle" font-size="24" font-weight="600" fill="#24324b">训练动作理解</text>
-    <text x="1368" y="249" text-anchor="middle" font-size="24" font-weight="400" fill="#24324b">动作质量评估</text>
-    <path d="M1250 309h236" stroke="#a7f3d0"/>
-    <text x="1368" y="339" text-anchor="middle" font-size="18" fill="#475569">姿态 · 技巧 · 质量</text>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="1099" viewBox="0 0 1520 1099" role="img" aria-labelledby="title description"><title id="title">应用领域</title><desc id="description">2×2 rounded cards: sign language and news research in the first row; instrument performance and makeup tutorials in the second. Examples support training dataset construction and research.</desc><g font-family="Microsoft YaHei, Segoe UI, sans-serif">
+<g class="domain-card" data-domain="sign" transform="translate(16 16)">
+<rect width="732" height="641" rx="24" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">🤟</text>
+<text x="94" y="60" font-size="29" fill="#2563eb" font-weight="700">手语</text>
+<text x="32" y="101" font-size="20" fill="#2563eb" font-weight="600">重要数据集 · 已验证应用</text>
+<a href="https://aclanthology.org/2022.emnlp-main.427.pdf#page=3">
+<text x="32" y="142" font-size="24" fill="#2563eb" font-weight="700">OpenASL</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">从人工选定的三个 YouTube 频道采集手语视频。</text>
+<a href="https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4">
+<text x="32" y="236" font-size="24" fill="#2563eb" font-weight="700">YouTube-ASL</text>
+</a>
+<text x="32" y="274" font-size="22" fill="#475569">人工审核候选视频，并允许把标签应用于整个频道。</text>
+<a href="https://arxiv.org/html/2407.11144#S2.SS2">
+<text x="32" y="330" font-size="24" fill="#2563eb" font-weight="700">YouTube-SL-25</text>
+</a>
+<text x="32" y="368" font-size="22" fill="#475569">作者随机抽查每个频道的视频，再接受、拒绝或进一步检查频道。</text>
+</g>
+<g class="domain-card" data-domain="news" transform="translate(772 16)">
+<rect width="732" height="641" rx="24" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">📰</text>
+<text x="94" y="60" font-size="29" fill="#b45309" font-weight="700">新闻传播研究</text>
+<text x="32" y="101" font-size="20" fill="#b45309" font-weight="600">频道筛选也服务于研究样本构建与分析</text>
+<a href="https://www.pewresearch.org/journalism/2020/09/28/youtube-news-methodology/">
+<text x="32" y="142" font-size="24" fill="#b45309" font-weight="700">Pew · YouTube 新闻研究（2020）</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">人工检查 17,797 个频道，纳入 377 个新闻／时事频道；依据是最</text>
+<text x="32" y="210" font-size="22" fill="#475569">近 15 个视频的标题和封面。</text>
+<text x="32" y="246" font-size="21" fill="#b45309">新闻频道特征、内容与传播方式分析</text>
+<a href="https://ojs.aaai.org/index.php/ICWSM/article/download/18105/17908/21600#page=4">
+<text x="32" y="301" font-size="24" fill="#b45309" font-weight="700">Cross-Partisan Discussions · ICWSM 2021</text>
+</a>
+<text x="32" y="339" font-size="22" fill="#475569">第一作者人工检查每个频道随机抽取的 10 个视频，排除不活跃或与</text>
+<text x="32" y="369" font-size="22" fill="#475569">美国新闻政治无关的频道。最终数据含 973 个频道，非初筛数量。</text>
+<text x="32" y="405" font-size="21" fill="#b45309">跨政治立场评论互动与受众重叠研究</text>
+<a href="https://www.pewresearch.org/journalism/2024/11/18/news-influencers-methodology/">
+<text x="32" y="460" font-size="24" fill="#b45309" font-weight="700">Pew · America’s News Influencers（2024）</text>
+</a>
+<text x="32" y="498" font-size="22" fill="#475569">关键词、粉丝量和机构名称等初筛后，对剩余 3,576 个 YouTube</text>
+<text x="32" y="528" font-size="22" fill="#475569">账号逐一人工审核。</text>
+<text x="32" y="564" font-size="21" fill="#b45309">新闻创作者生态、内容生产与传播研究</text>
+</g>
+<g class="domain-card" data-domain="music" transform="translate(16 681)">
+<rect width="732" height="402" rx="24" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">🎹</text>
+<text x="94" y="60" font-size="29" fill="#7c3aed" font-weight="700">乐器演奏</text>
+<text x="32" y="101" font-size="20" fill="#7c3aed" font-weight="600">重要数据集 · 可拓展方向</text>
+<a href="https://arxiv.org/html/2411.02551v2#S2.SS2">
+<text x="32" y="142" font-size="24" fill="#7c3aed" font-weight="700">PIAST</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">从 23 个选定的钢琴内容频道采集演奏视频。</text>
+<text x="32" y="244" font-size="23" fill="#475569">先确定稳定的演奏来源，再采集作品，是音乐数据构建的重要入</text>
+<text x="32" y="276" font-size="23" fill="#475569">口。</text>
+<text x="32" y="332" font-size="23" fill="#475569">PIAST 预处理后主要提供音频、转录 MIDI 和文本。</text>
+</g>
+<g class="domain-card" data-domain="makeup" transform="translate(772 681)">
+<rect width="732" height="402" rx="24" fill="#fdf2f8" stroke="#fbcfe8" stroke-width="2"/>
+<text x="32" y="65" font-size="42" fill="#334155" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">💄</text>
+<text x="94" y="60" font-size="29" fill="#db2777" font-weight="700">美妆教学</text>
+<text x="32" y="101" font-size="20" fill="#db2777" font-weight="600">重要数据集 · 可拓展方向</text>
+<a href="https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4">
+<text x="32" y="142" font-size="24" fill="#db2777" font-weight="700">YouMakeup</text>
+</a>
+<text x="32" y="180" font-size="22" fill="#475569">先整理知名美妆品牌和博主名单，再搜索其官方频道并采集教学视</text>
+<text x="32" y="210" font-size="22" fill="#475569">频。</text>
+<text x="32" y="274" font-size="23" fill="#475569">频道筛选可以把庞杂的创作内容收窄到专业教学来源。</text>
+<text x="32" y="330" font-size="23" fill="#475569">Jev Account Filter 可用于按教学内容与创作者定位选择账户。</text>
+</g>
+</g></svg>
