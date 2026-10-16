@@ -44,7 +44,7 @@ async def model_call(args, payload, preview, stem):
     if cached is not None:
         hash_path.write_text(signature, encoding='ascii')
         return cached
-    # 保留旧原始响应供检查，但新请求成功前将缓存标为未完成，避免失败后误用旧结果。
+    # 保留旧原始响应供检查，但新请求成功前将已保存响应标为未完成，避免失败后误用旧结果。
     hash_path.write_text('pending:' + signature, encoding='ascii')
     raw = await call_model_api(payload, args.api, endpoint=endpoint,
         api_key_env=args.api_key_env,

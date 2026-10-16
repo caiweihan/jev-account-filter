@@ -116,7 +116,7 @@ def test_external_cache_and_second_cover_folder_follow_video_links(tmp_path, vie
     source = experiment / 'results.csv'
     source.write_text(out.getvalue(), encoding='utf-8-sig', newline='')
     (experiment / 'category.json').write_text(json.dumps(TASK), encoding='utf-8')
-    channel = {'url': 'https://example.com/user/a', 'bio': '外部缓存简介', 'videos': [
+    channel = {'url': 'https://example.com/user/a', 'bio': '外部采集简介', 'videos': [
         {'id': '1', 'url': 'https://example.com/video/1', 'title': '低分标题', 'cover_path': r'C:\old-project\data\channels\demo\a\covers\1.jpg'},
         {'id': '2', 'url': 'https://example.com/video/2', 'title': '高分标题', 'cover_path': r'C:\old-project\data\channels\demo\a\covers\2.jpg'}]}
     (folder / 'channel.json').write_text(json.dumps(channel), encoding='utf-8')
@@ -134,12 +134,12 @@ def test_external_cache_and_second_cover_folder_follow_video_links(tmp_path, vie
     page.locator('#cache-folder').set_input_files(experiment)
     ready(page, '已载入 1 个频道')
     assert page.locator('#category').input_value() != ''
-    assert data(page)['rows'][0]['bio'] == '外部缓存简介'
+    assert data(page)['rows'][0]['bio'] == '外部采集简介'
     assert data(page)['rows'][0]['videos'][0]['title'] == '高分标题'
     assert data(page)['rows'][0]['videos'][0]['title_p'] == .95
     assert data(page)['summary']['missing_cover'] == 2
-    assert 'cover_audit' not in data(page)
-    assert page.frame_locator('#report').locator('#front-audit').count() == 0
+    assert data(page)['cover_audit']['source_sha256'] == hashlib.sha256(source.read_bytes()).hexdigest()
+    assert page.frame_locator('#report').locator('#front-audit').is_visible()
     covers = tmp_path / 'independent-covers'
     covers.mkdir()
     Image.new('RGB', (11, 17), 'red').save(covers / '1.jpg')

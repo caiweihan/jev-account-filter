@@ -10,7 +10,7 @@ __pycache__/
 *.egg-info/
 cookies*.json
 
-# Team-collected datasets stay local. Only the synthetic CSV is public.
+# Team datasets stay local; explicitly published examples are allowed below.
 *.csv
 /input/*
 !/input/channels.example.csv

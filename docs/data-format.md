@@ -69,3 +69,11 @@ Screening never modifies the dataset. Results, rule snapshots, and model respons
 ## Built-in collection and extension
 
 The Douyin and Kuaishou collectors produce this format directly. Platform implementations live in `account_filter/collection/platforms/`; model screening and API logic live separately in `account_filter/screening/`. Add a same-named adapter module and a `configs/platforms.toml` entry for a new collection platform. Custom data sources only need data files and are not restricted by the built-in platform list.
+
+## Optional cover-audit data
+
+Cover audits are independent of classification results. The viewer reads `cover-audit/latest.json` in a selected experiment directory, for example `{"path":"cover-audit/text-check/audit-results.json"}`. The path is relative to that directory. Audit `source_sha256` must match the original results CSV, otherwise the audit is omitted.
+
+The audit supplies display metadata: `title`, `criteria`, and `population` describe the heading, criteria, and selected population. They are rendered as plain text, never HTML. `model/prompt_version/generated` identify the model, criteria version, and date. Any domain's cover criteria may be described.
+
+Each `rows` entry matches the original CSV by one-based `id` and `url` and contains `name/manual/prediction/status/videos`. `overall` is the direct all-covers answer; `any_front` is the direct at-least-one answer. Each answer has `choice` (`yes/no/unclear`), a display `label`, and three `probabilities`. Per-image answers live in `videos[].front`. Keep group and per-image judgments independent instead of replacing them with an aggregation. `csv`, `response`, and `cover` link to local files in the experiment or collected-data directory; the browser resolves only files explicitly selected by the user.

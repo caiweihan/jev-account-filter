@@ -38,9 +38,8 @@ Provider- and category-independent operational settings still have ordinary defa
 - `rules/channel_*`: account criteria and independent probability based on metadata, titles, and thumbnails.
 - `video_*` and candidate-related fields: per-video questions and the best candidate, using `{key}` to identify each work.
 - `analysis_warning`: the evidence-scope explanation for the task.
-- `report_extension`: an optional task report module; omitting it produces only the generic report.
 
-`sign-language` and `fitness.example.toml` are optional examples. Sign-language-specific thumbnail audits, rule simulations, and report components live in `account_filter/tasks/sign_language/`; generic code does not infer them.
+`sign-language` and `fitness.example.toml` are optional examples. The standalone sign-language thumbnail audit lives in `account_filter/tasks/sign_language/`. All display components live in `account_filter/templates/` and use audit-file metadata; the viewer contains no category-specific scenarios.
 
 New experiments save category and non-sensitive API configuration snapshots. Resuming uses an existing explicit selection; older experiments without snapshots require explicit arguments. Historical results, collected data, and existing reports are not rewritten automatically.
 

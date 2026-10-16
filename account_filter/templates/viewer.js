@@ -80,7 +80,7 @@ function inferCategory(){
  if(!model.categoryAuto)return;
  const labels=new Set(model.records.flatMap(row=>[row.manual,row.prediction]).filter(Boolean));
  const candidates=available.map((category,index)=>({category,index})).filter(({category})=>[category.positive_label,category.negative_label].some(label=>labels.has(label))&&!model.records.some(row=>row.p!=null&&![category.positive_label,category.negative_label,'疑难'].includes(row.prediction)));
- const unique=[...new Map(candidates.map(item=>[JSON.stringify([item.category.positive_label,item.category.negative_label,item.category.report_extension||'']),item])).values()];
+ const unique=[...new Map(candidates.map(item=>[JSON.stringify([item.category.positive_label,item.category.negative_label]),item])).values()];
  $('category').value=unique.length===1?String(unique[0].index):'';
 }
 function updateSelection(){
@@ -96,8 +96,8 @@ function decodeCSV(bytes,choice,kind){
 function useCacheCategory(roots){
  if(!model.records||($('category').value&&!model.categoryAuto))return false;
  const entries=model.categories.filter(x=>roots.some(root=>x.group===root.group&&x.folder===root.folder));
- const candidates=[...new Map(entries.filter(x=>validCategory(x.value)).map(x=>[JSON.stringify([x.value.name,x.value.positive_label,x.value.negative_label,x.value.report_extension||'']),x.value])).values()];
- if(candidates.length!==1)return false;const c=candidates[0];let i=available.findIndex(x=>x.positive_label===c.positive_label&&x.negative_label===c.negative_label&&(x.report_extension||'')===(c.report_extension||''));
+ const candidates=[...new Map(entries.filter(x=>validCategory(x.value)).map(x=>[JSON.stringify([x.value.name,x.value.positive_label,x.value.negative_label]),x.value])).values()];
+ if(candidates.length!==1)return false;const c=candidates[0];let i=available.findIndex(x=>x.positive_label===c.positive_label&&x.negative_label===c.negative_label);
  if(i<0)i=Number(categoryOption(c));$('category').value=String(i);return true;
 }
 async function matchingRoots(){
@@ -105,7 +105,7 @@ async function matchingRoots(){
  for(const group of model.groups)for(const entry of group.csv){if(entry.file.name===model.file.name){entry.hash??=await sha256(await entry.file.arrayBuffer());if(entry.hash===model.hash)roots.push({group:group.id,folder:dirname(entry.path)})}}
  return roots;
 }
-async function pool(items,action){let next=0,done=0;await Promise.all(Array.from({length:Math.min(8,items.length)},async()=>{while(next<items.length){await action(items[next++]);done++;if(done%25===0||done===items.length){$('progress').value=done;$('progress').max=Math.max(1,items.length);say(`索引频道缓存 ${done}/${items.length}…`);await new Promise(resolve=>setTimeout(resolve,0))}}}))}
+async function pool(items,action){let next=0,done=0;await Promise.all(Array.from({length:Math.min(8,items.length)},async()=>{while(next<items.length){await action(items[next++]);done++;if(done%25===0||done===items.length){$('progress').value=done;$('progress').max=Math.max(1,items.length);say(`索引采集数据 ${done}/${items.length}…`);await new Promise(resolve=>setTimeout(resolve,0))}}}))}
 async function addFolder(files){
  if(!files.length)return;const group={id:model.groups.length,files:new Map(),names:new Map(),csv:[]},metadata=[];
  for(const item of files){const file=item.file||item,path=normalize(item.path||file.webkitRelativePath||file.name),entry={group:group.id,path,file};group.files.set(path,entry);const names=group.names.get(file.name)||[];names.push(entry);group.names.set(file.name,names);if(file.name.endsWith('.csv'))group.csv.push(entry);if(['channel.json','category.json'].includes(file.name))metadata.push(entry)}
@@ -136,7 +136,7 @@ async function enrich(rows,roots,assets){
    const saved=savedRows.get(identity(row.url));row.bio=saved.bio;row.page_count=saved.page_count;row.no_posts=saved.no_posts;row.snapshot=saved.snapshot;if(saved.snapshot)matched++;
    const videos=new Map(saved.videos.map(video=>[identity(video.url),video]));for(const video of row.videos){const cached=videos.get(identity(video.url));if(!cached)continue;for(const key of ['title','title_p','cover'])video[key]=cached[key];titles+=Boolean(video.title);covers+=Boolean(video.cover)}
   }
-  if(i%100===0){$('progress').max=rows.length;$('progress').value=i;say(`匹配 CSV 与缓存 ${i+1}/${rows.length}…`);await new Promise(resolve=>setTimeout(resolve,0))}
+  if(i%100===0){$('progress').max=rows.length;$('progress').value=i;say(`匹配 CSV 与采集数据 ${i+1}/${rows.length}…`);await new Promise(resolve=>setTimeout(resolve,0))}
  }return{matched,covers,titles};
 }
 function summarize(rows,labels){
@@ -156,19 +156,19 @@ async function auditData(roots,assets){
 }
 async function renderReport(){
  if(model.restoring)return;
- if(!model.records){updateSelection();say('请选择结果 CSV。已添加的缓存及二次核验会在载入后匹配。');return}const roots=await matchingRoots();if(!useCacheCategory(roots))inferCategory();const category=selectedCategory();updateSelection();if(!category){$('advanced-settings').open=true;say('CSV 已读取。无法唯一识别类别，请选择分析类别，或指定自定义正类、负类标签。');return}
+ if(!model.records){updateSelection();say('请选择结果 CSV。已添加的采集数据及二次核验会在载入后匹配。');return}const roots=await matchingRoots();if(!useCacheCategory(roots))inferCategory();const category=selectedCategory();updateSelection();if(!category){$('advanced-settings').open=true;say('CSV 已读取。无法唯一识别类别，请选择分析类别，或指定自定义正类、负类标签。');return}
  const assets=model.cachedView?[...model.cachedView.assets]:[];
   const rows=structuredClone(model.records),labels=[category.positive_label,'疑难',category.negative_label];
   for(const row of rows){row.comparable=labels.includes(row.manual)&&labels.includes(row.prediction);row.wrong=row.comparable&&row.manual!==row.prediction;const values=row.videos.map(v=>v.p).filter(v=>v!==null);row.max=values.length?Math.max(...values):null;row.mean=values.length?values.reduce((a,b)=>a+b,0)/values.length:null;row.gap=values.length&&row.p!==null?row.max-row.p:null;row.spread=values.length>1?values[0]-values[1]:null}
-  const metadata=await enrich(rows,roots,assets),extension=category.report_extension||'',supported=Object.hasOwn(bundle.templates,extension),template=supported?bundle.templates[extension]:bundle.templates[''];
-  const payload={rows,ranks:model.ranks,labels,summary:summarize(rows,labels),category:{id:category.id||'custom',name:category.name,report_extension:extension},source:model.file.name,sha256:model.hash,generated:new Date().toLocaleString('zh-CN')};
+  const metadata=await enrich(rows,roots,assets);
+  const payload={rows,ranks:model.ranks,labels,summary:summarize(rows,labels),category:{id:category.id||'custom',name:category.name},source:model.file.name,sha256:model.hash,generated:new Date().toLocaleString('zh-CN')};
   const review=attachReview(rows,labels);if(review)payload.second_review=review;
-  if(extension&&supported){const audit=await auditData(roots,assets)||(model.cachedView?.payload.sha256===model.hash?model.cachedView.payload.cover_audit:null);if(audit)payload.cover_audit=audit}
+  const audit=await auditData(roots,assets)||(model.cachedView?.payload.sha256===model.hash?model.cachedView.payload.cover_audit:null);if(audit)payload.cover_audit=audit;
   await showReport(payload,assets);
-  say(`已载入 ${rows.length} 个频道；可对照 ${payload.summary.comparable}，不符 ${payload.summary.mismatch}。数据匹配 ${metadata.matched}/${rows.length} 个频道，标题 ${metadata.titles} 条，封面 ${metadata.covers} 张。${review?`二次核验匹配 ${review.matched} 个频道。`:''}${extension&&!supported?'此页面未打包该类别扩展，使用通用分析。':''}`);
+  say(`已载入 ${rows.length} 个频道；可对照 ${payload.summary.comparable}，不符 ${payload.summary.mismatch}。数据匹配 ${metadata.matched}/${rows.length} 个频道，标题 ${metadata.titles} 条，封面 ${metadata.covers} 张。${review?`二次核验匹配 ${review.matched} 个频道。`:''}`);
 }
 async function showReport(payload,assets){
- const extension=payload.category.report_extension||'',template=bundle.templates[extension]||bundle.templates[''];
+ const template=bundle.templates[''];
  const html=template.replace('__VIEWER_PAYLOAD__',()=>jsonEscape(payload)),token=crypto.randomUUID();
  model.reportToken=token;
  const used=new Set(assetReferences(payload).map(([object,key])=>object[key]).filter(Boolean));assetBroker.items=new Map(assets.filter(item=>used.has(item.id)).map(item=>[item.id,item]));assetBroker.queue=[];
@@ -190,7 +190,7 @@ $('cache-folder').onchange=()=>{const files=Array.from($('cache-folder').files);
 $('category').onchange=()=>{model.categoryAuto=$('category').value==='';$('custom-labels').hidden=$('category').value!=='custom';action(renderReport)};
 for(const id of ['positive','negative'])$(id).onchange=()=>action(renderReport);
 $('encoding').onchange=()=>{const file=$('csv-file').files[0]||model.file;action(async()=>{if(file)await loadCSV(file)})};
-$('clear-cache').onclick=()=>action(async()=>{model.groups=[];model.folderNames=[];model.channels.clear();model.categories=[];model.cachedView=null;updateSelection();$('cache-note').textContent='已清除缓存选择。仅使用 CSV 分析，简介、标题和封面暂缺。';await renderReport()});
+$('clear-cache').onclick=()=>action(async()=>{model.groups=[];model.folderNames=[];model.channels.clear();model.categories=[];model.cachedView=null;updateSelection();$('cache-note').textContent='已清除数据选择。仅使用 CSV 分析，简介、标题和封面暂缺。';await renderReport()});
 $('review-file').onchange=()=>{const file=$('review-file').files[0];if(file)action(()=>loadReview(file))};
 $('review-encoding').onchange=()=>{const file=$('review-file').files[0]||model.review?.file;action(async()=>{if(file)await loadReview(file)})};
 $('clear-review').onclick=()=>action(async()=>{model.review=null;$('review-file').value='';updateSelection();await renderReport()});

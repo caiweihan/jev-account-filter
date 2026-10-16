@@ -69,3 +69,11 @@ custom,example,https://example.org/account,Example,,channels/example/channel.jso
 ## 内置采集与扩展
 
 内置抖音与快手采集器直接输出这个格式。平台实现位于 `account_filter/collection/platforms/`，筛选与 API 位于 `account_filter/screening/`。新增采集平台时添加同名适配模块并在 `configs/platforms.toml` 登记；自定义数据来源只需生成数据文件，不受内置平台列表限制。
+
+## 可选封面核验数据
+
+封面核验独立于分类结果。分析页面会在所选实验目录读取 `cover-audit/latest.json`，例如 `{"path":"cover-audit/text-check/audit-results.json"}`。`path` 相对于实验目录；数据中的 `source_sha256` 必须与原结果 CSV 的 SHA-256 一致，否则不显示。
+
+展示元数据由核验文件提供：`title` 是标题，`criteria` 是判据说明，`population` 是核验对象范围；都作为纯文本显示，不执行 HTML。模型、版本、时间分别用 `model/prompt_version/generated`。这些字段可描述任何领域的封面标准。
+
+`rows` 每项以原 CSV 的 `id`（从 1 开始）和 `url` 对齐，包含 `name/manual/prediction/status/videos`。`overall` 是所有候选符合标准的整组答案，`any_front` 是至少一张符合的答案；每项使用 `choice`（`yes/no/unclear`）、显示文本 `label` 和三项 `probabilities`。逐候选答案放在 `videos[].front`。保留整组与逐张的独立判断，不用程序汇总替代模型结论。`csv`、`response` 和 `cover` 使用实验目录内或正式采集目录中的本地文件链接；浏览器仅解析主动选择的文件。

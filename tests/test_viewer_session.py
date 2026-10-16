@@ -117,7 +117,7 @@ def test_expired_permission_automatically_displays_cached_review_and_covers(view
       FileSystemDirectoryHandle.prototype.requestPermission=FileSystemFileHandle.prototype.requestPermission;
     """)
     page.reload()
-    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析缓存")')
+    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析副本")')
     assert page.evaluate('window.permissionPrompts') == 0
     assert page.locator('#restore-session').count() == 0
     assert data(page)['rows'][0]['name'] == '虚构账户'
@@ -271,7 +271,7 @@ def test_regular_file_selection_also_restores_analysis_without_handles(tmp_path,
     ready(page, '已载入 1 个频道')
     page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动保存")')
     page.reload()
-    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析缓存")')
+    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析副本")')
     assert data(page)['rows'][0]['name'] == '普通选择'
     assert page.locator('#refresh-files').is_hidden()
     assert page.locator('#restore-session').count() == 0
@@ -284,7 +284,7 @@ def test_regular_file_selection_also_restores_analysis_without_handles(tmp_path,
     # ignore them rather than calling queryPermission/getFile on startup.
     page.evaluate("async()=>{await sessionStore({...session.saved,csv:{name:'old.csv'},folders:[{name:'old-cache'}]})}")
     page.reload()
-    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析缓存")')
+    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析副本")')
     assert data(page)['rows'][0]['name'] == '普通选择'
     assert page.locator('#choose-csv').is_visible()
     assert page.locator('#refresh-files').is_hidden()
@@ -309,7 +309,7 @@ def test_get_file_denial_after_picker_and_on_reopen_preserves_analysis(viewer):
     assert data(page)['rows'][0]['name'] == '虚构账户'
     page.add_init_script(script)
     page.reload()
-    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析缓存")')
+    page.wait_for_function('()=>document.querySelector("#session-note").textContent.includes("已自动显示上次分析副本")')
     assert data(page)['rows'][0]['name'] == '虚构账户'
     assert page.locator('#choose-csv').is_visible()
     assert '浏览器拒绝读取' in page.locator('#session-note').inner_text()

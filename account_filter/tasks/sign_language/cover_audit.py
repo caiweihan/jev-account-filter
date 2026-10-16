@@ -13,10 +13,12 @@ from ...screening.classifier import call_model_api, encode_cover, probability
 from ...screening.config import load_config
 from ...progress import Progress
 from ...report import load_rows
+from ...experiments import create_experiment_dir
 
 PROJECT = Path(__file__).resolve().parents[3]
 VERSION = 'front-cover-hypothesis-v2-person-or-sign-text'
 LABELS = {'yes': '符合', 'no': '不符合', 'unclear': '无法判断'}
+CRITERIA = '符合任一条件：主要视觉内容是真实人物的正面，允许只见身体和手、脸不可见；或封面有可辨读的“手语”文字。不要求特定表情或手势，也不据此判断完整视频是否含手语。'
 # 中文：两项条件满足任意一项即符合：①主要视觉内容为真实人物正面；脸可以不可见，
 # 只显示正面的身体和手也可以。②封面本身有能辨读的“手语”文字（如“学手语”也符合）。
 # 不要求脸、表情或特定手势；侧面/背面、插画等若有“手语”文字仍可通过第二项。
@@ -126,9 +128,9 @@ def write_json(path, data):
 
 def export_csv(rows, output):
     headings = ['CSV数据行', '账户名称', '频道网址', '人工标注', '原预测结果', '候选视频数', '已发送封面数',
-                '猜想判断', '全部符合概率', '不符合概率', '无法判断概率', '至少一张符合', '至少一张符合概率', '错误信息', '模型答案冲突']
+                '核验结果', '全部符合概率', '不符合概率', '无法判断概率', '至少一张符合', '至少一张符合概率', '错误信息', '模型答案冲突']
     for k in range(1,6):
-        headings += [f'视频{k}原手语分数', f'视频{k}链接', f'视频{k}标题', f'视频{k}封面判断', f'视频{k}符合标准概率']
+        headings += [f'视频{k}原视频分数', f'视频{k}链接', f'视频{k}标题', f'视频{k}封面判断', f'视频{k}符合标准概率']
     temporary = output.with_suffix('.csv.tmp')
     with temporary.open('w', encoding='utf-8-sig', newline='') as stream:
         writer = csv.DictWriter(stream, fieldnames=headings); writer.writeheader()
@@ -141,7 +143,7 @@ def export_csv(rows, output):
             values['模型答案冲突'] = r.get('conflict', '')
             for v in r['videos']:
                 k=v['rank']; front=v.get('front') or {}
-                values.update({f'视频{k}原手语分数': v['p'], f'视频{k}链接': v['url'], f'视频{k}标题': v['title'],
+                values.update({f'视频{k}原视频分数': v['p'], f'视频{k}链接': v['url'], f'视频{k}标题': v['title'],
                                f'视频{k}封面判断': front.get('label', '缺少封面' if not v.get('cover') else '待判断'),
                                f'视频{k}符合标准概率': front.get('probabilities', {}).get('yes')})
             writer.writerow(values)
@@ -170,9 +172,13 @@ async def run(args):
     load_dotenv(PROJECT / '.env')
     config = load_config(args.config)
     source = args.results_csv.resolve(); root = source.parent
-    output = args.resume.resolve() if args.resume else root / 'cover-audit' / datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d-%H%M%S-%f')
+    if args.resume and args.output:
+        raise ValueError('--resume 与 --output 不能同时指定。')
+    output = args.resume.resolve() if args.resume else (args.output or root / 'cover-audit/sign-language').resolve()
+    if output == root:
+        raise ValueError('封面检查应使用独立的具名目录，不能直接写入原实验根目录。')
     output.relative_to(root)  # 本地报告与封面链接必须保留在同一个实验目录中。
-    # 现有报告已经按作品链接关联标题与缓存封面；校验一致时直接复用，避免反复读数千快照。
+    # 现有报告已经按作品链接关联标题与采集封面；校验一致时直接复用，避免反复读数千快照。
     page = root/'analysis.html'
     cached_report = None
     if page.is_file():
@@ -182,6 +188,8 @@ async def run(args):
         except (IndexError, ValueError):
             pass
     source_hash = hashlib.sha256(source.read_bytes()).hexdigest()
+    if cached_report and cached_report['sha256'] != source_hash:
+        raise ValueError('现有分析报告与源 CSV 不符，请先更新报告或使用对应的结果。尚未调用模型。')
     rows = cached_report['rows'] if cached_report and cached_report['sha256'] == source_hash else load_rows(source, labels=['手语频道', '疑难', '不是手语频道'])[0]
     manual_positive_total = sum(r['manual'] == '手语频道' for r in rows)
     rows = [r for r in rows if r['manual'] == '手语频道'][:args.limit]
@@ -190,16 +198,22 @@ async def run(args):
     if any(len(r['videos']) > 5 for r in rows):
         raise ValueError('本检查只支持每频道最多5个原候选；不会静默丢弃候选。')
     settings = {'source': str(source), 'source_sha256': source_hash,
+                'title': '候选封面特征核验', 'criteria': CRITERIA,
+                'population': '人工标注为“手语频道”的账户',
                 'prompt_version': VERSION, 'model': config['model'], 'api': config['api'],
+                'endpoint': config['endpoint'],
                 'image_side': config['image_side'], 'generated': datetime.now(timezone(timedelta(hours=8))).isoformat(timespec='seconds'),
                 'manual_positive_total': manual_positive_total,
                 'csv': (output/'cover-audit.csv').relative_to(root).as_posix()}
     if args.resume:
         previous = json.loads((output/'audit-results.json').read_text(encoding='utf-8'))
-        for key in ('source_sha256', 'prompt_version', 'model', 'api', 'image_side'):
+        for key in ('source_sha256', 'prompt_version', 'model', 'api', 'endpoint', 'image_side'):
             if previous.get(key) != settings[key]:
                 raise ValueError(f'继续目录 {key} 与当前输入或配置不符；请开始新检查。')
-    output.mkdir(parents=True, exist_ok=True)
+        if [r['id'] for r in previous['rows']] != [r['id'] for r in rows]:
+            raise ValueError('续跑不能改变待核验账户范围。')
+    else:
+        create_experiment_dir(output)
     results = [{**r, 'status': '待处理', 'error': ''} for r in rows]
     progress = Progress(len(rows)); stop = asyncio.Event(); semaphore = asyncio.Semaphore(args.concurrency)
     async def process(index, row):
@@ -241,35 +255,35 @@ async def run(args):
     bundle = publish(root, output, results, settings)
     # 保留现有分析数据与所有原图表，仅更新额外检查区的数据。
     page = root/'analysis.html'
-    if page.is_file():
-        text = page.read_text(encoding='utf-8')
-        data = json.loads(text.split('<script id="report-data" type="application/json">')[1].split('</script>')[0])
-        if data['sha256'] != settings['source_sha256']:
-            raise ValueError('现有 HTML 与源CSV校验值不符，检查结果已保存，但未更新 HTML。')
+    if cached_report:
+        data = cached_report
         data['cover_audit'] = bundle
-        from ...category import load_category
-        task = load_category(PROJECT / 'configs/categories/sign-language.toml')
-        data['category'] = {key: task[key] for key in ('id', 'name', 'report_extension')}
         from ...report import assemble_html
         page.write_text(assemble_html(data), encoding='utf-8')
     print(json.dumps({'output': str(output), 'summary': bundle['summary'], 'cost_usd': bundle['usage_cost']}, ensure_ascii=False))
     return 1 if any(r['status'] in ('调用失败', '待处理') for r in results) else 0
 
 
-def main():
+def parser():
     parser=argparse.ArgumentParser(description='检查人工手语频道的原候选封面；仅调用模型，不访问平台')
     parser.add_argument('results_csv', type=Path)
     parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--resume', type=Path)
+    parser.add_argument('--output', type=Path, help='具名检查目录，须在源实验目录内；默认 cover-audit/sign-language')
     parser.add_argument('--limit', type=int, default=None, help='只检查源顺序中的前N个手语标注频道')
     parser.add_argument('--concurrency', type=int, default=2)
-    args=parser.parse_args()
+    return parser
+
+
+def main():
+    command = parser()
+    args=command.parse_args()
     if args.concurrency<1 or args.concurrency>8 or (args.limit is not None and args.limit<1):
-        parser.error('concurrency 为1..8，limit 必须大于0')
+        command.error('concurrency 为1..8，limit 必须大于0')
     try:
         raise SystemExit(asyncio.run(run(args)))
     except (OSError, ValueError) as exc:
-        parser.exit(1, f'{type(exc).__name__}: {exc}\n')
+        command.exit(1, f'{type(exc).__name__}: {exc}\n')
 
 
 if __name__ == '__main__':

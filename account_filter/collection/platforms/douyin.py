@@ -166,7 +166,7 @@ DOM_SCRIPT = r"""() => {
      /^(?:Tag:\s*)?(?:图文|图集|图片)(?:作品)?$/.test((el.getAttribute('aria-label') || el.getAttribute('title') || '').trim()));
    const image_post = a.href.includes('/note/') || image_stack_icon || image_label;
    const article_post = a.href.includes('/article/');
-   // 这里是页面作者作品卡片的真实链接，不是根据作品ID拼出的旧缓存链接。
+   // 这里是页面作者作品卡片的真实链接，不是根据作品ID拼出的已有资料链接。
    const video_link = /^https:\/\/(?:www\.)?douyin\.com\/video\/\d+(?:[/?#]|$)/.test(a.href);
    videos.push({id, title: title?.getAttribute('title') || title?.textContent?.trim() || img?.alt || a.textContent.trim(),
      cover_url: img?.currentSrc || img?.src || '', url: a.href, source: 'profile_dom',

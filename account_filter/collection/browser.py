@@ -267,7 +267,7 @@ async def download_cover(context, url: str, destination: Path):
     from PIL import Image
     from pillow_heif import register_heif_opener
     import io
-    # CDN即使地址以.jpeg结尾也可能返回HEIC；解码后统一保存为JPEG缓存。
+    # CDN即使地址以.jpeg结尾也可能返回HEIC；解码后统一保存为JPEG图片。
     register_heif_opener()
     with Image.open(io.BytesIO(content)) as image:
         image = image.convert('RGB')
@@ -321,7 +321,7 @@ async def archive_covers(channel, root, page, on_status=None):
         if existing and existing.is_file():
             continue
         if on_status:
-            on_status(f"缓存封面 {index}/{len(channel['videos'])}")
+            on_status(f"采集封面 {index}/{len(channel['videos'])}")
         if not video.get('cover_url'):
             missing.append({'id': video['id'], 'reason': '未采集到封面地址'})
             continue

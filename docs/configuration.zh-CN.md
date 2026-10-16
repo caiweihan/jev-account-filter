@@ -38,11 +38,10 @@ api_key_env = "MODEL_API_KEY"
 - `rules/channel_*`：资料、标题与封面的账户判据和独立概率。
 - `video_*`、候选相关字段：逐视频问题和最佳候选，使用 `{key}` 对应作品。
 - `analysis_warning`：该任务的证据范围说明。
-- `report_extension`：可选任务报告模块；不填只生成通用报告。
 
-`sign-language` 和 `fitness.example.toml` 都是可选示例。手语的独立历史封面检查与可选报告组件在 `account_filter/tasks/sign_language/`，不在通用代码中推定。
+`sign-language` 和 `fitness.example.toml` 都是可选示例。手语的独立封面检查工具在 `account_filter/tasks/sign_language/`；所有展示组件均位于 `account_filter/templates/`，从核验文件读取元数据，不包含特定领域的场景判断。
 
-新实验保存类别和非敏感 API 配置快照。续跑只能读取已有明确选择；旧实验无快照时必须显式指定。历史结果、采集采集数据和已有报告不自动改写。
+新实验保存类别和非敏感 API 配置快照。续跑只能读取已有明确选择；旧实验无快照时必须显式指定。历史结果、采集数据和已有报告不自动改写。
 
 ## 平台与类别独立
 

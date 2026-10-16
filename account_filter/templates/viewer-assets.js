@@ -9,8 +9,8 @@ function assetReferences(payload){
 const assetBroker={items:new Map(),queue:[],active:0};
 async function readViewerAsset(item){
  if(item.file)return item.file;
- if(!session.db||!item.key)throw Error('本地文件缓存不可用，请重新选择采集数据目录。');
- return new Promise((resolve,reject)=>{const request=session.db.transaction('assets').objectStore('assets').get(item.key);request.onsuccess=()=>request.result?resolve(request.result):reject(Error('本地文件缓存缺失，请重新选择采集数据目录。'));request.onerror=()=>reject(request.error)});
+ if(!session.db||!item.key)throw Error('本地文件副本不可用，请重新选择采集数据目录。');
+ return new Promise((resolve,reject)=>{const request=session.db.transaction('assets').objectStore('assets').get(item.key);request.onsuccess=()=>request.result?resolve(request.result):reject(Error('本地文件副本缺失，请重新选择采集数据目录。'));request.onerror=()=>reject(request.error)});
 }
 async function serveViewerAssets(){
  while(assetBroker.active<4&&assetBroker.queue.length){const request=assetBroker.queue.shift();if(request.token!==model.reportToken)continue;assetBroker.active++;

@@ -18,7 +18,7 @@
 <p class="note">将 CSV 或采集数据目录从资源管理器拖到下方对应行，也可点击按钮选择。文件仅在浏览器中读取，不上传、不访问视频平台或模型。</p>
 <div class="file-controls">
 <div class="file-row" data-drop-kind="csv" role="group" aria-label="拖入结果 CSV"><span class="file-label">结果 CSV</span><div class="file-selection"><span class="file-choice"><input id="csv-file" type="file" accept=".csv,text/csv" aria-label="结果 CSV" hidden><button id="choose-csv" type="button">选择 CSV</button></span><button id="pick-csv" type="button" hidden>选择 CSV</button><span id="csv-selected" class="selected-file">尚未选择</span></div></div>
-<div class="file-row" data-drop-kind="folder" role="group" aria-label="拖入本地证据目录（可多次添加）"><span class="file-label">本地证据目录（可多次添加）</span><div class="file-selection"><span class="file-choice"><input id="cache-folder" type="file" webkitdirectory multiple aria-label="本地证据目录" hidden><button id="choose-folder" type="button">添加采集数据目录</button></span><button id="pick-folder" type="button" hidden>添加采集数据目录</button><span id="folder-selected" class="selected-file">尚未添加</span></div><button id="clear-cache" type="button" disabled>清除缓存选择</button></div>
+<div class="file-row" data-drop-kind="folder" role="group" aria-label="拖入本地证据目录（可多次添加）"><span class="file-label">本地证据目录（可多次添加）</span><div class="file-selection"><span class="file-choice"><input id="cache-folder" type="file" webkitdirectory multiple aria-label="本地证据目录" hidden><button id="choose-folder" type="button">添加采集数据目录</button></span><button id="pick-folder" type="button" hidden>添加采集数据目录</button><span id="folder-selected" class="selected-file">尚未添加</span></div><button id="clear-cache" type="button" disabled>清除数据选择</button></div>
 <div class="file-row" data-drop-kind="review" role="group" aria-label="拖入二次人工核验 CSV（可选）"><span class="file-label">二次人工核验 CSV（可选）</span><div class="file-selection"><span class="file-choice"><input id="review-file" type="file" accept=".csv,text/csv" aria-label="二次人工核验 CSV" hidden><button id="choose-review" type="button">选择核验 CSV</button></span><button id="pick-review" type="button" hidden>选择核验 CSV</button><span id="review-selected" class="selected-file">尚未选择</span></div><button id="clear-review" type="button" disabled>清除二次核验</button></div>
 </div>
 <div id="selection-summary">类别和编码自动识别；仅在无法确定或需要调整时使用分析设置。</div>
@@ -28,11 +28,11 @@
 <label>结果 CSV 编码<select id="encoding"><option value="auto">自动识别</option><option value="utf-8">UTF-8</option><option value="gb18030">GB18030 / GBK</option></select></label>
 <label>核验 CSV 编码<select id="review-encoding"><option value="auto">自动识别</option><option value="utf-8">UTF-8</option><option value="gb18030">GB18030 / GBK</option></select></label>
 <span class="note">类别用于确定正负标签和专属分析；不会改变分类模型或原 CSV。无法唯一识别的类别需手动指定。</span></div></details>
-<div class="note" id="cache-note">未选择缓存：仍可查看 CSV 统计和筛选；简介、标题、封面等补充信息暂缺。</div>
+<div class="note" id="cache-note">未选择采集数据：仍可查看 CSV 统计和筛选；简介、标题、封面等补充信息暂缺。</div>
 <div class="controls"><span id="session-note" class="note">正在载入上次分析…</span><button id="refresh-files" type="button" hidden>更新本地文件</button><button id="forget-session" type="button" hidden>忘记上次选择</button></div>
 <div id="status" role="status" aria-live="polite">请选择结果 CSV；类别和编码将自动识别。</div><progress id="progress" hidden></progress>
 </header>
-<div id="empty"><h2>载入实验数据</h2><p>选择结果 CSV 后生成交互评估报告，可选添加二次核验与本地证据。</p><p>缓存可以来自本项目，也可以来自其它磁盘或目录；只读取你选择的文件。</p></div>
+<div id="empty"><h2>载入实验数据</h2><p>选择结果 CSV 后生成交互评估报告，可选添加二次核验与本地证据。</p><p>采集数据可以来自本项目，也可以来自其它磁盘或目录；只读取你选择的文件。</p></div>
 <iframe id="report" title="结果可视化" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" hidden></iframe>
 <script id="viewer-bundle" type="application/json">__VIEWER_BUNDLE__</script>
 <script>__VIEWER_SCRIPT__</script>

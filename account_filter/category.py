@@ -24,11 +24,6 @@ def validate_category(values):
         except (KeyError, ValueError) as exc:
             raise ValueError(f'分类配置 {field} 只支持 {{key}} 占位符。') from exc
     category = {field: values[field] for field in FIELDS}
-    extension = values.get('report_extension', '')
-    if extension and (not isinstance(extension, str) or not extension.startswith('account_filter.tasks.')):
-        raise ValueError('report_extension 必须指向 account_filter.tasks 下的任务报告模块。')
-    if extension:
-        category['report_extension'] = extension
     return category
 
 

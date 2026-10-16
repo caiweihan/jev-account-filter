@@ -2,7 +2,6 @@
 import argparse
 import csv
 import hashlib
-import importlib
 import json
 import math
 import os
@@ -38,7 +37,7 @@ def read_json(path):
 
 
 def relative_file(path, root):
-    """只引用实验目录或项目正式缓存中的本地文件，不使用远程封面地址。"""
+    """只引用实验目录或项目采集数据中的本地文件，不使用远程封面地址。"""
     try:
         resolved = path.resolve()
         if not (resolved.is_relative_to(root.resolve()) or resolved.is_relative_to(COLLECTED_DATA.resolve())):
@@ -149,22 +148,12 @@ def generate(csv_path, output=None, *, category=None):
                'source': csv_path.parent.name + '/' + csv_path.name,
                'sha256': hashlib.sha256(csv_path.read_bytes()).hexdigest(),
                'generated': datetime.now().astimezone().isoformat(timespec='seconds')}
-    payload['category'] = {key: category[key] for key in ('id', 'name', 'report_extension') if key in category}
-    extension = report_extension(payload)
-    if extension:
-        extension.augment_payload(payload, csv_path, output)
+    payload['category'] = {key: category[key] for key in ('id', 'name') if key in category}
+    from .audit import attach_cover_audit
+    attach_cover_audit(payload, csv_path, output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(assemble_html(payload), encoding='utf-8')
     return output, payload['summary']
-
-
-def report_extension(payload):
-    module = payload.get('category', {}).get('report_extension')
-    if not module:
-        return None
-    if not module.startswith('account_filter.tasks.'):
-        raise ValueError('报告扩展必须位于 account_filter.tasks 下。')
-    return importlib.import_module(module)
 
 
 def assemble_html(payload):
@@ -172,10 +161,12 @@ def assemble_html(payload):
     scripts = '\n'.join((Path(__file__).parent / 'templates' / name).read_text(encoding='utf-8')
                         for name in ('analysis-extra.js', 'analysis-cluster.js', 'analysis-evaluation.js'))
     template = template.replace('__ANALYSIS_SCRIPTS__', scripts)
-    extension = report_extension(payload)
-    components = extension.components() if extension else {}
-    for slot in ('top', 'bottom', 'evidence', 'scripts', 'nav', 'style'):
-        template = template.replace(f'__TASK_{slot.upper()}__', components.get(slot, ''))
+    directory = Path(__file__).parent / 'templates'
+    components = {slot: (directory / name).read_text(encoding='utf-8') for slot, name in {
+        'top': 'analysis-audit.html', 'scripts': 'analysis-audit.js', 'style': 'analysis-audit-style.html'}.items()}
+    components['nav'] = '<a href="#front-audit" id="front-nav" hidden>封面特征核验</a>'
+    for slot, content in components.items():
+        template = template.replace(f'__AUDIT_{slot.upper()}__', content)
     # Escaping keeps supplied CSV text inside the JSON data block, never executable markup.
     data = json.dumps(payload, ensure_ascii=False, allow_nan=False).replace('<', '\\u003c').replace('&', '\\u0026')
     return template.replace('__REPORT_DATA__', data)

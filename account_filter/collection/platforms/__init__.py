@@ -1,1 +1,1 @@
-"""Platform-specific parsing belongs here; browser/cache orchestration is shared."""
+"""Platform-specific parsing belongs here; browser/data orchestration is shared."""

@@ -4,10 +4,6 @@ from pathlib import Path
 from .category import category_labels
 
 RESULT_COLUMNS = ['账户名称', '频道网址', '预测结果', '频道概率', '人工标注', '预测与标注不符', '最可能的视频']
-PRIVATE_RESULT = '无法判断（私密账号）'
-NOT_FOUND_RESULT = '用户不存在'
-CACHE_REFRESHED = '已更新缓存'
-NON_CLASSIFICATION_RESULTS = (PRIVATE_RESULT, NOT_FOUND_RESULT, CACHE_REFRESHED)
 
 
 def write_json(path, value):

@@ -7,7 +7,7 @@ const nativeSelection=location.protocol!=='file:'&&typeof window.showOpenFilePic
 function sessionText(text){$('session-note').textContent=text}
 function ordinarySelection(){for(const id of ['csv-file','cache-folder','review-file'])$(id).parentElement.hidden=false}
 function accessDenied(error){return ['NotAllowedError','SecurityError','NotSupportedError'].includes(error?.name)}
-function fileError(error){return accessDenied(error)?'浏览器拒绝读取此文件或目录，请通过普通文件选择重新载入；已有分析缓存保留。':error?.name==='NotFoundError'?'文件已移动或删除，请重新选择。':error.message}
+function fileError(error){return accessDenied(error)?'浏览器拒绝读取此文件或目录，请通过普通文件选择重新载入；已有分析副本保留。':error?.name==='NotFoundError'?'文件已移动或删除，请重新选择。':error.message}
 async function pickRemembered(picker){try{return await picker()}catch(error){if(accessDenied(error)){ordinarySelection();sessionText('当前浏览器拒绝读取文件，已显示普通文件选择；已有分析不受影响。');throw Error(fileError(error))}throw error}}
 function sessionHandles(saved){return [saved.csv,saved.review,...saved.folders].filter(Boolean)}
 function sessionNames(){return [session.csv?.name,session.review?.name,...session.folders.map(h=>h.name)].filter(Boolean).join('、')}
@@ -44,7 +44,7 @@ async function rememberSession(quiet=false){
   category:selectedCategory(),categoryAuto:model.categoryAuto,custom:$('category').value==='custom',positive:$('positive').value,negative:$('negative').value};
  try{const snapshot=model.lastView!==session.persistedView?snapshotView():null;await sessionStore(saved,snapshot);session.saved=saved;session.persistedView=model.lastView;$('forget-session').hidden=false;$('refresh-files').hidden=!nativeSelection||!sessionHandles(saved).length;
   if(!quiet)sessionText(snapshot||model.lastView?`已自动保存上次分析及所用封面，下次打开直接显示。当前选择：${sessionNames()||model.file?.name||''}。`:'文件选择、类别和编码会自动保存。');
- }catch{try{await sessionStore(saved);session.saved=saved;$('forget-session').hidden=false}catch{}sessionText('浏览器无法保存完整分析缓存（可能空间不足），当前分析仍可使用；下次可能需要重新授权读取文件。')}
+ }catch{try{await sessionStore(saved);session.saved=saved;$('forget-session').hidden=false}catch{}sessionText('浏览器无法保存完整分析副本（可能空间不足），当前分析仍可使用；下次可能需要重新授权读取文件。')}
 }
 const runViewerAction=action;
 action=async work=>{const ok=await runViewerAction(work);if(ok&&!session.skipSave){busy(true);try{await rememberSession()}finally{busy(false)}}session.skipSave=false;return ok};
@@ -71,7 +71,7 @@ function applySessionCategory(saved){
  model.categoryAuto=saved.categoryAuto??false;
  if(saved.custom){$('category').value='custom';$('custom-labels').hidden=false;return}
  if(!validCategory(saved.category))return;
- let index=available.findIndex(c=>c.id===saved.category.id&&c.positive_label===saved.category.positive_label&&c.negative_label===saved.category.negative_label&&(c.report_extension||'')===(saved.category.report_extension||''));
+ let index=available.findIndex(c=>c.id===saved.category.id&&c.positive_label===saved.category.positive_label&&c.negative_label===saved.category.negative_label);
  if(index<0)index=Number(categoryOption(saved.category));$('category').value=String(index);$('custom-labels').hidden=true;
 }
 async function restoreSession(prompt=false){
@@ -93,9 +93,9 @@ async function restoreSession(prompt=false){
   model.restoring=false;await renderReport();
   const waiting=grants.some(value=>value!=='granted');$('refresh-files').hidden=!nativeSelection||!handles.length;
   const cached=Boolean(model.cachedView)&&(waiting||errors.length||!handles.length);
-  sessionText(`${cached?`已自动显示上次分析缓存（${session.snapshot.date}）。`:waiting?'上次文件读取权限不可用。':handles.length?`已自动载入：${sessionNames()}。`:'已恢复上次的类别及编码。'}${waiting?(nativeSelection?'如需读取磁盘上的最新改动，可点击“更新本地文件”授权。':'本地 HTML 使用普通文件选择；如需读取磁盘上的新改动，请重新选择文件或目录。'):''}${errors.length?' 部分文件无法读取（可能权限受限、已移动或删除）：'+errors.join('；')+'。可重新选择替换。':''}`);
+  sessionText(`${cached?`已自动显示上次分析副本（${session.snapshot.date}）。`:waiting?'上次文件读取权限不可用。':handles.length?`已自动载入：${sessionNames()}。`:'已恢复上次的类别及编码。'}${waiting?(nativeSelection?'如需读取磁盘上的最新改动，可点击“更新本地文件”授权。':'本地 HTML 使用普通文件选择；如需读取磁盘上的新改动，请重新选择文件或目录。'):''}${errors.length?' 部分文件无法读取（可能权限受限、已移动或删除）：'+errors.join('；')+'。可重新选择替换。':''}`);
   if(!waiting&&!errors.length&&handles.length){session.restoring=false;await rememberSession(true)}else session.persistedView=model.lastView;
-  if(session.legacy)sessionText('已升级缓存读取方式，旧版整批文件缓存不再自动载入。请重新选择结果 CSV、核验 CSV 和采集数据目录一次；无需重新采集或调用模型，之后继续自动恢复。');
+  if(session.legacy)sessionText('已升级分析副本读取方式，旧版整批文件副本不再自动载入。请重新选择结果 CSV、核验 CSV 和采集数据目录一次；无需重新采集或调用模型，之后继续自动恢复。');
  }finally{model.restoring=false;session.restoring=false}
 }
 function clearSavedHandle(id,work){const original=$(id).onchange;$(id).onchange=event=>{work();original(event)}}
@@ -119,12 +119,12 @@ $('refresh-files').onclick=()=>action(async()=>{session.skipSave=true;await rest
 $('forget-session').onclick=()=>action(async()=>{
  // Suppress automatic saving for this action; current analysis remains open.
  session.skipSave=true;
- if(session.db)await sessionStore(null);session.saved=null;session.csv=null;session.review=null;session.folders=[];$('refresh-files').hidden=true;$('forget-session').hidden=true;sessionText('已忘记上次选择并删除浏览器中的分析缓存，当前分析保留。之后新选择的文件会重新记住。');
+ if(session.db)await sessionStore(null);session.saved=null;session.csv=null;session.review=null;session.folders=[];$('refresh-files').hidden=true;$('forget-session').hidden=true;sessionText('已忘记上次选择并删除浏览器中的分析副本，当前分析保留。之后新选择的文件会重新记住。');
 });
 async function initSession(){
  busy(true);
  try{
-  session.db=await new Promise((resolve,reject)=>{const request=indexedDB.open('jev-viewer:'+location.pathname,2);request.onupgradeneeded=()=>{for(const name of ['selection','assets'])if(!request.result.objectStoreNames.contains(name))request.result.createObjectStore(name)};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>sessionText('请关闭旧版分析页面，再重新打开此页面完成缓存升级。')});
+  session.db=await new Promise((resolve,reject)=>{const request=indexedDB.open('jev-viewer:'+location.pathname,2);request.onupgradeneeded=()=>{for(const name of ['selection','assets'])if(!request.result.objectStoreNames.contains(name))request.result.createObjectStore(name)};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);request.onblocked=()=>sessionText('请关闭旧版分析页面，再重新打开此页面完成存储升级。')});
   session.saved=await new Promise((resolve,reject)=>{const request=session.db.transaction('selection').objectStore('selection').get('last');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});
   session.snapshot=await new Promise((resolve,reject)=>{const request=session.db.transaction('selection').objectStore('selection').get('view-v2');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});
   session.legacy=!session.snapshot&&await new Promise((resolve,reject)=>{const request=session.db.transaction('selection').objectStore('selection').getKey('view');request.onsuccess=()=>resolve(request.result!==undefined);request.onerror=()=>reject(request.error)});
