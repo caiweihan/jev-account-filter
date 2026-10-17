@@ -28,6 +28,8 @@ Provider- and category-independent operational settings still have ordinary defa
 | `image_side` | 512 | Longest edge of an uploaded image; the original stays unchanged |
 | `image_token_estimate` | 1536 | Per-image budget estimate, not actual billing |
 
+For Jev (`typesafe/jev-*` or `~typesafe/jev-*`), uploaded copies are limited to 1568 pixels per edge and centered on a white canvas if either edge is below 280 pixels. This satisfies the provider's image limits without cropping, stretching, or changing collected originals. Other models retain the usual image resizing behavior.
+
 ## Select a category explicitly
 
 `--category` accepts a name under `configs/categories/` or a full TOML path. Classification rules, positive/negative labels, question text, and version all come from that file.

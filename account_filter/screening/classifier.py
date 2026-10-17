@@ -45,10 +45,20 @@ CHAT_OUTPUT_INSTRUCTIONS = (
 )
 
 
-def encode_cover(path: Path, side: int) -> str:
+def encode_cover(path: Path, side: int, *, model: str = '') -> str:
     with Image.open(path) as image:
         image = ImageOps.exif_transpose(image).convert('RGB')
-        image.thumbnail((side, side))
+        # Jev 的厂商限制比 OpenRouter 文档更严格：每边须为 280..1568。
+        # 小图补边，保留完整画面，不拉伸；只改变发送副本，不修改采集数据。
+        is_jev = model.startswith(('typesafe/jev-', '~typesafe/jev-'))
+        limit = min(side, 1568) if is_jev else side
+        image.thumbnail((limit, limit))
+        if is_jev:
+            width, height = image.size
+            if min(width, height) < 280:
+                canvas = Image.new('RGB', (max(width, 280), max(height, 280)), 'white')
+                canvas.paste(image, ((canvas.width - width) // 2, (canvas.height - height) // 2))
+                image = canvas
         buffer = io.BytesIO()
         image.save(buffer, format='JPEG', quality=80)
     return 'data:image/jpeg;base64,' + base64.b64encode(buffer.getvalue()).decode('ascii')
@@ -133,7 +143,7 @@ def build_request(channel: dict, root: Path, *, model: str, api: str,
         state.append(text)
         if description['has_cover']:
             try:
-                state.append({'type': 'image_url', 'image_url': {'url': encode_cover(cover, image_side)}})
+                state.append({'type': 'image_url', 'image_url': {'url': encode_cover(cover, image_side, model=model)}})
             except (OSError, ValueError):
                 description['has_cover'] = False
                 state[-1] = json.dumps(description, ensure_ascii=False)

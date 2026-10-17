@@ -22,17 +22,19 @@ An account's profile page already provides useful previews: titles describe vide
 
 **To the best of our knowledge, Jev Account Filter is the first project to screen video-platform accounts without downloading or watching full videos.** It first selects candidates by title, then combines their thumbnails with account metadata to judge the account's category independently, turning a large pool of accounts into a reviewable list of collection sources. Collected evidence and screening rules are stored separately, allowing researchers to revise criteria, replace models, and compare results using the same collected data. Accounts include both creator profiles and channels on video platforms. Sign-language screening is one validated application; other domains can be selected through category configurations.
 
+Our team is already using this project to screen sign-language accounts on short-video platforms. We welcome contributions that extend its applications to other domains and research needs.
+
 ### Advantages
 
-We used **GPT-6 Luna Decisions** to evaluate sign-language account screening on **2,140 Douyin accounts**.
+We screened **2,140 Douyin accounts** for sign-language content with **Jev 1.14**: **8 hours** of data collection and **1 hour** of API inference, at a total API cost of **$0.565** and **94.49%** accuracy.
 
-<p><img src="docs/assets/contributions/fast.en.svg" alt="Fast: 2,140 accounts, 1,500 human person-hours versus 11 model hours, a 136.36-fold speedup; multiple questions answered in parallel." width="100%"></p>
+<p><img src="docs/assets/contributions/fast.en.svg" alt="Fast: 2,140 accounts, 1,500 human person-hours versus 8 hours of collection + 1 hour of Jev API calls, a 166.67-fold speedup; multiple questions answered in parallel." width="100%"></p>
 
-<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap: low-cost decisions, title-first ranking and a small set of thumbnails; shared evidence across questions and reusable collected data." width="100%"></p>
+<p><img src="docs/assets/contributions/cheap.en.svg" alt="Cheap: $0.565 in total Jev API cost for 2,140 accounts, title-first ranking and a small set of thumbnails; shared evidence across questions." width="100%"></p>
 
-<p><img src="docs/assets/contributions/accurate.en.svg" alt="Accurate: conditional full-set accuracy estimates of 94.02% for human labels and 96.64% for model predictions; the vertical axis spans 90% to 100%." width="100%"></p>
+<p><img src="docs/assets/contributions/accurate.en.svg" alt="Accurate: conditional full-set accuracy estimates of 94.02% for human labels, 94.49% for Jev, and 96.64% for GPT-6 Luna Decisions; the vertical axis spans 90% to 100%." width="100%"></p>
 
-<p><img src="docs/assets/contributions/flexible.en.svg" alt="Flexible — illustrated contribution" width="100%"></p>
+<p><img src="docs/assets/contributions/flexible.en.svg" alt="Flexible: reuse collected data across repeated experiments and refine screening criteria without collecting again." width="100%"></p>
 
 <p><img src="docs/assets/contributions/promising.en.svg" alt="Promising — illustrated contribution" width="100%"></p>
 
@@ -60,11 +62,11 @@ Collection adapters and category rules are independent. Custom sources only need
 
 Screening produces more than an account list. The interactive analysis page brings together class composition, classification performance, score distributions, and feature clusters. Select a group in a chart to inspect individual accounts, candidate titles, thumbnails, and model scores. Adding a second-review CSV automatically updates the evaluation reference and enables a comparison of human annotation errors and model errors.
 
-The statistical views below come from the complete experiment on **2,140 Douyin accounts**; account-level evidence uses the explicitly published demo subset. The team's full account list and collected works remain private.
+The statistical views below come from the latest complete **Jev 1.14 experiment on 2,140 Douyin accounts**; account-level evidence uses the explicitly published demo subset. The team's full account list and collected works remain private.
 
-**Dataset composition and performance.** Class proportions describe the sample, while the reviewed comparison separates model errors from original annotation errors. Accuracy is a conditional estimate: the 198 original disagreements use second-review labels, and the remaining 1,942 agreements retain their original labels, assumed correct without independent review.
+**Dataset composition and performance.** Class proportions describe the sample, while the reviewed comparison separates model errors from original annotation errors. Accuracy is a conditional estimate: the 198 previously reviewed accounts use second-review labels; the other 1,942 retain their original labels, assumed correct.
 
-<p><img src="docs/assets/visualization/overview.en.png" alt="Class composition and performance across 2,140 accounts: conditional human accuracy of 94.02% and model accuracy of 96.64%." width="100%"></p>
+<p><img src="docs/assets/visualization/overview.en.png" alt="Class composition and performance across 2,140 accounts: conditional human accuracy of 94.02% and Jev accuracy of 94.49%." width="100%"></p>
 
 **Errors and score distributions.** The confusion matrix separates missed accounts from false inclusions. Normalized histograms compare account probabilities for human-error and model-error samples, helping identify score ranges that warrant closer review. The two error groups can overlap.
 

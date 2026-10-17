@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
   <title id="title">Flexible: 让筛选规则可以反复试验</title>
-  <desc id="description">类别边界、账户类型与证据要求，都可以通过配置反复调整和比较。复用同一份数据重新实验，减少人工规则变化后的重复审阅，让筛选标准跟着研究问题迭代。</desc>
+  <desc id="description">类别边界、账户类型与证据要求，都可反复调整和比较。 重复实验直接复用已采集数据， 无需反复访问平台、下载视频或重新采集。 减少规则变化后的重复人工审阅， 让筛选标准跟着研究问题迭代。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -13,9 +13,11 @@
         <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#ad5b16" stroke="none" />
         <text x="57" y="65" font-size="38" fill="#ad5b16" font-weight="700">Flexible</text>
         <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">让筛选规则可以反复试验</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">类别边界、账户类型与证据要求，都可以通过配置反复调整和比较。</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">复用同一份数据重新实验，减少人工规则变化后的重复审阅，让筛选</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">标准跟着研究问题迭代。</text>
+        <text x="38" y="155" font-size="24" fill="#43516a">类别边界、账户类型与证据要求，都可反复调整和比较。</text>
+        <text x="38" y="190" font-size="24" fill="#43516a">重复实验直接复用已采集数据，</text>
+        <text x="38" y="225" font-size="24" fill="#43516a">无需反复访问平台、下载视频或重新采集。</text>
+        <text x="38" y="260" font-size="24" fill="#43516a">减少规则变化后的重复人工审阅，</text>
+        <text x="38" y="295" font-size="24" fill="#43516a">让筛选标准跟着研究问题迭代。</text>
       </g>
       <text x="1396" y="32" font-size="17" fill="#ad5b16" opacity=".55" font-weight="600" text-anchor="end">04</text>
       <path d="M843 43V362" fill="none" stroke="#f3ddbb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="413" viewBox="0 0 1440 413" role="img" aria-labelledby="title description">
   <title id="title">Flexible: Iterate on the screening criteria</title>
-  <desc id="description">Adjust and compare category boundaries, account types, and evidence requirements through configuration. Rerun on the same data to reduce repeated manual review when rules change, and let the screening criteria evolve with the research question.</desc>
+  <desc id="description">Adjust category boundaries, account types, and evidence. Reuse collected data across repeated experiments, without revisiting platforms, downloading videos, or collecting again. Reduce repeated manual review when screening rules change, and let the criteria evolve with the research question.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
       <path d="M1 1L6 4L1 7" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -13,10 +13,11 @@
         <rect x="38" y="35" width="5" height="37" rx="2.5" fill="#ad5b16" stroke="none" />
         <text x="57" y="65" font-size="38" fill="#ad5b16" font-weight="700">Flexible</text>
         <text x="38" y="109" font-size="26" fill="#24344e" font-weight="600">Iterate on the screening criteria</text>
-        <text x="38" y="155" font-size="25" fill="#43516a">Adjust and compare category boundaries, account types, and</text>
-        <text x="38" y="190" font-size="25" fill="#43516a">evidence requirements through configuration. Rerun on the same</text>
-        <text x="38" y="225" font-size="25" fill="#43516a">data to reduce repeated manual review when rules change, and let</text>
-        <text x="38" y="260" font-size="25" fill="#43516a">the screening criteria evolve with the research question.</text>
+        <text x="38" y="155" font-size="24" fill="#43516a">Adjust category boundaries, account types, and evidence.</text>
+        <text x="38" y="190" font-size="24" fill="#43516a">Reuse collected data across repeated experiments,</text>
+        <text x="38" y="225" font-size="24" fill="#43516a">without revisiting platforms, downloading videos, or collecting again.</text>
+        <text x="38" y="260" font-size="24" fill="#43516a">Reduce repeated manual review when screening rules change,</text>
+        <text x="38" y="295" font-size="24" fill="#43516a">and let the criteria evolve with the research question.</text>
       </g>
       <text x="1396" y="32" font-size="17" fill="#ad5b16" opacity=".55" font-weight="600" text-anchor="end">04</text>
       <path d="M843 43V362" fill="none" stroke="#f3ddbb" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />

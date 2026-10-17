@@ -28,6 +28,8 @@ api_key_env = "MODEL_API_KEY"
 | `image_side` | 512 | 上传图片最长边，原图不变 |
 | `image_token_estimate` | 1536 | 每图预算估值，不是实际计费 |
 
+Jev（`typesafe/jev-*` 或 `~typesafe/jev-*`）的上传副本每边不超过 1568 像素，任一边小于 280 时居中补白边，以满足厂商的图片限制。不裁剪、拉伸或修改采集原图；其它模型保留原有的缩放行为。
+
 ## 类别必须明确选择
 
 `--category` 接受 `configs/categories/` 下的名称或完整 TOML 路径。分类规则、正负标签、问题文本和版本均来自该文件。
