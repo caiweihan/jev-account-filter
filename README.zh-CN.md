@@ -1,7 +1,7 @@
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a></p>
 
 <div align="center">
-  <img src="docs/assets/banner.svg" alt="Jev Account Filter：用决策模型筛选视频平台账户" width="1200">
+  <a href="docs/assets/promo.png"><img src="docs/assets/promo.svg" alt="Jev Account Filter：用决策模型筛选视频平台账户，展示 UGC 数据采集流程及人工账户筛选瓶颈。" width="1200"></a>
   <p><strong>Find the accounts. Build the dataset.</strong></p>
   <p>用决策模型批量筛选视频平台账号、分类频道、寻找手语账号，为领域数据集构建与研究选择创作者。</p>
   <p><kbd>Fast</kbd>　<kbd>Cheap</kbd>　<kbd>Accurate</kbd>　<kbd>Flexible</kbd>　<kbd>Promising</kbd></p>
@@ -15,8 +15,6 @@
 从用户创作社区采集数据集，用于模型训练，正在成为越来越常见的研究路径。视频平台汇集了大量创作者持续发布的真实场景内容，为扩大训练数据规模、丰富内容分布和覆盖更多人群提供了机会。如何从这些持续增长的内容中找到特定领域的数据来源，也随之成为数据集构建的重要问题。
 
 一条常见的采集路线是先确定相关账户，再通过视频模型和人工检查，筛出其中适合训练的具体视频。已有研究尝试了人工整理来源、自动检索候选和按频道抽查等方法，但筛选来源及审核内容仍需要投入人工。   候选账户越多，逐个浏览和判断的成本就越高；当类别边界或采集目标改变时，部分工作还需要重做。**账户筛选因此成为领域数据采集中的一道瓶颈。**
-
-<p><img src="docs/assets/collection-workflow.svg" alt="通过关键词及推荐发现候选账户 → 人工筛选相关账户（账户筛选瓶颈） → 视频模型与人工审核筛选具体视频 → 预处理并构建训练数据集。下方 Jev Account Filter 通过视频标题与封面筛选账户，向上箭头指向人工筛选相关账户这一步。" width="100%"></p>
 
 账户主页本身已经提供了丰富的预览信息：标题表达作品主题，封面呈现视觉线索，名称和简介补充创作者定位。这些信息为低成本的来源判断提供了可能。与此同时，决策模型能够把给定证据直接转换为类别选择和相关性概率，并在同一请求中回答多个独立问题，适合大规模、可重复的筛选任务。
 
