@@ -3,7 +3,7 @@
 <div align="center">
   <img src="docs/assets/banner.svg" alt="Jev Account Filter：用决策模型筛选视频平台账户" width="1200">
   <p><strong>Find the accounts. Build the dataset.</strong></p>
-  <p>用决策模型筛选视频平台账户，让领域数据集采集从更好的来源开始。</p>
+  <p>用决策模型批量筛选视频平台账号、分类频道、寻找手语账号，为领域数据集构建与研究选择创作者。</p>
   <p><kbd>Fast</kbd>　<kbd>Cheap</kbd>　<kbd>Accurate</kbd>　<kbd>Flexible</kbd>　<kbd>Promising</kbd></p>
   <p><a href="docs/installation.zh-CN.md">安装</a> · <a href="docs/commands.zh-CN.md">运行指南</a> · <a href="docs/configuration.zh-CN.md">配置说明</a></p>
 </div>
@@ -43,6 +43,13 @@
 **Jev Account Filter 既可用于构建模型训练集，也可为新闻传播等研究提供样本筛选与分析支持。** 下方列举了多个领域的重要数据集和代表性研究，它们的论文和方法记录了人工筛选频道或整理频道来源的过程。本项目未来可替代其中的人工频道筛选环节。手语是已验证的应用，其他领域可通过新的类别配置拓展。
 
 <p><img src="docs/assets/application-domains.svg" alt="2×2 应用领域卡片：第一行是手语与新闻传播研究，第二行是乐器演奏与美妆教学；各卡片介绍相关数据集或研究的频道选择过程。" width="100%"></p>
+
+- **寻找手语账号：** 批量筛选手语频道与创作者，为手语翻译数据集选择视频来源。OpenASL、YouTube-ASL、YouTube-SL-25 展示了筛选相关频道的需求；本项目的账号筛选实验已验证这一领域。
+- **新闻传播研究：** 筛选新闻频道与时事账号，构建研究样本，用于分析新闻创作者、受众重叠及跨政治立场的讨论。Pew 的 YouTube 研究展示了这类人工筛选的工作量。
+- **乐器演奏数据集：** 在采集音乐视频前识别钢琴及其他乐器演奏频道。PIAST 展示了整理频道来源在音乐数据集构建中的作用。
+- **美妆教学数据集：** 在采集教学视频前筛选美妆博主与化妆教程频道。YouMakeup 展示了这一来源筛选环节。
+
+后三项是待拓展的应用方向，需要各自的类别规则与评估，不代表已经完成额外领域的基准实验。
 
 数据集原文：[OpenASL · §3](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · [YouTube-ASL · §2.1、§3.2](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · [YouTube-SL-25 · §2.2](https://arxiv.org/html/2407.11144#S2.SS2) · [PIAST · §2.2](https://arxiv.org/html/2411.02551v2#S2.SS2) · [YouMakeup · §3.1](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4)。
 
@@ -91,3 +98,9 @@
 **[安装与环境](docs/installation.zh-CN.md)**：准备项目内的 Python 环境与浏览器。
 **[配置说明](docs/configuration.zh-CN.md)**：选择服务商、模型与目标类别。
 [运行命令](docs/commands.zh-CN.md) · [数据格式](docs/data-format.zh-CN.md)
+
+## 许可证与引用
+
+项目代码与原创文档采用 [MIT 许可证](LICENSE)。第三方组件保留各自的许可证，包括[平台图标](docs/assets/platform-icons/LICENSE-simple-icons.txt)。演示子集的公开不转让创作者图片、标题或个人资料的权利。
+
+如果在研究中使用本项目，请通过 [CITATION.cff](CITATION.cff) 引用本仓库。欢迎拓展账号筛选的类别、平台及研究应用。

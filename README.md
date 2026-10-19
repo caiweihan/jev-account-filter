@@ -3,7 +3,7 @@
 <div align="center">
   <img src="docs/assets/banner.en.svg" alt="Jev Account Filter: decision models for video-platform account screening" width="1200">
   <p><strong>Find the accounts. Build the dataset.</strong></p>
-  <p>Screen video-platform accounts with decision models. Start domain dataset collection with better sources.</p>
+  <p>Account screening and channel classification with decision models: find sign language creators and other domain-specific sources for datasets and research.</p>
   <p><kbd>Fast</kbd>　<kbd>Cheap</kbd>　<kbd>Accurate</kbd>　<kbd>Flexible</kbd>　<kbd>Promising</kbd></p>
   <p><a href="docs/installation.md">Installation</a> · <a href="docs/commands.md">Commands</a> · <a href="docs/configuration.md">Configuration</a></p>
 </div>
@@ -43,6 +43,13 @@ We screened **2,140 Douyin accounts** for sign-language content with **Jev 1.14*
 **Jev Account Filter can support both model-training dataset construction and sample selection and analysis for research, including news and communication studies.** The examples below include major datasets and representative studies whose papers and methods document human channel screening or curation of channel sources. The project could replace the manual channel-screening stage in these workflows. Sign language is the validated application; other domains can be explored through new category configurations.
 
 <p><img src="docs/assets/application-domains.en.svg" alt="A 2×2 grid: sign language and news and communication research in the first row; instrument performance and makeup tutorials in the second. Each card describes channel selection for relevant datasets or studies." width="100%"></p>
+
+- **Sign language account discovery:** find sign language channels and creators as sources for sign language translation datasets. OpenASL, YouTube-ASL, and YouTube-SL-25 illustrate the need to select relevant channel sources; our account-screening experiment evaluates this domain.
+- **News and communication research:** screen news and current-affairs channels to build research samples for studying news creators, audience overlap, and cross-partisan discussions. Pew's YouTube studies illustrate this manual screening workload.
+- **Instrument performance datasets:** identify piano and other instrument-performance channels before collecting music videos. PIAST illustrates the role of curated channel sources in music dataset construction.
+- **Makeup tutorial datasets:** select beauty creators and makeup tutorial channels before collecting instructional videos. YouMakeup illustrates this source-selection stage.
+
+The latter three are potential applications, requiring their own category rules and evaluation; they are not additional validated benchmarks.
 
 Dataset papers: [OpenASL · §3](https://aclanthology.org/2022.emnlp-main.427.pdf#page=3) · [YouTube-ASL · §2.1, §3.2](https://papers.nips.cc/paper/2023/file/5c61452daca5f0c260e683b317d13a3f-Paper-Datasets_and_Benchmarks.pdf#page=4) · [YouTube-SL-25 · §2.2](https://arxiv.org/html/2407.11144#S2.SS2) · [PIAST · §2.2](https://arxiv.org/html/2411.02551v2#S2.SS2) · [YouMakeup · §3.1](https://aclanthology.org/anthology-files/pdf/D/D19/D19-1517.pdf#page=4).
 
@@ -92,3 +99,9 @@ Opening [`analysis.html`](analysis.html) first displays **six real public exampl
 **[Configuration](docs/configuration.md)**: choose a provider, model, and target category.
 
 [Commands](docs/commands.md) · [Data format](docs/data-format.md)
+
+## License and citation
+
+The project code and original documentation are available under the [MIT License](LICENSE). Third-party components retain their own licenses, including the [platform icons](docs/assets/platform-icons/LICENSE-simple-icons.txt). Publication of the demonstration subset does not transfer rights to creators' images, titles, or profile content.
+
+If you use this project in research, please cite the repository using [CITATION.cff](CITATION.cff). Contributions that extend account screening to new categories, platforms, or research workflows are welcome.

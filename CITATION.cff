@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite this repository."
+type: software
+title: "Jev Account Filter"
+authors:
+  - name: "Jev Account Filter contributors"
+    type: entity
+repository-code: "https://github.com/caiweihan/jev-account-filter"
+url: "https://github.com/caiweihan/jev-account-filter"
+abstract: >-
+  Account screening and channel classification for video-platform dataset
+  curation and research. Decision models rank video titles and evaluate selected
+  thumbnails with profile metadata. Sign language account discovery is a
+  validated application; category rules and platform adapters are extensible.
+keywords:
+  - account screening
+  - channel classification
+  - creator discovery
+  - sign language
+  - dataset curation
+  - decision models
+license: MIT
